@@ -4,7 +4,7 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 
-namespace Sts2At;
+namespace AtprotoTracker;
 
 [HarmonyPatch(typeof(RunManager), nameof(RunManager.OnEnded))]
 internal static class RunEndHook

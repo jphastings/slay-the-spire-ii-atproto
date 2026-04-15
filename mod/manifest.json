@@ -1,10 +1,10 @@
 {
-  "id": "sts2.at",
-  "name": "sts2.at",
+  "id": "atproto-tracker",
+  "name": "atproto-tracker",
   "version": "0.1.0",
   "author": "jphastings",
   "description": "Posts end-of-run summaries to your atproto PDS.",
-  "entry": "sts2.at.dll",
+  "entry": "atproto-tracker.dll",
   "has_dll": true,
   "has_pck": false,
   "dependencies": []

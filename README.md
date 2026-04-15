@@ -1,4 +1,4 @@
-# sts2.at
+# Slay the Spire 2: AT Protocol Tracker
 
 A [Slay the Spire 2](https://store.steampowered.com/app/2868840/) mod that posts end-of-run summaries to your [atproto](https://atproto.com) PDS.
 
@@ -10,20 +10,20 @@ Early. The run-end Harmony hook is pinned (`MegaCrit.Sts2.Core.Runs.RunManager.O
 
 ## Install (no build required)
 
-Drop the latest release zip into your game's mods folder (see [Platforms](#platforms)), then launch the game once. The mod will create `config.json` next to its DLL; edit it and restart:
+1. Unzip the latest release into your game's mods folder (see [Platforms](#platforms)) so that `atproto-tracker.dll` ends up at `…/mods/atproto-tracker/atproto-tracker.dll`.
+2. Create a `config.json` in that same folder with your PDS, handle (or DID), and an app password:
 
-```json
-{
-  "pdsUrl": "https://bsky.social",
-  "handle": "you.example.com",
-  "appPassword": "xxxx-xxxx-xxxx-xxxx",
-  "gameRef": "at://did:web:gamesgamesgamesgames.games/games.gamesgamesgamesgames.game/3mglj4k2edl2l"
-}
-```
+   ```json
+   {
+     "pdsUrl": "https://bsky.social",
+     "handle": "you.example.com",
+     "appPassword": "xxxx-xxxx-xxxx-xxxx"
+   }
+   ```
 
-`gameRef` defaults to the canonical StS2 `actor.game` record published under `did:web:gamesgamesgamesgames.games`. Set it to empty string to skip the stats record update.
+   If you skip this step, the mod will write a template `config.json` next to the DLL on first launch and log a loud warning — just fill it in and restart the game. App passwords are created at [bsky.app/settings/app-passwords](https://bsky.app/settings/app-passwords).
 
-App passwords live at [bsky.app/settings/app-passwords](https://bsky.app/settings/app-passwords). The mod caches the rkey of your `actor.stats` record after first run, so subsequent runs update that same record instead of creating new ones.
+3. Launch the game. Each run creates a new `me.byjp.pesos.sts2.run` record on your PDS and updates a single rolling `games.gamesgamesgamesgames.actor.stats` record (the mod caches its rkey back into `config.json` after the first run).
 
 ## Build
 
@@ -31,10 +31,10 @@ Prerequisite: [.NET SDK 9+](https://dotnet.microsoft.com/download). The build re
 
 ```sh
 # Build only
-dotnet build mod/sts2.at.csproj -c Release
+dotnet build mod/atproto-tracker.csproj -c Release
 
-# Build and install into the game's mods/sts2.at/ directory
-dotnet build mod/sts2.at.csproj -c Release -t:Install
+# Build and install into the game's mods/atproto-tracker/ directory
+dotnet build mod/atproto-tracker.csproj -c Release -t:Install
 ```
 
 The csproj auto-detects the default Steam install path on macOS, Linux, and Windows. If your install is elsewhere (e.g. a non-default Steam library), copy [mod/local.props.template](mod/local.props.template) to `mod/local.props` and set `Sts2DataDir` and `ModsPath`.
@@ -49,7 +49,7 @@ scripts/generate-refs.sh  # reads Sts2DataDir from mod/local.props
 
 ### Releases
 
-Bump `ModVersion` in [mod/Plugin.cs](mod/Plugin.cs) and push to `main`. The [release workflow](.github/workflows/release.yml) creates a `v<version>` tag and publishes a zip with `sts2.at.dll` + `manifest.json` + `config.example.json`.
+Bump `ModVersion` in [mod/Plugin.cs](mod/Plugin.cs) and push to `main`. The [release workflow](.github/workflows/release.yml) creates a `v<version>` tag and publishes a zip with `atproto-tracker.dll` + `manifest.json` + `config.example.json`.
 
 ## Layout
 
@@ -60,9 +60,9 @@ Bump `ModVersion` in [mod/Plugin.cs](mod/Plugin.cs) and push to `main`. The [rel
 
 One DLL, all platforms. Install path differs:
 
-- **Windows**: `…/Slay the Spire 2/mods/sts2.at/`
-- **macOS**: `…/SlayTheSpire2.app/Contents/MacOS/mods/sts2.at/` — the loader only searches inside the `.app` bundle, so installing here invalidates the app's code signature. Steam-installed builds still launch fine, but Gatekeeper may complain on first run.
-- **Linux / Steam Deck**: `…/Slay the Spire 2/mods/sts2.at/`
+- **Windows**: `…/Slay the Spire 2/mods/atproto-tracker/`
+- **macOS**: `…/SlayTheSpire2.app/Contents/MacOS/mods/atproto-tracker/` — the loader only searches inside the `.app` bundle, so installing here invalidates the app's code signature. Steam-installed builds still launch fine, but Gatekeeper may complain on first run.
+- **Linux / Steam Deck**: `…/Slay the Spire 2/mods/atproto-tracker/`
 
 ## Credits
 

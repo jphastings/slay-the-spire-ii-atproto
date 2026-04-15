@@ -1,12 +1,12 @@
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Modding;
 
-namespace Sts2At;
+namespace AtprotoTracker;
 
 [ModInitializer("ModLoaded")]
 public static class Plugin
 {
-    public const string ModId = "sts2.at";
+    public const string ModId = "atproto-tracker";
     public const string ModVersion = "0.1.0";
 
     internal static Config Config = null!;

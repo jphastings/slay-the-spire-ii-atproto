@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-namespace Sts2At;
+namespace AtprotoTracker;
 
 internal sealed class AtProtoClient
 {

@@ -6,7 +6,7 @@ using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Saves;
 
-namespace Sts2At;
+namespace AtprotoTracker;
 
 internal static class RunStateExtractor
 {

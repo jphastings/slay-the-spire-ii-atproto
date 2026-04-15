@@ -5,8 +5,8 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <AssemblyName>sts2.at</AssemblyName>
-    <RootNamespace>Sts2At</RootNamespace>
+    <AssemblyName>atproto-tracker</AssemblyName>
+    <RootNamespace>AtprotoTracker</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
@@ -49,16 +49,16 @@
     <Error Text="sts2.dll not found at '$(Sts2DataDir)'. Set Sts2DataDir in mod/local.props to point at your game install's data dir." />
   </Target>
 
-  <!-- `dotnet build -t:Install` builds and deploys to the game's mods/sts2.at/ dir. -->
+  <!-- `dotnet build -t:Install` builds and deploys to the game's mods/atproto-tracker/ dir. -->
   <Target Name="Install" DependsOnTargets="Build">
     <PropertyGroup>
-      <DeployDir>$(ModsPath)/sts2.at</DeployDir>
+      <DeployDir>$(ModsPath)/atproto-tracker</DeployDir>
     </PropertyGroup>
     <MakeDir Directories="$(DeployDir)" />
     <Copy SourceFiles="$(TargetPath)"        DestinationFolder="$(DeployDir)" />
     <Copy SourceFiles="manifest.json"        DestinationFolder="$(DeployDir)" />
     <Copy SourceFiles="config.example.json"  DestinationFolder="$(DeployDir)" />
-    <Message Text="Installed sts2.at to $(DeployDir)" Importance="high" />
+    <Message Text="Installed atproto-tracker to $(DeployDir)" Importance="high" />
   </Target>
 
 </Project>

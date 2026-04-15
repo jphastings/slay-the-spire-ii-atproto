@@ -4,7 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mod", "mod", "{4721CDBE-9835-733F-D50B-18F505229922}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sts2.at", "mod\sts2.at.csproj", "{6EF7C6D7-2B94-957B-34B8-AF14AC405426}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "atproto-tracker", "mod\atproto-tracker.csproj", "{6EF7C6D7-2B94-957B-34B8-AF14AC405426}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

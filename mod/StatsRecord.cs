@@ -1,7 +1,7 @@
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-namespace Sts2At;
+namespace AtprotoTracker;
 
 internal sealed class StatsRecord
 {

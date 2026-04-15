@@ -42,18 +42,18 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         env:
           Sts2DataDir: ${{ github.workspace }}/mod/refs
-        run: dotnet build mod/sts2.at.csproj -c Release
+        run: dotnet build mod/atproto-tracker.csproj -c Release
 
       - name: Stage release files
         if: steps.check.outputs.skip != 'true'
         run: |
-          stage="release/sts2.at"
+          stage="release/atproto-tracker"
           mkdir -p "$stage"
-          cp mod/.godot/mono/temp/bin/Release/sts2.at.dll "$stage/"
-          cp mod/manifest.json                           "$stage/"
-          cp mod/config.example.json                     "$stage/"
+          cp mod/.godot/mono/temp/bin/Release/atproto-tracker.dll "$stage/"
+          cp mod/manifest.json                                    "$stage/"
+          cp mod/config.example.json                              "$stage/"
           cd release
-          zip -r "sts2.at-${{ steps.ver.outputs.tag }}.zip" sts2.at
+          zip -r "atproto-tracker-${{ steps.ver.outputs.tag }}.zip" atproto-tracker
 
       - name: Create release
         if: steps.check.outputs.skip != 'true'
@@ -61,6 +61,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "${{ steps.ver.outputs.tag }}" \
-            --title "sts2.at ${{ steps.ver.outputs.tag }}" \
+            --title "atproto-tracker ${{ steps.ver.outputs.tag }}" \
             --generate-notes \
-            "release/sts2.at-${{ steps.ver.outputs.tag }}.zip"
+            "release/atproto-tracker-${{ steps.ver.outputs.tag }}.zip"
