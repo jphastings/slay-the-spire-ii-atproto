@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths: ['mod/Plugin.cs']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Extract mod version
+        id: ver
+        run: |
+          version=$(grep -oP 'ModVersion\s*=\s*"\K[^"]+' mod/Plugin.cs)
+          if [[ -z "$version" ]]; then echo "could not read ModVersion from mod/Plugin.cs" >&2; exit 1; fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$version"    >> "$GITHUB_OUTPUT"
+
+      - name: Skip if tag exists
+        id: check
+        run: |
+          if git ls-remote --tags origin "refs/tags/${{ steps.ver.outputs.tag }}" | grep -q .; then
+            echo "tag already exists, nothing to release"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        if: steps.check.outputs.skip != 'true'
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build
+        if: steps.check.outputs.skip != 'true'
+        env:
+          Sts2DataDir: ${{ github.workspace }}/mod/refs
+        run: dotnet build mod/sts2.at.csproj -c Release
+
+      - name: Stage release files
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          stage="release/sts2.at"
+          mkdir -p "$stage"
+          cp mod/.godot/mono/temp/bin/Release/sts2.at.dll "$stage/"
+          cp mod/manifest.json                           "$stage/"
+          cp mod/config.example.json                     "$stage/"
+          cd release
+          zip -r "sts2.at-${{ steps.ver.outputs.tag }}.zip" sts2.at
+
+      - name: Create release
+        if: steps.check.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.ver.outputs.tag }}" \
+            --title "sts2.at ${{ steps.ver.outputs.tag }}" \
+            --generate-notes \
+            "release/sts2.at-${{ steps.ver.outputs.tag }}.zip"

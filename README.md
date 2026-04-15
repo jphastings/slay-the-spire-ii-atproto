@@ -39,6 +39,18 @@ dotnet build mod/sts2.at.csproj -c Release -t:Install
 
 The csproj auto-detects the default Steam install path on macOS, Linux, and Windows. If your install is elsewhere (e.g. a non-default Steam library), copy [mod/local.props.template](mod/local.props.template) to `mod/local.props` and set `Sts2DataDir` and `ModsPath`.
 
+### CI / reference assemblies
+
+CI builds against API-only reference assemblies in [mod/refs/](mod/refs/) so the game's proprietary DLLs never leave the user's machine. Regenerate them after a game update:
+
+```sh
+scripts/generate-refs.sh  # reads Sts2DataDir from mod/local.props
+```
+
+### Releases
+
+Bump `ModVersion` in [mod/Plugin.cs](mod/Plugin.cs) and push to `main`. The [release workflow](.github/workflows/release.yml) creates a `v<version>` tag and publishes a zip with `sts2.at.dll` + `manifest.json` + `config.example.json`.
+
 ## Layout
 
 - [lexicons/](lexicons/) — atproto lexicon JSON for `at.sts2.run`
