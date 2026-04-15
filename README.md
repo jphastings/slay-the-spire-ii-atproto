@@ -25,6 +25,19 @@ Early. The run-end Harmony hook is pinned (`MegaCrit.Sts2.Core.Runs.RunManager.O
 
 3. Launch the game. Each run creates a new `me.byjp.pesos.sts2.run` record on your PDS and updates a single rolling `games.gamesgamesgamesgames.actor.stats` record (the mod caches its rkey back into `config.json` after the first run).
 
+> [!TIP]
+> Your save hasn't vanished! Follow this guidance to make sure it's available during modded play.
+
+Slay the Spire 2 keeps **separate save files for modded and unmodded profiles** — the first time you launch with any mod installed, the game will look empty. Your existing progress is still on disk under a sibling folder; copy `progress.save` across:
+
+| OS                 | Unmodded                                                                        | Modded                                                                               |
+| ------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Windows            | `%APPDATA%\SlayTheSpire2\steam\<STEAM_ID>\1\profile1\saves`                     | `%APPDATA%\SlayTheSpire2\steam\<STEAM_ID>\modded\profile1\saves`                     |
+| macOS              | `~/Library/Application Support/SlayTheSpire2/steam/<STEAM_ID>/1/profile1/saves` | `~/Library/Application Support/SlayTheSpire2/steam/<STEAM_ID>/modded/profile1/saves` |
+| Linux / Steam Deck | `~/.local/share/SlayTheSpire2/steam/<STEAM_ID>/1/profile1/saves`                | `~/.local/share/SlayTheSpire2/steam/<STEAM_ID>/modded/profile1/saves`                |
+
+Copy (don't move) so you keep an unmodded backup.
+
 ## Build
 
 Prerequisite: [.NET SDK 9+](https://dotnet.microsoft.com/download). The build references `sts2.dll` and `0Harmony.dll` directly from your game install — no need to copy them.
