@@ -1,0 +1,10 @@
+<!--
+  Copy this file to local.props and edit if your StS2 install is not at the default
+  location. local.props is gitignored.
+-->
+<Project>
+  <PropertyGroup>
+    <!-- <Sts2DataDir>/Volumes/Crucial X9/SteamLibrary/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_arm64</Sts2DataDir> -->
+    <!-- <ModsPath>/Volumes/Crucial X9/SteamLibrary/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods</ModsPath> -->
+  </PropertyGroup>
+</Project>

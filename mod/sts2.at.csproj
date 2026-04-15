@@ -1,0 +1,62 @@
+<Project Sdk="Godot.NET.Sdk/4.5.1">
+
+  <!-- Optional local override for Sts2DataDir / ModsPath. Not checked in. -->
+  <Import Project="local.props" Condition="Exists('local.props')" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>sts2.at</AssemblyName>
+    <RootNamespace>Sts2At</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+
+  <!-- Auto-detect the game's platform-specific data dir on each OS.
+       Override by setting Sts2DataDir in local.props if your install is elsewhere. -->
+  <PropertyGroup Condition="'$(Sts2DataDir)' == '' and $([MSBuild]::IsOSPlatform('OSX'))">
+    <Sts2DataDir>$(HOME)/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_arm64</Sts2DataDir>
+    <ModsPath>$(HOME)/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods</ModsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Sts2DataDir)' == '' and $([MSBuild]::IsOSPlatform('Linux'))">
+    <Sts2DataDir>$(HOME)/.steam/steam/steamapps/common/Slay the Spire 2/data_sts2_linuxbsd_x86_64</Sts2DataDir>
+    <ModsPath>$(HOME)/.steam/steam/steamapps/common/Slay the Spire 2/mods</ModsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Sts2DataDir)' == '' and $([MSBuild]::IsOSPlatform('Windows'))">
+    <Sts2DataDir>C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\data_sts2_windows_x86_64</Sts2DataDir>
+    <ModsPath>C:\Program Files (x86)\Steam\steamapps\common\Slay the Spire 2\mods</ModsPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="sts2">
+      <HintPath>$(Sts2DataDir)/sts2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(Sts2DataDir)/0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="manifest.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="CheckSts2DataDir" BeforeTargets="ResolveAssemblyReferences"
+          Condition="!Exists('$(Sts2DataDir)/sts2.dll')">
+    <Error Text="sts2.dll not found at '$(Sts2DataDir)'. Set Sts2DataDir in mod/local.props to point at your game install's data dir." />
+  </Target>
+
+  <!-- `dotnet build -t:Install` builds and deploys to the game's mods/sts2.at/ dir. -->
+  <Target Name="Install" DependsOnTargets="Build">
+    <PropertyGroup>
+      <DeployDir>$(ModsPath)/sts2.at</DeployDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(DeployDir)" />
+    <Copy SourceFiles="$(TargetPath)"  DestinationFolder="$(DeployDir)" />
+    <Copy SourceFiles="manifest.json"  DestinationFolder="$(DeployDir)" />
+    <Message Text="Installed sts2.at to $(DeployDir)" Importance="high" />
+  </Target>
+
+</Project>
