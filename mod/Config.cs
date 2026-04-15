@@ -8,7 +8,6 @@ namespace AtprotoTracker;
 
 internal sealed class Config
 {
-    [JsonPropertyName("pdsUrl")]      public string PdsUrl { get; set; } = "https://bsky.social";
     [JsonPropertyName("handle")]      public string Handle { get; set; } = "";
     [JsonPropertyName("appPassword")] public string AppPassword { get; set; } = "";
     // Cached after first run so subsequent runs update the same actor.stats record.

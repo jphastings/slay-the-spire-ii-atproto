@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -9,38 +8,43 @@ namespace AtprotoTracker;
 
 internal sealed class AtProtoClient
 {
-    private readonly Config _cfg;
     private readonly HttpClient _http = new();
+    private string _pdsUrl = "";
     private string? _did;
     private string? _accessJwt;
     private DateTime _expiresAt;
 
-    public AtProtoClient(Config cfg) => _cfg = cfg;
+    public string Did => _did ?? throw new InvalidOperationException("not authenticated");
 
-    private async Task EnsureSessionAsync()
+    // Log in against a specific PDS with app-password credentials. Call once after
+    // resolving the identity via Slingshot.
+    public async Task LoginAsync(string pdsUrl, string identifier, string appPassword)
     {
-        if (_accessJwt is not null && DateTime.UtcNow < _expiresAt) return;
-
+        _pdsUrl = pdsUrl.TrimEnd('/');
         var res = await _http.PostAsJsonAsync(
-            $"{_cfg.PdsUrl}/xrpc/com.atproto.server.createSession",
-            new { identifier = _cfg.Handle, password = _cfg.AppPassword });
-        res.EnsureSuccessStatusCode();
+            $"{_pdsUrl}/xrpc/com.atproto.server.createSession",
+            new { identifier, password = appPassword });
+        if (!res.IsSuccessStatusCode)
+        {
+            var err = await res.Content.ReadAsStringAsync();
+            throw new InvalidOperationException($"createSession HTTP {(int)res.StatusCode}: {err}");
+        }
         var body = await res.Content.ReadFromJsonAsync<JsonNode>()
                    ?? throw new InvalidOperationException("empty session response");
-        _did = body["did"]!.GetValue<string>();
+        _did       = body["did"]!.GetValue<string>();
         _accessJwt = body["accessJwt"]!.GetValue<string>();
         _expiresAt = DateTime.UtcNow.AddMinutes(90);
         _http.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessJwt);
     }
 
-    public string Did => _did ?? throw new InvalidOperationException("not authenticated");
+    public bool IsAuthenticated => _accessJwt is not null && DateTime.UtcNow < _expiresAt;
 
     public async Task<string> CreateRecordAsync(string collection, object record)
     {
-        await EnsureSessionAsync();
+        RequireAuth();
         var res = await _http.PostAsJsonAsync(
-            $"{_cfg.PdsUrl}/xrpc/com.atproto.repo.createRecord",
+            $"{_pdsUrl}/xrpc/com.atproto.repo.createRecord",
             new { repo = _did, collection, record });
         res.EnsureSuccessStatusCode();
         var body = await res.Content.ReadFromJsonAsync<JsonNode>()
@@ -50,9 +54,9 @@ internal sealed class AtProtoClient
 
     public async Task<string> PutRecordAsync(string collection, string rkey, object record)
     {
-        await EnsureSessionAsync();
+        RequireAuth();
         var res = await _http.PostAsJsonAsync(
-            $"{_cfg.PdsUrl}/xrpc/com.atproto.repo.putRecord",
+            $"{_pdsUrl}/xrpc/com.atproto.repo.putRecord",
             new { repo = _did, collection, rkey, record });
         res.EnsureSuccessStatusCode();
         var body = await res.Content.ReadFromJsonAsync<JsonNode>()
@@ -62,13 +66,19 @@ internal sealed class AtProtoClient
 
     public async Task<JsonNode?> GetRecordAsync(string collection, string rkey)
     {
-        await EnsureSessionAsync();
-        var url = $"{_cfg.PdsUrl}/xrpc/com.atproto.repo.getRecord"
+        RequireAuth();
+        var url = $"{_pdsUrl}/xrpc/com.atproto.repo.getRecord"
                 + $"?repo={Uri.EscapeDataString(_did!)}"
                 + $"&collection={Uri.EscapeDataString(collection)}"
                 + $"&rkey={Uri.EscapeDataString(rkey)}";
         var res = await _http.GetAsync(url);
         if (!res.IsSuccessStatusCode) return null;
         return await res.Content.ReadFromJsonAsync<JsonNode>();
+    }
+
+    private void RequireAuth()
+    {
+        if (!IsAuthenticated)
+            throw new InvalidOperationException("atproto-tracker: not authenticated");
     }
 }

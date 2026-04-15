@@ -11,17 +11,18 @@ Early. The run-end Harmony hook is pinned (`MegaCrit.Sts2.Core.Runs.RunManager.O
 ## Install (no build required)
 
 1. Unzip the latest release into your game's mods folder (see [Platforms](#platforms)) so that `atproto-tracker.dll` ends up at `…/mods/atproto-tracker/atproto-tracker.dll`.
-2. Create a `config.json` in that same folder with your PDS, handle (or DID), and an app password:
+2. Create a `config.json` in that same folder with your handle (or DID) and an app password:
 
    ```json
    {
-     "pdsUrl": "https://bsky.social",
      "handle": "you.example.com",
      "appPassword": "xxxx-xxxx-xxxx-xxxx"
    }
    ```
 
-   If you skip this step, the mod will write a template `config.json` next to the DLL on first launch and log a loud warning — just fill it in and restart the game. App passwords are created at [bsky.app/settings/app-passwords](https://bsky.app/settings/app-passwords).
+   The mod resolves your PDS automatically via [Slingshot](https://slingshot.microcosm.blue/) at startup and authenticates immediately, so any credential problem surfaces before your first run. The main menu shows a small `@` in the bottom-right corner: green when authenticated, red (with a strike-through) when credentials are missing or invalid — click it for details.
+
+   If you skip this step, the mod will write a template `config.json` next to the DLL on first launch — just fill it in and restart the game. App passwords are created at [bsky.app/settings/app-passwords](https://bsky.app/settings/app-passwords).
 
 3. Launch the game. Each run creates a new `me.byjp.pesos.sts2.run` record on your PDS and updates a single rolling `games.gamesgamesgamesgames.actor.stats` record (the mod caches its rkey back into `config.json` after the first run).
 

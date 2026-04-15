@@ -13,12 +13,11 @@ internal static class RunPublisher
 
     public static async Task PublishAsync(RunRecord run)
     {
-        var cfg   = Plugin.Config;
         var proto = Plugin.AtProto;
 
-        if (string.IsNullOrEmpty(cfg.Handle) || string.IsNullOrEmpty(cfg.AppPassword))
+        if (AuthState.Status != AuthStatus.Ok)
         {
-            Log.Warn("handle/appPassword not configured — skipping upload");
+            Log.Warn($"not authenticated (status={AuthState.Status}) — skipping upload. {AuthState.Error}");
             return;
         }
 
