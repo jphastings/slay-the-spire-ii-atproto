@@ -40,7 +40,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="manifest.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="manifest.json"       CopyToOutputDirectory="PreserveNewest" />
+    <None Include="config.example.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <Target Name="CheckSts2DataDir" BeforeTargets="ResolveAssemblyReferences"
@@ -54,8 +55,9 @@
       <DeployDir>$(ModsPath)/sts2.at</DeployDir>
     </PropertyGroup>
     <MakeDir Directories="$(DeployDir)" />
-    <Copy SourceFiles="$(TargetPath)"  DestinationFolder="$(DeployDir)" />
-    <Copy SourceFiles="manifest.json"  DestinationFolder="$(DeployDir)" />
+    <Copy SourceFiles="$(TargetPath)"        DestinationFolder="$(DeployDir)" />
+    <Copy SourceFiles="manifest.json"        DestinationFolder="$(DeployDir)" />
+    <Copy SourceFiles="config.example.json"  DestinationFolder="$(DeployDir)" />
     <Message Text="Installed sts2.at to $(DeployDir)" Importance="high" />
   </Target>
 

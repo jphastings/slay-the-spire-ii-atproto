@@ -37,10 +37,23 @@ internal sealed class Config
         {
             cfg = new Config();
             File.WriteAllText(path, JsonSerializer.Serialize(cfg, JsonOpts));
-            Log.Warn($"wrote default config to {path} — fill in handle + appPassword");
+            LogFirstRunBanner(path);
         }
         cfg.Path = path;
+        if (string.IsNullOrWhiteSpace(cfg.Handle) || string.IsNullOrWhiteSpace(cfg.AppPassword))
+            LogFirstRunBanner(path);
         return cfg;
+    }
+
+    private static void LogFirstRunBanner(string path)
+    {
+        Log.Warn("========================================================================");
+        Log.Warn("sts2.at: not yet configured — runs will NOT be posted to your PDS.");
+        Log.Warn($"Edit this file, then restart the game:");
+        Log.Warn($"  {path}");
+        Log.Warn("Set 'handle' to your atproto handle (e.g. you.bsky.social) and");
+        Log.Warn("'appPassword' to an app password from https://bsky.app/settings/app-passwords");
+        Log.Warn("========================================================================");
     }
 
     public void Save() => File.WriteAllText(Path, JsonSerializer.Serialize(this, JsonOpts));
