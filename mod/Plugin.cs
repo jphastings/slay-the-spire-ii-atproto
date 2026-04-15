@@ -9,7 +9,7 @@ namespace AtprotoTracker;
 public static class Plugin
 {
     public const string ModId = "atproto-tracker";
-    public const string ModVersion = "0.1.0";
+    public const string ModVersion = "0.2.0";
 
     internal static Config Config = null!;
     internal static AtProtoClient AtProto = null!;
