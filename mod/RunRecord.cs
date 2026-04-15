@@ -5,7 +5,7 @@ namespace Sts2At;
 
 internal sealed class RunRecord
 {
-    [JsonPropertyName("$type")]      public string Type => "at.sts2.run";
+    [JsonPropertyName("$type")]      public string Type => "me.byjp.pesos.sts2.run";
     [JsonPropertyName("outcome")]    public string Outcome { get; set; } = "";
     [JsonPropertyName("character")]  public string Character { get; set; } = "";
     [JsonPropertyName("ascension")]  public int Ascension { get; set; }

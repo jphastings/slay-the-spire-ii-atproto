@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "id": "at.sts2.run",
+  "id": "me.byjp.pesos.sts2.run",
   "defs": {
     "main": {
       "type": "record",

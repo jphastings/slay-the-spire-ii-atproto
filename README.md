@@ -2,7 +2,7 @@
 
 A [Slay the Spire 2](https://store.steampowered.com/app/2868840/) mod that posts end-of-run summaries to your [atproto](https://atproto.com) PDS.
 
-Runs are stored as `at.sts2.run` records. A rolling `games.gamesgamesgamesgames.actor.stats` record is updated alongside each run so the game shows up in [HappyView](https://github.com/gamesgamesgamesgamesgames/happyview)-style game-catalog apps.
+Runs are stored as `me.byjp.pesos.sts2.run` records. A rolling `games.gamesgamesgamesgames.actor.stats` record is updated alongside each run so the game shows up in [HappyView](https://github.com/gamesgamesgamesgamesgames/happyview)-style game-catalog apps.
 
 ## Status
 
@@ -53,7 +53,7 @@ Bump `ModVersion` in [mod/Plugin.cs](mod/Plugin.cs) and push to `main`. The [rel
 
 ## Layout
 
-- [lexicons/](lexicons/) — atproto lexicon JSON for `at.sts2.run`
+- [lexicons/](lexicons/) — atproto lexicon JSON for `me.byjp.pesos.sts2.run`
 - [mod/](mod/) — C# mod project (Godot .NET / HarmonyX, targets .NET 9)
 
 ## Platforms

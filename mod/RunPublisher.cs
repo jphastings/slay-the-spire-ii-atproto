@@ -8,7 +8,7 @@ namespace Sts2At;
 internal static class RunPublisher
 {
     private const string StatsCollection = "games.gamesgamesgamesgames.actor.stats";
-    private const string RunCollection   = "at.sts2.run";
+    private const string RunCollection   = "me.byjp.pesos.sts2.run";
 
     public static async Task PublishAsync(RunRecord run)
     {
