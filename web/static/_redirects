@@ -1,0 +1,7 @@
+# SPA routes — rewrite to the app shell with a 200 status
+/              /index.html   200
+/:actor        /index.html   200
+/:actor/:tid   /index.html   200
+
+# Anything else is not a real page — serve the app shell with a 404 status
+/*             /index.html   404
