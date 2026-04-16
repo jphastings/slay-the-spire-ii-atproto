@@ -7,5 +7,6 @@
   "entry": "atproto-tracker.dll",
   "has_dll": true,
   "has_pck": false,
-  "dependencies": []
+  "dependencies": [],
+  "affects_gameplay": false
 }
