@@ -38,13 +38,15 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Build
+      # --- Build mod ---
+      - name: Build mod
         if: steps.check.outputs.skip != 'true'
         env:
           Sts2DataDir: ${{ github.workspace }}/mod/refs
         run: dotnet build mod/atproto-tracker.csproj -c Release
 
-      - name: Stage release files
+      # --- Stage mod zip ---
+      - name: Stage mod zip
         if: steps.check.outputs.skip != 'true'
         run: |
           stage="release/atproto-tracker"
@@ -55,6 +57,56 @@ jobs:
           cd release
           zip -r "atproto-tracker-${{ steps.ver.outputs.tag }}.zip" atproto-tracker
 
+      # --- Build installers ---
+      - name: Copy mod into installer resources
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          mkdir -p installer/Resources
+          cp mod/.godot/mono/temp/bin/Release/atproto-tracker.dll installer/Resources/
+          cp mod/manifest.json                                    installer/Resources/
+          cp mod/config.example.json                              installer/Resources/
+
+      - name: Publish installer (Windows x64)
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          dotnet publish installer/installer.csproj -c Release -r win-x64 \
+            --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o out/win-x64
+          mv out/win-x64/atproto-tracker-installer.exe \
+             "release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-win-x64.exe"
+
+      - name: Publish installer (macOS arm64)
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          dotnet publish installer/installer.csproj -c Release -r osx-arm64 \
+            --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o out/osx-arm64
+          scripts/bundle-macos-app.sh out/osx-arm64 \
+            "${{ steps.ver.outputs.version }}" out/osx-arm64
+          cd out/osx-arm64 && zip -r "../../release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-osx-arm64.zip" \
+            atproto-tracker-installer.app
+
+      - name: Publish installer (macOS x64)
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          dotnet publish installer/installer.csproj -c Release -r osx-x64 \
+            --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o out/osx-x64
+          scripts/bundle-macos-app.sh out/osx-x64 \
+            "${{ steps.ver.outputs.version }}" out/osx-x64
+          cd out/osx-x64 && zip -r "../../release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-osx-x64.zip" \
+            atproto-tracker-installer.app
+
+      - name: Publish installer (Linux x64)
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          dotnet publish installer/installer.csproj -c Release -r linux-x64 \
+            --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o out/linux-x64
+          mv out/linux-x64/atproto-tracker-installer \
+             "release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-linux-x64"
+
+      # --- Create release with all artifacts ---
       - name: Create release
         if: steps.check.outputs.skip != 'true'
         env:
@@ -63,4 +115,8 @@ jobs:
           gh release create "${{ steps.ver.outputs.tag }}" \
             --title "atproto-tracker ${{ steps.ver.outputs.tag }}" \
             --generate-notes \
-            "release/atproto-tracker-${{ steps.ver.outputs.tag }}.zip"
+            release/atproto-tracker-${{ steps.ver.outputs.tag }}.zip \
+            release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-win-x64.exe \
+            release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-osx-arm64.zip \
+            release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-osx-x64.zip \
+            release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-linux-x64

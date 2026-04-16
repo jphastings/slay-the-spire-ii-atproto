@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AtprotoTracker.Installer.MainWindow"
+        Title="atproto-tracker installer"
+        Width="520" Height="400" CanResize="False"
+        WindowStartupLocation="CenterScreen">
+
+    <StackPanel Margin="24" Spacing="14">
+
+        <!-- Game path -->
+        <TextBlock Text="Game install" FontWeight="SemiBold" />
+        <DockPanel>
+            <Button DockPanel.Dock="Right" Content="Browse…" Margin="8,0,0,0"
+                    Click="BrowseClicked" />
+            <TextBox x:Name="GamePathBox" Watermark="/path/to/Slay the Spire 2" />
+        </DockPanel>
+
+        <!-- Credentials -->
+        <TextBlock Text="Atmosphere account" FontWeight="SemiBold" Margin="0,8,0,0" />
+        <TextBox x:Name="HandleBox" Watermark="you.example.com (handle or DID)" />
+
+        <TextBlock Text="App Password" FontWeight="SemiBold" />
+        <DockPanel>
+            <Button DockPanel.Dock="Right" x:Name="TogglePasswordBtn"
+                    Content="Show" Margin="8,0,0,0"
+                    Click="TogglePasswordClicked" Width="60" />
+            <TextBox x:Name="PasswordBox" PasswordChar="●"
+                     Watermark="xxxx-xxxx-xxxx-xxxx" />
+        </DockPanel>
+
+        <DockPanel>
+            <Button DockPanel.Dock="Left" Content="Verify Credentials"
+                    Click="VerifyClicked" />
+            <TextBlock x:Name="VerifyStatus" VerticalAlignment="Center"
+                       Margin="12,0,0,0" Foreground="Gray" />
+        </DockPanel>
+
+        <!-- Save migration -->
+        <CheckBox x:Name="MigrateSaveCheck"
+                  Content="Copy save data to modded profile"
+                  IsChecked="True" />
+
+        <!-- Install / Update -->
+        <Button x:Name="InstallBtn" Content="Install"
+                HorizontalAlignment="Stretch" Height="40"
+                Click="InstallClicked"
+                HorizontalContentAlignment="Center"
+                FontWeight="SemiBold" />
+
+        <TextBlock x:Name="StatusText" Text="Ready" Foreground="Gray" />
+    </StackPanel>
+</Window>

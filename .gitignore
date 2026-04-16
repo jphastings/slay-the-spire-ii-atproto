@@ -7,3 +7,5 @@ obj/
 mod/config.json
 mod/local.props
 .godot/
+installer/Resources/
+out/
