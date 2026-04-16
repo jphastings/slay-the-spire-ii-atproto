@@ -1,78 +1,110 @@
 {
-  "lexicon": 1,
-  "id": "me.byjp.pesos.sts2.run",
-  "defs": {
-    "main": {
-      "type": "record",
-      "description": "A single Slay the Spire 2 run.",
-      "key": "tid",
-      "record": {
-        "type": "object",
-        "required": ["outcome", "character", "ascension", "seed", "startedAt", "updatedAt"],
-        "properties": {
-          "outcome": {
-            "type": "string",
-            "description": "How the run ended.",
-            "knownValues": ["in_progress", "victory", "death", "abandoned"]
-          },
-          "character": {
-            "type": "string",
-            "description": "Character class id (e.g. 'ironclad', 'silent')."
-          },
-          "ascension": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 20
-          },
-          "seed": {
-            "type": "string",
-            "description": "Run seed as displayed in-game."
-          },
-          "floor": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "act": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 4
-          },
-          "score": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "killedBy": {
-            "type": "string",
-            "description": "Enemy / event that ended the run, if applicable."
-          },
-          "startedAt": { "type": "string", "format": "datetime" },
-          "endedAt":   { "type": "string", "format": "datetime" },
-          "durationSeconds": { "type": "integer", "minimum": 0 },
-          "deck": {
-            "type": "array",
-            "description": "Card ids in the final deck.",
-            "items": { "type": "string" }
-          },
-          "relics": {
-            "type": "array",
-            "description": "Relic ids held at run end.",
-            "items": { "type": "string" }
-          },
-          "game": {
-            "type": "string",
-            "format": "at-uri",
-            "description": "Optional at-uri of the canonical games.gamesgamesgamesgames.actor.game record for StS2."
-          },
-          "statsRef": {
-            "type": "string",
-            "format": "at-uri",
-            "description": "at-uri of the user's games.gamesgamesgamesgames.actor.stats record for StS2, updated alongside this run."
-          },
-          "modVersion":  { "type": "string" },
-          "gameVersion": { "type": "string" },
-          "updatedAt":   { "type": "string", "format": "datetime" }
-        }
-      }
-    }
-  }
+	"lexicon": 1,
+	"id": "me.byjp.pesos.sts2.run",
+	"defs": {
+		"main": {
+			"type": "record",
+			"description": "A single Slay the Spire 2 run.",
+			"key": "tid",
+			"record": {
+				"type": "object",
+				"properties": {
+					"outcome": {
+						"type": "string",
+						"description": "How the run ended.",
+						"knownValues": [
+							"in_progress",
+							"victory",
+							"death",
+							"abandoned"
+						]
+					},
+					"character": {
+						"type": "string",
+						"description": "Character class id (e.g. 'ironclad', 'silent')."
+					},
+					"ascension": {
+						"type": "integer",
+						"minimum": 0,
+						"maximum": 20
+					},
+					"seed": {
+						"type": "string",
+						"description": "Run seed as displayed in-game."
+					},
+					"floor": {
+						"type": "integer",
+						"minimum": 0
+					},
+					"act": {
+						"type": "integer",
+						"minimum": 1,
+						"maximum": 4
+					},
+					"score": {
+						"type": "integer",
+						"minimum": 0
+					},
+					"killedBy": {
+						"type": "string",
+						"description": "Enemy / event that ended the run, if applicable."
+					},
+					"startedAt": {
+						"type": "string",
+						"format": "datetime"
+					},
+					"endedAt": {
+						"type": "string",
+						"format": "datetime"
+					},
+					"durationSeconds": {
+						"type": "integer",
+						"minimum": 0
+					},
+					"deck": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "Card ids in the final deck."
+					},
+					"relics": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "Relic ids held at run end."
+					},
+					"game": {
+						"type": "string",
+						"format": "at-uri",
+						"description": "Optional at-uri of the canonical games.gamesgamesgamesgames.actor.game record for StS2."
+					},
+					"statsRef": {
+						"type": "string",
+						"format": "at-uri",
+						"description": "at-uri of the user's games.gamesgamesgamesgames.actor.stats record for StS2, updated alongside this run."
+					},
+					"modVersion": {
+						"type": "string"
+					},
+					"gameVersion": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "datetime"
+					}
+				},
+				"required": [
+					"outcome",
+					"character",
+					"ascension",
+					"seed",
+					"startedAt",
+					"updatedAt"
+				]
+			}
+		}
+	}
 }

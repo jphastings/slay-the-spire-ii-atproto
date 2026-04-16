@@ -1,0 +1,61 @@
+:root {
+	--bg-primary: #0d0d0d;
+	--bg-secondary: #141414;
+	--bg-card: #1a1a1a;
+	--bg-card-hover: #222;
+	--text-primary: #e8e0d4;
+	--text-secondary: #9a8e7e;
+	--text-muted: #665e52;
+	--accent-red: #c0392b;
+	--accent-red-dim: #8b2a20;
+	--accent-gold: #d4a843;
+	--accent-green: #27ae60;
+	--accent-amber: #c89b3c;
+	--accent-grey: #6b6b6b;
+	--border-subtle: #2a2a2a;
+	--border-card: #333;
+	--font-body: 'Inter', system-ui, sans-serif;
+	--font-display: 'Cinzel', serif;
+	--radius: 8px;
+	--radius-sm: 4px;
+	--shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
+	--max-width: 52rem;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	color-scheme: dark;
+}
+
+body {
+	font-family: var(--font-body);
+	background: var(--bg-primary);
+	color: var(--text-primary);
+	line-height: 1.6;
+	min-height: 100dvh;
+}
+
+a {
+	color: var(--accent-gold);
+	text-decoration: none;
+	transition: color 0.15s;
+}
+
+a:hover {
+	color: var(--text-primary);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-display);
+	font-weight: 700;
+	line-height: 1.2;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "sts2-runs-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "pnpm build:lexicons && vite build",
+    "build:lexicons": "prototypey gen-emit ../lexicons src/lib/lexicons/**/*.ts",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "prototypey": "^0.7.0"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^3.0.10",
+    "@sveltejs/kit": "^2.57.1",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "svelte": "^5.55.4",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.8"
+  }
+}

@@ -9,3 +9,6 @@ mod/local.props
 .godot/
 installer/Resources/
 out/
+web/node_modules/
+web/.svelte-kit/
+web/build/
