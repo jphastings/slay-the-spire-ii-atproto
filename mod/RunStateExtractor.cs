@@ -10,6 +10,32 @@ namespace AtprotoTracker;
 
 internal static class RunStateExtractor
 {
+    /// <summary>Extract from live RunState (run start + mid-run updates).</summary>
+    public static RunRecord ExtractLive(RunManager manager, RunState state)
+    {
+        var players = state.Players;
+        // First player is the local player in single-player.
+        object? me = null;
+        if (players is not null)
+        {
+            foreach (var p in players) { me = p; break; }
+        }
+
+        return new RunRecord
+        {
+            Outcome         = "in_progress",
+            Character       = GetString(me, "Character", "Id") != "" ? GetString(me, "Character", "Id") : GetString(me, "CharacterId"),
+            Ascension       = (int)GetLong(state, "AscensionLevel"),
+            Seed            = state.Rng?.StringSeed ?? "",
+            FinalFloor      = (int)GetLong(state, "TotalFloor"),
+            FinalAct        = (int)GetLong(state, "CurrentActIndex") + 1,
+            Deck            = CollectIds(me, "Deck", "Cards"),
+            Relics          = CollectIds(me, "Relics"),
+            UpdatedAt       = Iso.Now(),
+        };
+    }
+
+    /// <summary>Extract final state from SerializableRun (run end).</summary>
     public static RunRecord Extract(RunManager manager, bool isVictory, SerializableRun serialized)
     {
         var state = manager.DebugOnlyGetState();
@@ -37,12 +63,13 @@ internal static class RunStateExtractor
             DurationSeconds = (int)duration,
             Deck            = CollectIds(me, "Deck"),
             Relics          = CollectIds(me, "Relics"),
-            CreatedAt       = Iso.At(endedAt),
+            UpdatedAt       = Iso.At(endedAt),
         };
     }
 
-    // Reflection helpers — keep the hook tolerant of EA-patch field drift.
-    private static object? GetMember(object? obj, string name)
+    // --- Reflection helpers (public for use from RunLifecycleHooks) ---
+
+    public static object? GetMember(object? obj, string name)
     {
         if (obj is null) return null;
         var t = obj.GetType();
@@ -52,7 +79,7 @@ internal static class RunStateExtractor
         return f?.GetValue(obj);
     }
 
-    private static object? GetMember(object? obj, params string[] path)
+    public static object? GetMember(object? obj, params string[] path)
     {
         foreach (var seg in path)
         {
@@ -62,7 +89,7 @@ internal static class RunStateExtractor
         return obj;
     }
 
-    private static long GetLong(object? obj, params string[] path)
+    public static long GetLong(object? obj, params string[] path)
     {
         var v = GetMember(obj, path);
         return v switch
@@ -80,10 +107,16 @@ internal static class RunStateExtractor
     private static string GetString(object? obj, params string[] path)
         => GetMember(obj, path)?.ToString() ?? "";
 
-    private static List<string> CollectIds(object? owner, string memberName)
+    private static List<string> CollectIds(object? owner, params string[] path)
     {
         var list = new List<string>();
-        if (GetMember(owner, memberName) is not IEnumerable seq) return list;
+        object? target = owner;
+        foreach (var seg in path)
+        {
+            target = GetMember(target, seg);
+            if (target is null) return list;
+        }
+        if (target is not IEnumerable seq) return list;
         foreach (var item in seq)
         {
             var id = GetMember(item, "Id") ?? GetMember(item, "CardId") ?? GetMember(item, "Name") ?? item;

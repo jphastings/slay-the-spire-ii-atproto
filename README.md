@@ -63,7 +63,7 @@ scripts/generate-refs.sh  # reads Sts2DataDir from mod/local.props
 
 ### Releases
 
-Bump `ModVersion` in [mod/Plugin.cs](mod/Plugin.cs) and push to `main`. The [release workflow](.github/workflows/release.yml) creates a `v<version>` tag and publishes a zip with `atproto-tracker.dll` + `manifest.json` + `config.example.json`.
+Bump `<Version>` in [mod/atproto-tracker.csproj](mod/atproto-tracker.csproj) and push to `main`. The build stamps the version into both the assembly and `manifest.json` automatically. The [release workflow](.github/workflows/release.yml) creates a `v<version>` tag and publishes a zip with `atproto-tracker.dll` + `manifest.json` + `config.example.json`.
 
 ## Layout
 
@@ -74,9 +74,19 @@ Bump `ModVersion` in [mod/Plugin.cs](mod/Plugin.cs) and push to `main`. The [rel
 
 One DLL, all platforms. Install path differs:
 
-- **Windows**: `…/Slay the Spire 2/mods/atproto-tracker/`
-- **macOS**: `…/SlayTheSpire2.app/Contents/MacOS/mods/atproto-tracker/` — the loader only searches inside the `.app` bundle, so installing here invalidates the app's code signature. Steam-installed builds still launch fine, but Gatekeeper may complain on first run.
-- **Linux / Steam Deck**: `…/Slay the Spire 2/mods/atproto-tracker/`
+### Windows
+
+In Steam, right-click *Slay the Spire 2* → **Manage → Browse Local Files**. Open the `mods` folder (create it if missing) and extract the release zip so you have `mods/atproto-tracker/{atproto-tracker.dll,manifest.json,config.json}`.
+
+### macOS
+
+Right click on your `SlayTheSpire2.app` (usually in `/Users/jp/Library/Application Support/Steam/steamapps/common`) and choose "Show Package".
+
+Navigate to `Contents/MacOS/mods/` (making the `mods` directory, if needed), then extract the release zip into that folder so you have `Contents/MacOS/mods/atproto-tracker/{atproto-tracker.dll,manifest.json,config.json}`
+
+
+  — installing here is necessary, but invalidates the app's code signature. Steam-installed builds still launch fine, but Gatekeeper may complain on first run.
+- **Linux / Steam Deck**: In Steam, right-click *Slay the Spire 2* → **Manage → Browse Local Files** (in Desktop Mode on Steam Deck). Open the `mods` folder (create it if missing) and extract the release zip so you have `mods/atproto-tracker/atproto-tracker.dll`.
 
 ## Credits
 

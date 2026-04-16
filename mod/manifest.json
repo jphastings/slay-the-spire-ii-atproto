@@ -1,9 +1,9 @@
 {
   "id": "atproto-tracker",
   "name": "atproto-tracker",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "jphastings",
-  "description": "Posts end-of-run summaries to your atproto PDS.",
+  "description": "Posts run summaries to your atproto PDS.",
   "entry": "atproto-tracker.dll",
   "has_dll": true,
   "has_pck": false,

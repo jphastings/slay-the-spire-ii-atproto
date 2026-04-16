@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -11,26 +10,34 @@ internal static class RunPublisher
     private const string RunCollection   = "me.byjp.pesos.sts2.run";
     private const string GameRef         = "at://did:web:gamesgamesgamesgames.games/games.gamesgamesgamesgames.game/3mglj4k2edl2l";
 
-    public static async Task PublishAsync(RunRecord run)
+    /// <summary>Create or update the in-progress run record (start + mid-run).</summary>
+    public static async Task PublishUpdateAsync(RunRecord run, string rkey)
+    {
+        if (AuthState.Status != AuthStatus.Ok) return;
+        run.Game = GameRef;
+        await Plugin.AtProto.PutRecordAsync(RunCollection, rkey, run);
+    }
+
+    /// <summary>Final update with outcome, then update stats.</summary>
+    public static async Task PublishFinalAsync(RunRecord run, string rkey)
     {
         var proto = Plugin.AtProto;
-
         if (AuthState.Status != AuthStatus.Ok)
         {
-            Log.Warn($"not authenticated (status={AuthState.Status}) — skipping upload. {AuthState.Error}");
+            Log.Warn($"not authenticated (status={AuthState.Status}) — skipping upload");
             return;
         }
 
-        // 1. Ensure a stats record exists and compute its at-uri (stable across runs).
+        // 1. Ensure stats record exists.
         var statsAtUri = await EnsureStatsRecordAsync(run);
         run.StatsRef = statsAtUri;
         run.Game     = GameRef;
 
-        // 2. Create the run record.
-        var runUri = await proto.CreateRecordAsync(RunCollection, run);
+        // 2. Final put of the run record.
+        var runUri = await proto.PutRecordAsync(RunCollection, rkey, run);
         Log.Info($"posted run: {runUri}");
 
-        // 3. Update stats with new playtime / lastPlayed (put to same rkey).
+        // 3. Update rolling stats.
         await UpdateStatsAsync(run);
     }
 
@@ -52,7 +59,7 @@ internal static class RunPublisher
             Game            = BuildGameRef(),
             Source          = "steam",
             PlaytimeMinutes = Math.Max(1, run.DurationSeconds / 60),
-            LastPlayed      = run.EndedAt,
+            LastPlayed      = run.EndedAt ?? Iso.Now(),
             CreatedAt       = Iso.Now(),
         };
         var uri = await proto.CreateRecordAsync(StatsCollection, stats);
@@ -78,14 +85,11 @@ internal static class RunPublisher
             Game            = BuildGameRef(),
             Source          = "steam",
             PlaytimeMinutes = prior + Math.Max(1, run.DurationSeconds / 60),
-            LastPlayed      = run.EndedAt,
+            LastPlayed      = run.EndedAt ?? Iso.Now(),
             CreatedAt       = createdAt,
         };
         await proto.PutRecordAsync(StatsCollection, cfg.StatsRkey, stats);
     }
 
-    // games.gamesgamesgamesgames.actor.game#gameRef shape:
-    // { "uri": "at://...", "cid": "..." } — we only have the at-uri, emit uri-only.
     private static JsonNode BuildGameRef() => new JsonObject { ["uri"] = GameRef };
 }
-

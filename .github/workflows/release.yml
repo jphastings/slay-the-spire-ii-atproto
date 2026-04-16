@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches: [main]
-    paths: ['mod/Plugin.cs']
+    paths: ['mod/atproto-tracker.csproj']
   workflow_dispatch:
 
 permissions:
@@ -18,8 +18,8 @@ jobs:
       - name: Extract mod version
         id: ver
         run: |
-          version=$(grep -oP 'ModVersion\s*=\s*"\K[^"]+' mod/Plugin.cs)
-          if [[ -z "$version" ]]; then echo "could not read ModVersion from mod/Plugin.cs" >&2; exit 1; fi
+          version=$(grep -oP '<Version>\K[^<]+' mod/atproto-tracker.csproj)
+          if [[ -z "$version" ]]; then echo "could not read <Version> from mod/atproto-tracker.csproj" >&2; exit 1; fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "tag=v$version"    >> "$GITHUB_OUTPUT"
 

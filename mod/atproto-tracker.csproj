@@ -7,6 +7,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>atproto-tracker</AssemblyName>
     <RootNamespace>AtprotoTracker</RootNamespace>
+    <Version>0.3.0</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
@@ -43,6 +44,17 @@
     <None Include="manifest.json"       CopyToOutputDirectory="PreserveNewest" />
     <None Include="config.example.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <!-- Stamp manifest.json version from the csproj <Version> before build. -->
+  <Target Name="UpdateManifestVersion" BeforeTargets="BeforeBuild">
+    <PropertyGroup>
+      <_ManifestContent>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/manifest.json'))</_ManifestContent>
+      <_ManifestUpdated>$([System.Text.RegularExpressions.Regex]::Replace($(_ManifestContent), '"version":\s*"[^"]*"', '"version": "$(Version)"'))</_ManifestUpdated>
+    </PropertyGroup>
+    <WriteLinesToFile Condition="'$(_ManifestContent)' != '$(_ManifestUpdated)'"
+                     File="$(MSBuildProjectDirectory)/manifest.json"
+                     Lines="$(_ManifestUpdated)" Overwrite="true" Encoding="UTF-8" />
+  </Target>
 
   <Target Name="CheckSts2DataDir" BeforeTargets="ResolveAssemblyReferences"
           Condition="!Exists('$(Sts2DataDir)/sts2.dll')">

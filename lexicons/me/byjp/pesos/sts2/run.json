@@ -8,12 +8,12 @@
       "key": "tid",
       "record": {
         "type": "object",
-        "required": ["outcome", "character", "ascension", "seed", "finalFloor", "startedAt", "endedAt", "createdAt"],
+        "required": ["outcome", "character", "ascension", "seed", "startedAt", "updatedAt"],
         "properties": {
           "outcome": {
             "type": "string",
             "description": "How the run ended.",
-            "knownValues": ["victory", "death", "abandoned"]
+            "knownValues": ["in_progress", "victory", "death", "abandoned"]
           },
           "character": {
             "type": "string",
@@ -70,7 +70,7 @@
           },
           "modVersion":  { "type": "string" },
           "gameVersion": { "type": "string" },
-          "createdAt":   { "type": "string", "format": "datetime" }
+          "updatedAt":   { "type": "string", "format": "datetime" }
         }
       }
     }

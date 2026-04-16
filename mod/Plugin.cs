@@ -9,7 +9,8 @@ namespace AtprotoTracker;
 public static class Plugin
 {
     public const string ModId = "atproto-tracker";
-    public const string ModVersion = "0.2.0";
+    public static readonly string ModVersion =
+        typeof(Plugin).Assembly.GetName().Version?.ToString(3) ?? "0.0.0";
 
     internal static Config Config = null!;
     internal static AtProtoClient AtProto = null!;

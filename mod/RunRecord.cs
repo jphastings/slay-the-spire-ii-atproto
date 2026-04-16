@@ -21,9 +21,14 @@ internal sealed class RunRecord
     [JsonPropertyName("killedBy"),   JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? KilledBy { get; set; }
 
-    [JsonPropertyName("startedAt")]       public string StartedAt { get; set; } = "";
-    [JsonPropertyName("endedAt")]         public string EndedAt { get; set; } = "";
-    [JsonPropertyName("durationSeconds")] public int DurationSeconds { get; set; }
+    [JsonPropertyName("startedAt"),       JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? StartedAt { get; set; }
+
+    [JsonPropertyName("endedAt"),         JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? EndedAt { get; set; }
+
+    [JsonPropertyName("durationSeconds"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public int DurationSeconds { get; set; }
 
     [JsonPropertyName("deck")]   public List<string> Deck { get; set; } = new();
     [JsonPropertyName("relics")] public List<string> Relics { get; set; } = new();
@@ -38,5 +43,5 @@ internal sealed class RunRecord
     [JsonPropertyName("gameVersion"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? GameVersion { get; set; }
 
-    [JsonPropertyName("createdAt")] public string CreatedAt { get; set; } = "";
+    [JsonPropertyName("updatedAt")] public string UpdatedAt { get; set; } = "";
 }
