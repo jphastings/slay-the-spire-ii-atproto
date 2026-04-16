@@ -135,9 +135,21 @@ jobs:
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security import "$CERTIFICATE_PATH" -k "$KEYCHAIN_PATH" \
             -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s \
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s \
             -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain
+          # Prepend build keychain to the existing search list
+          security list-keychains -d user -s "$KEYCHAIN_PATH" \
+            $(security list-keychains -d user | tr -d '"' | tr '\n' ' ')
+
+          # Verify import and extract the signing identity
+          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+          IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | head -1 | awk -F'"' '{print $2}')
+          if [[ -z "$IDENTITY" ]]; then
+            echo "::error::No codesigning identity found in imported certificate"
+            exit 1
+          fi
+          echo "Signing as: $IDENTITY"
+          echo "SIGNING_IDENTITY=$IDENTITY" >> "$GITHUB_ENV"
 
       # --- Store App Store Connect API key for notarization ---
       - name: Store API key
@@ -166,10 +178,10 @@ jobs:
 
           # Sign inner dylibs first, then the main executable, then the bundle
           find "$app" -name "*.dylib" -exec \
-            codesign --force --options runtime --sign "Developer ID Application:" --timestamp {} \;
-          codesign --force --options runtime --sign "Developer ID Application:" --timestamp \
+            codesign --force --options runtime --sign "$SIGNING_IDENTITY" --timestamp {} \;
+          codesign --force --options runtime --sign "$SIGNING_IDENTITY" --timestamp \
             --entitlements "$entitlements" "$app/Contents/MacOS/atproto-tracker-installer"
-          codesign --force --options runtime --sign "Developer ID Application:" --timestamp \
+          codesign --force --options runtime --sign "$SIGNING_IDENTITY" --timestamp \
             --entitlements "$entitlements" "$app"
 
           # Submit for notarization and wait
@@ -206,10 +218,10 @@ jobs:
           entitlements="scripts/entitlements.plist"
 
           find "$app" -name "*.dylib" -exec \
-            codesign --force --options runtime --sign "Developer ID Application:" --timestamp {} \;
-          codesign --force --options runtime --sign "Developer ID Application:" --timestamp \
+            codesign --force --options runtime --sign "$SIGNING_IDENTITY" --timestamp {} \;
+          codesign --force --options runtime --sign "$SIGNING_IDENTITY" --timestamp \
             --entitlements "$entitlements" "$app/Contents/MacOS/atproto-tracker-installer"
-          codesign --force --options runtime --sign "Developer ID Application:" --timestamp \
+          codesign --force --options runtime --sign "$SIGNING_IDENTITY" --timestamp \
             --entitlements "$entitlements" "$app"
 
           ditto -c -k --keepParent "$app" "$RUNNER_TEMP/x64-notarize.zip"
