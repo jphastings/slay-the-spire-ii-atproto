@@ -133,4 +133,10 @@
   <data name="error_prefix" xml:space="preserve">
     <value>오류: {0}</value>
   </data>
+  <data name="btn_play" xml:space="preserve">
+    <value>Slay the Spire 2 플레이</value>
+  </data>
+  <data name="status_up_to_date" xml:space="preserve">
+    <value>atproto-tracker v{0}이(가) 설치되어 있으며 최신 상태입니다.</value>
+  </data>
 </root>

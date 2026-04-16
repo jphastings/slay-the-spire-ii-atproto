@@ -14,6 +14,35 @@ internal static class ModInstaller
     public static string GetModFolder(string modsPath) =>
         Path.Combine(modsPath, ModFolderName);
 
+    /// <summary>Read the version from the embedded manifest.json resource.</summary>
+    public static string? GetBundledVersion()
+    {
+        var asm = Assembly.GetExecutingAssembly();
+        var resName = asm.GetManifestResourceNames()
+            .FirstOrDefault(n => n.EndsWith("manifest.json", StringComparison.OrdinalIgnoreCase));
+        if (resName is null) return null;
+        using var stream = asm.GetManifestResourceStream(resName)!;
+        try
+        {
+            var doc = JsonNode.Parse(stream);
+            return doc?["version"]?.GetValue<string>();
+        }
+        catch { return null; }
+    }
+
+    /// <summary>Read the version from the installed manifest.json on disk.</summary>
+    public static string? GetInstalledVersion(string modsPath)
+    {
+        var path = Path.Combine(GetModFolder(modsPath), "manifest.json");
+        if (!File.Exists(path)) return null;
+        try
+        {
+            var doc = JsonNode.Parse(File.ReadAllText(path));
+            return doc?["version"]?.GetValue<string>();
+        }
+        catch { return null; }
+    }
+
     /// <summary>Check if the mod is already installed and return existing config if so.</summary>
     public static JsonNode? ReadExistingConfig(string modsPath)
     {

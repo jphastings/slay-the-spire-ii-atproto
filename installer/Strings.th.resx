@@ -133,4 +133,10 @@
   <data name="error_prefix" xml:space="preserve">
     <value>ข้อผิดพลาด: {0}</value>
   </data>
+  <data name="btn_play" xml:space="preserve">
+    <value>เล่น Slay the Spire 2</value>
+  </data>
+  <data name="status_up_to_date" xml:space="preserve">
+    <value>atproto-tracker v{0} ติดตั้งแล้วและเป็นเวอร์ชันล่าสุด</value>
+  </data>
 </root>

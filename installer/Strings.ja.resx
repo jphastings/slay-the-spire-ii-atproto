@@ -133,4 +133,10 @@
   <data name="error_prefix" xml:space="preserve">
     <value>エラー: {0}</value>
   </data>
+  <data name="btn_play" xml:space="preserve">
+    <value>Slay the Spire 2 をプレイ</value>
+  </data>
+  <data name="status_up_to_date" xml:space="preserve">
+    <value>atproto-tracker v{0} はインストール済みで最新です。</value>
+  </data>
 </root>

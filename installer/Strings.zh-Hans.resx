@@ -133,4 +133,10 @@
   <data name="error_prefix" xml:space="preserve">
     <value>错误：{0}</value>
   </data>
+  <data name="btn_play" xml:space="preserve">
+    <value>玩 Slay the Spire 2</value>
+  </data>
+  <data name="status_up_to_date" xml:space="preserve">
+    <value>atproto-tracker v{0} 已安装且为最新版本。</value>
+  </data>
 </root>

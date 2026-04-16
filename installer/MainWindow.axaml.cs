@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Text.Json.Nodes;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -9,7 +11,10 @@ namespace AtprotoTracker.Installer;
 
 public partial class MainWindow : Window
 {
+    private const string SteamUri = "steam://rungameid/2868840";
+
     private bool _isUpgrade;
+    private bool _isPlayMode;
     private bool _passwordVisible;
     private MiniDoc? _resolvedIdentity;
 
@@ -28,11 +33,11 @@ public partial class MainWindow : Window
         if (gamePath is not null)
             GamePathBox.Text = gamePath;
 
-        // Check for existing install (upgrade).
+        // Check for existing install (upgrade or up-to-date).
         TryLoadExistingConfig();
 
         // Show/hide save migration.
-        MigrateSaveCheck.IsVisible = !_isUpgrade && ModInstaller.CanMigrateSave();
+        MigrateSaveCheck.IsVisible = !_isUpgrade && !_isPlayMode && ModInstaller.CanMigrateSave();
     }
 
     private void ApplyLocale()
@@ -65,8 +70,26 @@ public partial class MainWindow : Window
         _isUpgrade = true;
         HandleBox.Text = existing["handle"]?.GetValue<string>() ?? "";
         PasswordBox.Text = existing["appPassword"]?.GetValue<string>() ?? "";
-        InstallBtn.Content = Strings.Get("btn_update");
-        StatusText.Text = Strings.Get("status_existing_install");
+
+        var installed = ModInstaller.GetInstalledVersion(modsPath);
+        var bundled = ModInstaller.GetBundledVersion();
+        if (installed is not null && installed == bundled)
+        {
+            ShowPlayMode(installed);
+        }
+        else
+        {
+            InstallBtn.Content = Strings.Get("btn_update");
+            StatusText.Text = Strings.Get("status_existing_install");
+        }
+    }
+
+    private void ShowPlayMode(string version)
+    {
+        _isPlayMode = true;
+        InstallBtn.Content = Strings.Get("btn_play");
+        MigrateSaveCheck.IsVisible = false;
+        SetStatus(Strings.Get("status_up_to_date", version));
     }
 
     private async void BrowseClicked(object? sender, RoutedEventArgs e)
@@ -80,8 +103,9 @@ public partial class MainWindow : Window
         {
             GamePathBox.Text = folders[0].Path.LocalPath;
             _isUpgrade = false;
+            _isPlayMode = false;
             TryLoadExistingConfig();
-            MigrateSaveCheck.IsVisible = !_isUpgrade && ModInstaller.CanMigrateSave();
+            MigrateSaveCheck.IsVisible = !_isUpgrade && !_isPlayMode && ModInstaller.CanMigrateSave();
         }
     }
 
@@ -123,6 +147,12 @@ public partial class MainWindow : Window
 
     private async void InstallClicked(object? sender, RoutedEventArgs e)
     {
+        if (_isPlayMode)
+        {
+            LaunchGameAndQuit();
+            return;
+        }
+
         var gamePath = GamePathBox.Text?.Trim();
         var handle = HandleBox.Text?.Trim();
         var password = PasswordBox.Text?.Trim();
@@ -158,7 +188,8 @@ public partial class MainWindow : Window
             if (MigrateSaveCheck.IsVisible && MigrateSaveCheck.IsChecked == true)
                 ModInstaller.MigrateSaveIfNeeded(s => SetStatus(s));
 
-            SetStatus(Strings.Get("status_done"));
+            var version = ModInstaller.GetBundledVersion() ?? "?";
+            ShowPlayMode(version);
         }
         catch (Exception ex)
         {
@@ -168,6 +199,13 @@ public partial class MainWindow : Window
         {
             InstallBtn.IsEnabled = true;
         }
+    }
+
+    private void LaunchGameAndQuit()
+    {
+        Process.Start(new ProcessStartInfo(SteamUri) { UseShellExecute = true });
+        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            desktop.Shutdown();
     }
 
     private void SetStatus(string text, bool error = false)

@@ -133,4 +133,10 @@
   <data name="error_prefix" xml:space="preserve">
     <value>Hata: {0}</value>
   </data>
+  <data name="btn_play" xml:space="preserve">
+    <value>Slay the Spire 2 oyna</value>
+  </data>
+  <data name="status_up_to_date" xml:space="preserve">
+    <value>atproto-tracker v{0} kurulu ve güncel.</value>
+  </data>
 </root>
