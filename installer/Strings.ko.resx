@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="installer_title" xml:space="preserve">
+    <value>atproto-tracker 설치 프로그램</value>
+  </data>
+  <data name="installer_subtitle" xml:space="preserve">
+    <value>Atmosphere용 Slay the Spire 2 런 트래커</value>
+  </data>
+  <data name="section_game_install" xml:space="preserve">
+    <value>게임 설치</value>
+  </data>
+  <data name="section_atmosphere" xml:space="preserve">
+    <value>ATMOSPHERE 계정</value>
+  </data>
+  <data name="section_options" xml:space="preserve">
+    <value>옵션</value>
+  </data>
+  <data name="watermark_game_path" xml:space="preserve">
+    <value>Slay the Spire 2 경로</value>
+  </data>
+  <data name="watermark_handle" xml:space="preserve">
+    <value>핸들 또는 DID (예: you.bsky.social)</value>
+  </data>
+  <data name="watermark_password" xml:space="preserve">
+    <value>앱 비밀번호</value>
+  </data>
+  <data name="btn_browse" xml:space="preserve">
+    <value>찾아보기…</value>
+  </data>
+  <data name="btn_verify" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="btn_install" xml:space="preserve">
+    <value>설치</value>
+  </data>
+  <data name="btn_update" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
+  <data name="checkbox_migrate_save" xml:space="preserve">
+    <value>세이브 데이터를 mod 프로필로 복사</value>
+  </data>
+  <data name="tooltip_toggle_password" xml:space="preserve">
+    <value>비밀번호 표시 / 숨기기</value>
+  </data>
+  <data name="status_ready" xml:space="preserve">
+    <value>준비 완료</value>
+  </data>
+  <data name="status_existing_install" xml:space="preserve">
+    <value>기존 설치 감지됨 — 최신 버전으로 업데이트합니다.</value>
+  </data>
+  <data name="dialog_select_folder" xml:space="preserve">
+    <value>Slay the Spire 2 설치 폴더 선택</value>
+  </data>
+  <data name="error_enter_handle_password" xml:space="preserve">
+    <value>먼저 핸들과 비밀번호를 입력하세요.</value>
+  </data>
+  <data name="status_verifying" xml:space="preserve">
+    <value>확인 중…</value>
+  </data>
+  <data name="status_resolved" xml:space="preserve">
+    <value>✓ @{0}(으)로 확인됨</value>
+  </data>
+  <data name="error_game_path_invalid" xml:space="preserve">
+    <value>게임 설치 경로가 없거나 유효하지 않습니다.</value>
+  </data>
+  <data name="error_enter_credentials" xml:space="preserve">
+    <value>먼저 핸들과 앱 비밀번호를 입력하세요.</value>
+  </data>
+  <data name="status_verifying_credentials" xml:space="preserve">
+    <value>자격 증명 확인 중…</value>
+  </data>
+  <data name="status_done" xml:space="preserve">
+    <value>완료! Slay the Spire 2를 실행하여 런 기록을 시작하세요.</value>
+  </data>
+  <data name="error_prefix" xml:space="preserve">
+    <value>오류: {0}</value>
+  </data>
+</root>

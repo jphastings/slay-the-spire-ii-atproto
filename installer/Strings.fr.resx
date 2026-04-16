@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="installer_title" xml:space="preserve">
+    <value>atproto-tracker — installateur</value>
+  </data>
+  <data name="installer_subtitle" xml:space="preserve">
+    <value>Suivi de runs Slay the Spire 2 pour l’Atmosphere</value>
+  </data>
+  <data name="section_game_install" xml:space="preserve">
+    <value>INSTALLATION DU JEU</value>
+  </data>
+  <data name="section_atmosphere" xml:space="preserve">
+    <value>COMPTE ATMOSPHERE</value>
+  </data>
+  <data name="section_options" xml:space="preserve">
+    <value>OPTIONS</value>
+  </data>
+  <data name="watermark_game_path" xml:space="preserve">
+    <value>/chemin/vers/Slay the Spire 2</value>
+  </data>
+  <data name="watermark_handle" xml:space="preserve">
+    <value>Handle ou DID (ex. : you.bsky.social)</value>
+  </data>
+  <data name="watermark_password" xml:space="preserve">
+    <value>Mot de passe d’application</value>
+  </data>
+  <data name="btn_browse" xml:space="preserve">
+    <value>Parcourir…</value>
+  </data>
+  <data name="btn_verify" xml:space="preserve">
+    <value>Vérifier</value>
+  </data>
+  <data name="btn_install" xml:space="preserve">
+    <value>Installer</value>
+  </data>
+  <data name="btn_update" xml:space="preserve">
+    <value>Mettre à jour</value>
+  </data>
+  <data name="checkbox_migrate_save" xml:space="preserve">
+    <value>Copier les sauvegardes vers le profil moddé</value>
+  </data>
+  <data name="tooltip_toggle_password" xml:space="preserve">
+    <value>Afficher / masquer le mot de passe</value>
+  </data>
+  <data name="status_ready" xml:space="preserve">
+    <value>Prêt</value>
+  </data>
+  <data name="status_existing_install" xml:space="preserve">
+    <value>Installation existante détectée — mise à jour vers la dernière version.</value>
+  </data>
+  <data name="dialog_select_folder" xml:space="preserve">
+    <value>Sélectionner le dossier d’installation de Slay the Spire 2</value>
+  </data>
+  <data name="error_enter_handle_password" xml:space="preserve">
+    <value>Entrez d’abord le handle et le mot de passe.</value>
+  </data>
+  <data name="status_verifying" xml:space="preserve">
+    <value>Vérification…</value>
+  </data>
+  <data name="status_resolved" xml:space="preserve">
+    <value>✓ Résolu en tant que @{0}</value>
+  </data>
+  <data name="error_game_path_invalid" xml:space="preserve">
+    <value>Le chemin d’installation du jeu est manquant ou invalide.</value>
+  </data>
+  <data name="error_enter_credentials" xml:space="preserve">
+    <value>Entrez d’abord le handle et le mot de passe d’application.</value>
+  </data>
+  <data name="status_verifying_credentials" xml:space="preserve">
+    <value>Vérification des identifiants…</value>
+  </data>
+  <data name="status_done" xml:space="preserve">
+    <value>Terminé ! Lancez Slay the Spire 2 pour commencer à suivre vos runs.</value>
+  </data>
+  <data name="error_prefix" xml:space="preserve">
+    <value>Erreur : {0}</value>
+  </data>
+</root>

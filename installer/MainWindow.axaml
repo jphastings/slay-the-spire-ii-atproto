@@ -33,7 +33,8 @@
                 <TextBlock Text="atproto-tracker"
                            FontSize="20" FontWeight="Bold"
                            Foreground="White" />
-                <TextBlock Text="Slay the Spire 2 run tracker for the Atmosphere"
+                <TextBlock x:Name="SubtitleText"
+                           Text="Slay the Spire 2 run tracker for the Atmosphere"
                            FontSize="12" Foreground="#ccffffff" Margin="0,2,0,0" />
             </StackPanel>
         </Border>
@@ -54,14 +55,14 @@
 
                 <!-- Game install section -->
                 <StackPanel Spacing="0">
-                    <TextBlock Classes="section-header" Text="GAME INSTALL" />
+                    <TextBlock x:Name="SectionGameInstall" Classes="section-header" Text="GAME INSTALL" />
                     <Border Classes="card">
                         <Grid ColumnDefinitions="*,Auto">
                             <TextBox x:Name="GamePathBox" Grid.Column="0"
                                      Watermark="/path/to/Slay the Spire 2"
                                      MinWidth="0"
                                      VerticalAlignment="Center" />
-                            <Button Grid.Column="1" Content="Browse…"
+                            <Button x:Name="BrowseBtn" Grid.Column="1" Content="Browse…"
                                     Margin="8,0,0,0" VerticalAlignment="Center"
                                     Click="BrowseClicked" />
                         </Grid>
@@ -70,7 +71,7 @@
 
                 <!-- Credentials section -->
                 <StackPanel Spacing="0">
-                    <TextBlock Classes="section-header" Text="ATMOSPHERE ACCOUNT" />
+                    <TextBlock x:Name="SectionAtmosphere" Classes="section-header" Text="ATMOSPHERE ACCOUNT" />
                     <Border Classes="card">
                         <StackPanel Spacing="10">
                             <TextBox x:Name="HandleBox"
@@ -85,7 +86,7 @@
                                          Watermark="App password" />
                             </DockPanel>
                             <DockPanel>
-                                <Button DockPanel.Dock="Left" Content="Verify"
+                                <Button x:Name="VerifyBtn" DockPanel.Dock="Left" Content="Verify"
                                         Click="VerifyClicked" />
                                 <TextBlock x:Name="VerifyStatus" VerticalAlignment="Center"
                                            Margin="12,0,0,0" FontSize="12"
@@ -97,7 +98,7 @@
 
                 <!-- Options + Install -->
                 <StackPanel Spacing="0">
-                    <TextBlock Classes="section-header" Text="OPTIONS" />
+                    <TextBlock x:Name="SectionOptions" Classes="section-header" Text="OPTIONS" />
                     <Border Classes="card">
                         <StackPanel Spacing="12">
                             <CheckBox x:Name="MigrateSaveCheck"
