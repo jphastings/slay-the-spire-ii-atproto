@@ -32,9 +32,9 @@ internal static class MainMenuBadge
             FocusMode   = Control.FocusModeEnum.None,
         };
         btn.AddThemeFontSizeOverride("font_size", 28);
-        btn.AnchorLeft = 1; btn.AnchorTop = 1; btn.AnchorRight = 1; btn.AnchorBottom = 1;
-        btn.OffsetLeft = -60; btn.OffsetTop = -50;
-        btn.OffsetRight = -12; btn.OffsetBottom = -8;
+        btn.AnchorLeft = 0; btn.AnchorTop = 1; btn.AnchorRight = 0; btn.AnchorBottom = 1;
+        btn.OffsetLeft = 12; btn.OffsetTop = -50;
+        btn.OffsetRight = 60; btn.OffsetBottom = -8;
 
         // Red strike-through line overlaid on the @; hidden when status is Ok.
         var strike = new ColorRect
