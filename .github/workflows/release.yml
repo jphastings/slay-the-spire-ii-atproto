@@ -63,7 +63,7 @@ jobs:
           cp mod/manifest.json                                    "$stage/"
           cp mod/config.example.json                              "$stage/"
           cd release
-          zip -r "atproto-tracker-${{ needs.prepare.outputs.tag }}.zip" atproto-tracker
+          zip -r "atproto-tracker.zip" atproto-tracker
 
       # --- Build installers ---
       - name: Copy mod into installer resources
@@ -79,7 +79,7 @@ jobs:
             --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
             -o out/win-x64
           mv out/win-x64/atproto-tracker-installer.exe \
-             "release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-win-x64.exe"
+             "release/atproto-tracker-installer-win-x64.exe"
 
       - name: Publish installer (Linux x64)
         run: |
@@ -87,7 +87,7 @@ jobs:
             --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
             -o out/linux-x64
           mv out/linux-x64/atproto-tracker-installer \
-             "release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-linux-x64"
+             "release/atproto-tracker-installer-linux-x64"
 
       - name: Upload release artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -210,7 +210,7 @@ jobs:
           # Package for release
           mkdir -p release
           cd out/osx-arm64 && zip -r \
-            "../../release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-osx-arm64.zip" \
+            "../../release/atproto-tracker-installer-osx-arm64.zip" \
             atproto-tracker-installer.app
 
       # --- macOS x64 ---
@@ -258,7 +258,7 @@ jobs:
 
           mkdir -p release
           cd out/osx-x64 && zip -r \
-            "../../release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-osx-x64.zip" \
+            "../../release/atproto-tracker-installer-osx-x64.zip" \
             atproto-tracker-installer.app
 
       - name: Clean up keychain
@@ -290,8 +290,8 @@ jobs:
             --repo "${{ github.repository }}" \
             --title "atproto-tracker ${{ needs.prepare.outputs.tag }}" \
             --generate-notes \
-            release/atproto-tracker-${{ needs.prepare.outputs.tag }}.zip \
-            release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-win-x64.exe \
-            release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-osx-arm64.zip \
-            release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-osx-x64.zip \
-            release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-linux-x64
+            release/atproto-tracker.zip \
+            release/atproto-tracker-installer-win-x64.exe \
+            release/atproto-tracker-installer-osx-arm64.zip \
+            release/atproto-tracker-installer-osx-x64.zip \
+            release/atproto-tracker-installer-linux-x64
