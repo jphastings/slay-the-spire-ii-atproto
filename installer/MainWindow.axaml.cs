@@ -69,7 +69,7 @@ public partial class MainWindow : Window
     {
         _passwordVisible = !_passwordVisible;
         PasswordBox.PasswordChar = _passwordVisible ? '\0' : '●';
-        TogglePasswordBtn.Content = _passwordVisible ? "Hide" : "Show";
+        TogglePasswordBtn.Content = _passwordVisible ? "🔒" : "👁";
     }
 
     private async void VerifyClicked(object? sender, RoutedEventArgs e)

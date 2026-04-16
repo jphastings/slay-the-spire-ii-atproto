@@ -2,51 +2,119 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AtprotoTracker.Installer.MainWindow"
         Title="atproto-tracker installer"
-        Width="520" Height="400" CanResize="False"
+        Width="520" Height="540" CanResize="False"
         WindowStartupLocation="CenterScreen">
 
-    <StackPanel Margin="24" Spacing="14">
+    <Window.Styles>
+        <!-- Card style: rounded border with subtle fill -->
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="#06808080" />
+            <Setter Property="BorderBrush" Value="#18808080" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16,12" />
+        </Style>
+        <!-- Section header -->
+        <Style Selector="TextBlock.section-header">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+            <Setter Property="Margin" Value="2,0,0,6" />
+        </Style>
+    </Window.Styles>
 
-        <!-- Game path -->
-        <TextBlock Text="Game install" FontWeight="SemiBold" />
-        <DockPanel>
-            <Button DockPanel.Dock="Right" Content="Browse…" Margin="8,0,0,0"
-                    Click="BrowseClicked" />
-            <TextBox x:Name="GamePathBox" Watermark="/path/to/Slay the Spire 2" />
-        </DockPanel>
+    <DockPanel>
 
-        <!-- Credentials -->
-        <TextBlock Text="Atmosphere account" FontWeight="SemiBold" Margin="0,8,0,0" />
-        <TextBox x:Name="HandleBox" Watermark="you.example.com (handle or DID)" />
+        <!-- Header banner -->
+        <Border DockPanel.Dock="Top"
+                Background="#0078D4"
+                Padding="24,16">
+            <StackPanel>
+                <TextBlock Text="atproto-tracker"
+                           FontSize="20" FontWeight="Bold"
+                           Foreground="White" />
+                <TextBlock Text="Slay the Spire 2 run tracker for the Atmosphere"
+                           FontSize="12" Foreground="#ccffffff" Margin="0,2,0,0" />
+            </StackPanel>
+        </Border>
 
-        <TextBlock Text="App Password" FontWeight="SemiBold" />
-        <DockPanel>
-            <Button DockPanel.Dock="Right" x:Name="TogglePasswordBtn"
-                    Content="Show" Margin="8,0,0,0"
-                    Click="TogglePasswordClicked" Width="60" />
-            <TextBox x:Name="PasswordBox" PasswordChar="●"
-                     Watermark="xxxx-xxxx-xxxx-xxxx" />
-        </DockPanel>
+        <!-- Status bar -->
+        <Border DockPanel.Dock="Bottom"
+                BorderBrush="#20000000"
+                BorderThickness="0,1,0,0"
+                Padding="24,10">
+            <TextBlock x:Name="StatusText" Text="Ready"
+                       FontSize="12"
+                       Foreground="Gray" />
+        </Border>
 
-        <DockPanel>
-            <Button DockPanel.Dock="Left" Content="Verify Credentials"
-                    Click="VerifyClicked" />
-            <TextBlock x:Name="VerifyStatus" VerticalAlignment="Center"
-                       Margin="12,0,0,0" Foreground="Gray" />
-        </DockPanel>
+        <!-- Main content — Grid constrains width; inner StackPanel for vertical flow -->
+        <Grid Margin="24,16">
+          <StackPanel Spacing="16">
 
-        <!-- Save migration -->
-        <CheckBox x:Name="MigrateSaveCheck"
-                  Content="Copy save data to modded profile"
-                  IsChecked="True" />
+                <!-- Game install section -->
+                <StackPanel Spacing="0">
+                    <TextBlock Classes="section-header" Text="GAME INSTALL" />
+                    <Border Classes="card">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBox x:Name="GamePathBox" Grid.Column="0"
+                                     Watermark="/path/to/Slay the Spire 2"
+                                     MinWidth="0"
+                                     VerticalAlignment="Center" />
+                            <Button Grid.Column="1" Content="Browse…"
+                                    Margin="8,0,0,0" VerticalAlignment="Center"
+                                    Click="BrowseClicked" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
 
-        <!-- Install / Update -->
-        <Button x:Name="InstallBtn" Content="Install"
-                HorizontalAlignment="Stretch" Height="40"
-                Click="InstallClicked"
-                HorizontalContentAlignment="Center"
-                FontWeight="SemiBold" />
+                <!-- Credentials section -->
+                <StackPanel Spacing="0">
+                    <TextBlock Classes="section-header" Text="ATMOSPHERE ACCOUNT" />
+                    <Border Classes="card">
+                        <StackPanel Spacing="10">
+                            <TextBox x:Name="HandleBox"
+                                     Watermark="Handle or DID (e.g. you.bsky.social)" />
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" x:Name="TogglePasswordBtn"
+                                        Content="👁" Margin="8,0,0,0" Width="36"
+                                        VerticalAlignment="Center"
+                                        Click="TogglePasswordClicked"
+                                        ToolTip.Tip="Show / hide password" />
+                                <TextBox x:Name="PasswordBox" PasswordChar="●"
+                                         Watermark="App password" />
+                            </DockPanel>
+                            <DockPanel>
+                                <Button DockPanel.Dock="Left" Content="Verify"
+                                        Click="VerifyClicked" />
+                                <TextBlock x:Name="VerifyStatus" VerticalAlignment="Center"
+                                           Margin="12,0,0,0" FontSize="12"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
 
-        <TextBlock x:Name="StatusText" Text="Ready" Foreground="Gray" />
-    </StackPanel>
+                <!-- Options + Install -->
+                <StackPanel Spacing="0">
+                    <TextBlock Classes="section-header" Text="OPTIONS" />
+                    <Border Classes="card">
+                        <StackPanel Spacing="12">
+                            <CheckBox x:Name="MigrateSaveCheck"
+                                      Content="Copy save data to modded profile"
+                                      IsChecked="True" />
+                            <Button x:Name="InstallBtn" Content="Install"
+                                    Classes="accent"
+                                    HorizontalAlignment="Stretch" Height="36"
+                                    HorizontalContentAlignment="Center"
+                                    FontWeight="SemiBold"
+                                    Click="InstallClicked" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+          </StackPanel>
+        </Grid>
+
+    </DockPanel>
 </Window>
