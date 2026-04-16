@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using HarmonyLib;
+using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 
 namespace AtprotoTracker;
@@ -111,14 +112,8 @@ internal static class MainMenuBadge
             AuthStatus.Failed      => $"Authentication failed:\n\n{AuthState.Error}\n\nFix config.json and restart the game.",
             _                      => $"Not yet configured.\n\n{AuthState.Error ?? "Edit config.json next to the mod DLL and restart the game."}",
         };
-        var dlg = new AcceptDialog
-        {
-            Title      = "atproto-tracker",
-            DialogText = body,
-        };
-        parent.AddChild(dlg);
-        dlg.PopupCentered();
-        dlg.Confirmed      += () => dlg.QueueFree();
-        dlg.CloseRequested += () => dlg.QueueFree();
+        var popup = NErrorPopup.Create("atproto-tracker", body, false);
+        NModalContainer.Instance?.Add(popup!);
+        NModalContainer.Instance?.ShowBackstop();
     }
 }
