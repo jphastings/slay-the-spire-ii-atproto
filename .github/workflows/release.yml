@@ -10,8 +10,12 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      tag: ${{ steps.ver.outputs.tag }}
+      skip: ${{ steps.check.outputs.skip }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
@@ -33,21 +37,25 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
+  build:
+    needs: prepare
+    if: needs.prepare.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
       - uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
-        if: steps.check.outputs.skip != 'true'
         with:
           dotnet-version: '9.0.x'
 
       # --- Build mod ---
       - name: Build mod
-        if: steps.check.outputs.skip != 'true'
         env:
           Sts2DataDir: ${{ github.workspace }}/mod/refs
         run: dotnet build mod/atproto-tracker.csproj -c Release
 
       # --- Stage mod zip ---
       - name: Stage mod zip
-        if: steps.check.outputs.skip != 'true'
         run: |
           stage="release/atproto-tracker"
           mkdir -p "$stage"
@@ -55,11 +63,10 @@ jobs:
           cp mod/manifest.json                                    "$stage/"
           cp mod/config.example.json                              "$stage/"
           cd release
-          zip -r "atproto-tracker-${{ steps.ver.outputs.tag }}.zip" atproto-tracker
+          zip -r "atproto-tracker-${{ needs.prepare.outputs.tag }}.zip" atproto-tracker
 
       # --- Build installers ---
       - name: Copy mod into installer resources
-        if: steps.check.outputs.skip != 'true'
         run: |
           mkdir -p installer/Resources
           cp mod/.godot/mono/temp/bin/Release/atproto-tracker.dll installer/Resources/
@@ -67,56 +74,189 @@ jobs:
           cp mod/config.example.json                              installer/Resources/
 
       - name: Publish installer (Windows x64)
-        if: steps.check.outputs.skip != 'true'
         run: |
           dotnet publish installer/installer.csproj -c Release -r win-x64 \
             --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
             -o out/win-x64
           mv out/win-x64/atproto-tracker-installer.exe \
-             "release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-win-x64.exe"
-
-      - name: Publish installer (macOS arm64)
-        if: steps.check.outputs.skip != 'true'
-        run: |
-          dotnet publish installer/installer.csproj -c Release -r osx-arm64 \
-            --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
-            -o out/osx-arm64
-          scripts/bundle-macos-app.sh out/osx-arm64 \
-            "${{ steps.ver.outputs.version }}" out/osx-arm64
-          cd out/osx-arm64 && zip -r "../../release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-osx-arm64.zip" \
-            atproto-tracker-installer.app
-
-      - name: Publish installer (macOS x64)
-        if: steps.check.outputs.skip != 'true'
-        run: |
-          dotnet publish installer/installer.csproj -c Release -r osx-x64 \
-            --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
-            -o out/osx-x64
-          scripts/bundle-macos-app.sh out/osx-x64 \
-            "${{ steps.ver.outputs.version }}" out/osx-x64
-          cd out/osx-x64 && zip -r "../../release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-osx-x64.zip" \
-            atproto-tracker-installer.app
+             "release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-win-x64.exe"
 
       - name: Publish installer (Linux x64)
-        if: steps.check.outputs.skip != 'true'
         run: |
           dotnet publish installer/installer.csproj -c Release -r linux-x64 \
             --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
             -o out/linux-x64
           mv out/linux-x64/atproto-tracker-installer \
-             "release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-linux-x64"
+             "release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-linux-x64"
 
-      # --- Create release with all artifacts ---
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-linux-win
+          path: release/
+
+  build-macos:
+    needs: prepare
+    if: needs.prepare.outputs.skip != 'true'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build mod
+        env:
+          Sts2DataDir: ${{ github.workspace }}/mod/refs
+        run: dotnet build mod/atproto-tracker.csproj -c Release
+
+      - name: Copy mod into installer resources
+        run: |
+          mkdir -p installer/Resources
+          cp mod/.godot/mono/temp/bin/Release/atproto-tracker.dll installer/Resources/
+          cp mod/manifest.json                                    installer/Resources/
+          cp mod/config.example.json                              installer/Resources/
+
+      # --- Import Apple signing certificate into a temporary keychain ---
+      - name: Import signing certificate
+        env:
+          APPLE_CERTIFICATE_P12: ${{ secrets.APPLE_CERTIFICATE_P12 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          CERTIFICATE_PATH="$RUNNER_TEMP/certificate.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
+          KEYCHAIN_PASSWORD="$(uuidgen)"
+
+          echo "$APPLE_CERTIFICATE_P12" | base64 --decode > "$CERTIFICATE_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" -k "$KEYCHAIN_PATH" \
+            -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s \
+            -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain
+
+      # --- Store App Store Connect API key for notarization ---
+      - name: Store API key
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_KEY_ID: ${{ vars.APP_STORE_CONNECT_KEY_ID }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/private_keys"
+          echo "$APP_STORE_CONNECT_API_KEY" > "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8"
+
+      # --- macOS arm64 ---
+      - name: Build, sign & notarize installer (macOS arm64)
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ vars.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          dotnet publish installer/installer.csproj -c Release -r osx-arm64 \
+            --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o out/osx-arm64
+
+          scripts/bundle-macos-app.sh out/osx-arm64 \
+            "${{ needs.prepare.outputs.version }}" out/osx-arm64
+
+          app="out/osx-arm64/atproto-tracker-installer.app"
+          entitlements="scripts/entitlements.plist"
+
+          # Sign inner dylibs first, then the main executable, then the bundle
+          find "$app" -name "*.dylib" -exec \
+            codesign --force --options runtime --sign "Developer ID Application:" --timestamp {} \;
+          codesign --force --options runtime --sign "Developer ID Application:" --timestamp \
+            --entitlements "$entitlements" "$app/Contents/MacOS/atproto-tracker-installer"
+          codesign --force --options runtime --sign "Developer ID Application:" --timestamp \
+            --entitlements "$entitlements" "$app"
+
+          # Submit for notarization and wait
+          ditto -c -k --keepParent "$app" "$RUNNER_TEMP/arm64-notarize.zip"
+          xcrun notarytool submit "$RUNNER_TEMP/arm64-notarize.zip" \
+            --key "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" \
+            --key-id "$APP_STORE_CONNECT_KEY_ID" \
+            --issuer "$APP_STORE_CONNECT_ISSUER_ID" \
+            --wait
+
+          # Staple the notarization ticket to the app
+          xcrun stapler staple "$app"
+
+          # Package for release
+          mkdir -p release
+          cd out/osx-arm64 && zip -r \
+            "../../release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-osx-arm64.zip" \
+            atproto-tracker-installer.app
+
+      # --- macOS x64 ---
+      - name: Build, sign & notarize installer (macOS x64)
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ vars.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ vars.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          dotnet publish installer/installer.csproj -c Release -r osx-x64 \
+            --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o out/osx-x64
+
+          scripts/bundle-macos-app.sh out/osx-x64 \
+            "${{ needs.prepare.outputs.version }}" out/osx-x64
+
+          app="out/osx-x64/atproto-tracker-installer.app"
+          entitlements="scripts/entitlements.plist"
+
+          find "$app" -name "*.dylib" -exec \
+            codesign --force --options runtime --sign "Developer ID Application:" --timestamp {} \;
+          codesign --force --options runtime --sign "Developer ID Application:" --timestamp \
+            --entitlements "$entitlements" "$app/Contents/MacOS/atproto-tracker-installer"
+          codesign --force --options runtime --sign "Developer ID Application:" --timestamp \
+            --entitlements "$entitlements" "$app"
+
+          ditto -c -k --keepParent "$app" "$RUNNER_TEMP/x64-notarize.zip"
+          xcrun notarytool submit "$RUNNER_TEMP/x64-notarize.zip" \
+            --key "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" \
+            --key-id "$APP_STORE_CONNECT_KEY_ID" \
+            --issuer "$APP_STORE_CONNECT_ISSUER_ID" \
+            --wait
+
+          xcrun stapler staple "$app"
+
+          mkdir -p release
+          cd out/osx-x64 && zip -r \
+            "../../release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-osx-x64.zip" \
+            atproto-tracker-installer.app
+
+      - name: Clean up keychain
+        if: always()
+        run: security delete-keychain "$RUNNER_TEMP/build.keychain-db" 2>/dev/null || true
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-macos
+          path: release/
+
+  release:
+    needs: [prepare, build, build-macos]
+    if: needs.prepare.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: release/
+
       - name: Create release
-        if: steps.check.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${{ steps.ver.outputs.tag }}" \
-            --title "atproto-tracker ${{ steps.ver.outputs.tag }}" \
+          gh release create "${{ needs.prepare.outputs.tag }}" \
+            --repo "${{ github.repository }}" \
+            --title "atproto-tracker ${{ needs.prepare.outputs.tag }}" \
             --generate-notes \
-            release/atproto-tracker-${{ steps.ver.outputs.tag }}.zip \
-            release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-win-x64.exe \
-            release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-osx-arm64.zip \
-            release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-osx-x64.zip \
-            release/atproto-tracker-installer-${{ steps.ver.outputs.tag }}-linux-x64
+            release/atproto-tracker-${{ needs.prepare.outputs.tag }}.zip \
+            release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-win-x64.exe \
+            release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-osx-arm64.zip \
+            release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-osx-x64.zip \
+            release/atproto-tracker-installer-${{ needs.prepare.outputs.tag }}-linux-x64
