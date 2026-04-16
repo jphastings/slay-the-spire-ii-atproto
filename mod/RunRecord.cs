@@ -10,10 +10,10 @@ internal sealed class RunRecord
     [JsonPropertyName("character")]  public string Character { get; set; } = "";
     [JsonPropertyName("ascension")]  public int Ascension { get; set; }
     [JsonPropertyName("seed")]       public string Seed { get; set; } = "";
-    [JsonPropertyName("finalFloor")] public int FinalFloor { get; set; }
+    [JsonPropertyName("floor")] public int Floor { get; set; }
 
-    [JsonPropertyName("finalAct"),   JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-    public int FinalAct { get; set; }
+    [JsonPropertyName("act"),   JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public int Act { get; set; }
 
     [JsonPropertyName("score"),      JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public int Score { get; set; }

@@ -4,7 +4,7 @@
   "defs": {
     "main": {
       "type": "record",
-      "description": "A single completed Slay the Spire 2 run.",
+      "description": "A single Slay the Spire 2 run.",
       "key": "tid",
       "record": {
         "type": "object",
@@ -28,11 +28,11 @@
             "type": "string",
             "description": "Run seed as displayed in-game."
           },
-          "finalFloor": {
+          "floor": {
             "type": "integer",
             "minimum": 0
           },
-          "finalAct": {
+          "act": {
             "type": "integer",
             "minimum": 1,
             "maximum": 4
