@@ -141,11 +141,12 @@ jobs:
           security list-keychains -d user -s "$KEYCHAIN_PATH" \
             $(security list-keychains -d user | tr -d '"' | tr '\n' ' ')
 
-          # Verify import and extract the signing identity
+          # Verify import and extract the signing identity (must be Developer ID)
+          echo "Identities found in keychain:"
           security find-identity -v -p codesigning "$KEYCHAIN_PATH"
-          IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | head -1 | awk -F'"' '{print $2}')
+          IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep "Developer ID" | head -1 | awk -F'"' '{print $2}')
           if [[ -z "$IDENTITY" ]]; then
-            echo "::error::No codesigning identity found in imported certificate"
+            echo "::error::No 'Developer ID' codesigning identity found. Make sure APPLE_CERTIFICATE_P12 contains a 'Developer ID Application' certificate, not 'Apple Development' or 'Apple Distribution'."
             exit 1
           fi
           echo "Signing as: $IDENTITY"
