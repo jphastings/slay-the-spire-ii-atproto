@@ -45,7 +45,7 @@
     <None Include="config.example.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
-  <!-- Stamp manifest.json version from the csproj <Version> before build. -->
+  <!-- Stamp manifest.json version from the csproj Version tag before build. -->
   <Target Name="UpdateManifestVersion" BeforeTargets="BeforeBuild">
     <PropertyGroup>
       <_ManifestContent>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/manifest.json'))</_ManifestContent>
