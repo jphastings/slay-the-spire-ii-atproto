@@ -28,8 +28,14 @@ export function formatRelativeTime(iso: string): string {
 	return 'just now';
 }
 
+import { displayName } from './names';
+
 export function humanizeId(id: string): string {
-	// Strip namespace prefix (e.g. "character.ironclad" → "ironclad")
+	// Try the names lookup first (loaded from /names.json)
+	const known = displayName(id);
+	if (known) return known;
+
+	// Fallback: strip namespace prefix and title-case
 	const name = id.includes('.') ? id.slice(id.indexOf('.') + 1) : id;
 	return name
 		.replace(/[._]/g, ' ')

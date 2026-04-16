@@ -32,7 +32,7 @@
 
 <svelte:head>
 	<title>
-		{identity ? `@${identity.handle}` : page.params.actor} run — sts2.at
+		{identity ? `@${identity.handle}` : page.params.actor} run
 	</title>
 </svelte:head>
 

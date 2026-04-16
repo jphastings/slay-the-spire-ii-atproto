@@ -57,7 +57,7 @@
 </script>
 
 <svelte:head>
-	<title>{identity ? `@${identity.handle}` : page.params.actor} — sts2.at</title>
+	<title>{identity ? `@${identity.handle}` : page.params.actor}</title>
 </svelte:head>
 
 {#if loading}
