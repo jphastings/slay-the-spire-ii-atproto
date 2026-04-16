@@ -190,7 +190,18 @@ jobs:
             --key "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" \
             --key-id "$APP_STORE_CONNECT_KEY_ID" \
             --issuer "$APP_STORE_CONNECT_ISSUER_ID" \
-            --wait
+            --wait || {
+            echo "::error::Notarization failed. Fetching log:"
+            xcrun notarytool log \
+              "$(xcrun notarytool history \
+                --key "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" \
+                --key-id "$APP_STORE_CONNECT_KEY_ID" \
+                --issuer "$APP_STORE_CONNECT_ISSUER_ID" 2>&1 | awk 'NR==3{print $2}')" \
+              --key "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" \
+              --key-id "$APP_STORE_CONNECT_KEY_ID" \
+              --issuer "$APP_STORE_CONNECT_ISSUER_ID"
+            exit 1
+          }
 
           # Staple the notarization ticket to the app
           xcrun stapler staple "$app"
@@ -229,7 +240,18 @@ jobs:
             --key "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" \
             --key-id "$APP_STORE_CONNECT_KEY_ID" \
             --issuer "$APP_STORE_CONNECT_ISSUER_ID" \
-            --wait
+            --wait || {
+            echo "::error::Notarization failed. Fetching log:"
+            xcrun notarytool log \
+              "$(xcrun notarytool history \
+                --key "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" \
+                --key-id "$APP_STORE_CONNECT_KEY_ID" \
+                --issuer "$APP_STORE_CONNECT_ISSUER_ID" 2>&1 | awk 'NR==3{print $2}')" \
+              --key "$RUNNER_TEMP/private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" \
+              --key-id "$APP_STORE_CONNECT_KEY_ID" \
+              --issuer "$APP_STORE_CONNECT_ISSUER_ID"
+            exit 1
+          }
 
           xcrun stapler staple "$app"
 
