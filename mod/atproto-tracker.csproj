@@ -7,7 +7,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>atproto-tracker</AssemblyName>
     <RootNamespace>AtprotoTracker</RootNamespace>
-    <Version>0.4.2</Version>
+    <Version>0.5.0</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
@@ -66,10 +66,15 @@
     <PropertyGroup>
       <DeployDir>$(ModsPath)/atproto-tracker</DeployDir>
     </PropertyGroup>
+    <ItemGroup>
+      <SatelliteAssemblies Include="$(TargetDir)**/$(AssemblyName).resources.dll" />
+    </ItemGroup>
     <MakeDir Directories="$(DeployDir)" />
     <Copy SourceFiles="$(TargetPath)"        DestinationFolder="$(DeployDir)" />
     <Copy SourceFiles="manifest.json"        DestinationFolder="$(DeployDir)" />
     <Copy SourceFiles="config.example.json"  DestinationFolder="$(DeployDir)" />
+    <Copy SourceFiles="@(SatelliteAssemblies)"
+          DestinationFiles="@(SatelliteAssemblies->'$(DeployDir)/%(RecursiveDir)%(Filename)%(Extension)')" />
     <Message Text="Installed atproto-tracker to $(DeployDir)" Importance="high" />
   </Target>
 

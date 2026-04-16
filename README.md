@@ -4,14 +4,19 @@ A [Slay the Spire 2](https://store.steampowered.com/app/2868840/) mod that posts
 
 Runs are stored as `me.byjp.pesos.sts2.run` records. A rolling `games.gamesgamesgamesgames.actor.stats` record is updated alongside each run so the game shows up in [HappyView](https://github.com/gamesgamesgamesgamesgames/happyview)-style game-catalog apps.
 
+> [!NOTE]
+> I've added machine translations for non-English languages, so they're likely to be a bit wonky. If people are interested, I'll try to figure out how to include improved translations from humans too!
+
 ## Status
 
-Early. The run-end Harmony hook is pinned (`MegaCrit.Sts2.Core.Runs.RunManager.OnEnded`) and the mod builds clean. Run-state extraction uses reflection for tolerance against Early Access patch drift, so some deck/relic id field names may need fine-tuning on first publish.
+This is an early prototype from an experienced but non-games developer 😅 I'd love any feedback, if you've more context in this space!
+
+The run-end Harmony hook is pinned (`MegaCrit.Sts2.Core.Runs.RunManager.OnEnded`) and the mod builds clean. Run-state extraction uses reflection for tolerance against Early Access patch drift, so some deck/relic id field names may need fine-tuning later.
 
 ## Install (no build required)
 
-1. Unzip the latest release into your game's mods folder (see [Platforms](#platforms)) so that `atproto-tracker.dll` ends up at `…/mods/atproto-tracker/atproto-tracker.dll`.
-2. Create a `config.json` in that same folder with your handle (or DID) and an app password:
+1. Unzip the [latest release](https://github.com/jphastings/slay-the-spire-ii-atproto/releases) into your game's mods folder (see [Platforms](#platforms)).
+2. Create a `config.json` in that same folder with your handle (or DID) and an [app password](https://bsky.app/settings/app-passwords):
 
    ```json
    {
@@ -20,14 +25,17 @@ Early. The run-end Harmony hook is pinned (`MegaCrit.Sts2.Core.Runs.RunManager.O
    }
    ```
 
-   The mod resolves your PDS automatically via [Slingshot](https://slingshot.microcosm.blue/) at startup and authenticates immediately, so any credential problem surfaces before your first run. The main menu shows a small `@` in the bottom-right corner: green when authenticated, red (with a strike-through) when credentials are missing or invalid — click it for details.
+   The mod resolves your PDS automatically at startup (via [Slingshot](https://slingshot.microcosm.blue/) 😍) and authenticates immediately, so any credential problem surfaces before your first run.
 
-   If you skip this step, the mod will write a template `config.json` next to the DLL on first launch — just fill it in and restart the game. App passwords are created at [bsky.app/settings/app-passwords](https://bsky.app/settings/app-passwords).
+   > [!TIP]
+   > The main menu shows a small `@` in the bottom-left corner: green when authenticated, red (with a strike-through) when credentials are missing or invalid — click it for details.
+
+   If you skip this step, the mod will write a template `config.json` next to the DLL on first launch — just fill it in and restart the game.
 
 3. Launch the game. Each run creates a new `me.byjp.pesos.sts2.run` record on your PDS and updates a single rolling `games.gamesgamesgamesgames.actor.stats` record (the mod caches its rkey back into `config.json` after the first run).
 
 > [!TIP]
-> Your save hasn't vanished! Follow this guidance to make sure it's available during modded play.
+> Your save hasn't vanished! Modded StS2 saves/loads from a different place. Follow this guidance to make sure it's available during modded play.
 
 Slay the Spire 2 keeps **separate save files for modded and unmodded profiles** — the first time you launch with any mod installed, the game will look empty. Your existing progress is still on disk under a sibling folder; copy `progress.save` across:
 

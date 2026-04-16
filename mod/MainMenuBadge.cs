@@ -95,10 +95,10 @@ internal static class MainMenuBadge
         strike.Visible = status != AuthStatus.Ok && status != AuthStatus.Checking;
         btn.TooltipText = status switch
         {
-            AuthStatus.Ok          => $"atproto-tracker: publishing as @{AuthState.Handle}",
-            AuthStatus.Checking    => "atproto-tracker: checking credentials…",
-            AuthStatus.Failed      => $"atproto-tracker: {AuthState.Error}",
-            _                      => "atproto-tracker: not configured — check config.json",
+            AuthStatus.Ok          => Strings.Get("tooltip_ok", AuthState.Handle),
+            AuthStatus.Checking    => Strings.Get("tooltip_checking"),
+            AuthStatus.Failed      => Strings.Get("tooltip_failed", AuthState.Error),
+            _                      => Strings.Get("tooltip_unconfigured"),
         };
     }
 
@@ -107,10 +107,11 @@ internal static class MainMenuBadge
         var status = AuthState.Status;
         string body = status switch
         {
-            AuthStatus.Ok          => $"Publishing to your Atmosphere account:\n\n@{AuthState.Handle}",
-            AuthStatus.Checking    => "Checking credentials with Slingshot…",
-            AuthStatus.Failed      => $"Authentication failed:\n\n{AuthState.Error}\n\nFix config.json and restart the game.",
-            _                      => $"Not yet configured.\n\n{AuthState.Error ?? "Edit config.json next to the mod DLL and restart the game."}",
+            AuthStatus.Ok          => Strings.Get("dialog_ok", AuthState.Handle),
+            AuthStatus.Checking    => Strings.Get("dialog_checking"),
+            AuthStatus.Failed      => Strings.Get("dialog_failed", AuthState.Error),
+            _                      => Strings.Get("dialog_unconfigured",
+                                        AuthState.Error ?? Strings.Get("dialog_unconfigured_default")),
         };
         var popup = NErrorPopup.Create("atproto-tracker", body, false);
         NModalContainer.Instance?.Add(popup!);

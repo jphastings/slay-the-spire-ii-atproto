@@ -17,6 +17,7 @@ public static class Plugin
 
     public static void ModLoaded()
     {
+        Strings.Init();
         Config = Config.LoadOrCreate();
         AtProto = new AtProtoClient();
         new Harmony(ModId).PatchAll();
