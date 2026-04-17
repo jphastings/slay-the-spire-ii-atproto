@@ -1,6 +1,6 @@
 import type { ListRecordsResponse, GetRecordResponse } from './types';
 
-const COLLECTION = 'me.byjp.pesos.sts2.run';
+export const COLLECTION = 'me.byjp.pesos.sts2.run';
 
 export async function listRuns(
 	pds: string,

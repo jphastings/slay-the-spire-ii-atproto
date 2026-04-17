@@ -18,7 +18,7 @@
 <div class="deck">
 	{#each grouped as card}
 		<span class="card-tag">
-			{card.name}{#if card.count > 1} <span class="count">&times;{card.count}</span>{/if}
+			{card.name}{#if card.count > 1} <span class="count"> &times;{card.count}</span>{/if}
 		</span>
 	{/each}
 </div>
@@ -41,5 +41,6 @@
 
 	.count {
 		color: var(--text-muted);
+		margin-left: 0.5em;
 	}
 </style>

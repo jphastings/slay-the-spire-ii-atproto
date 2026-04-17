@@ -42,8 +42,8 @@
 	<div class="status">Loading...</div>
 {:else if error}
 	<div class="status error">{error}</div>
-{:else if run}
-	<RunDetail {run} />
+{:else if run && identity}
+	<RunDetail {run} did={identity.did} tid={page.params.tid} />
 {/if}
 
 <style>
