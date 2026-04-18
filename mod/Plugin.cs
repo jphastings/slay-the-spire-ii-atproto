@@ -32,14 +32,40 @@ public static class Plugin
     // _Unwind_RaiseException from libgcc_s. Inside sandboxed Linux runtimes
     // like Steam Deck's Steam Runtime "sniper" container, libgcc_s isn't
     // loaded into the process yet, so dlopen fails and PatchAll throws.
+    // Must use RTLD_GLOBAL so the symbols are visible to Harmony's later
+    // dlopen of mm-exhelper.so — NativeLibrary.TryLoad uses RTLD_LOCAL.
+    private const int RTLD_NOW = 2;
+    private const int RTLD_GLOBAL = 0x100;
+
+    [DllImport("libdl.so.2", EntryPoint = "dlopen")]
+    private static extern IntPtr DlopenLibdl(string path, int flags);
+
+    [DllImport("libc.so.6", EntryPoint = "dlopen")]
+    private static extern IntPtr DlopenLibc(string path, int flags);
+
     private static void PreloadLinuxUnwinder()
     {
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return;
         foreach (var name in new[] { "libgcc_s.so.1", "libgcc_s.so" })
         {
-            if (NativeLibrary.TryLoad(name, out _)) return;
+            var h = TryDlopenGlobal(name);
+            if (h != IntPtr.Zero)
+            {
+                Log.Info($"preloaded {name} (RTLD_GLOBAL) for Harmony unwinder");
+                return;
+            }
         }
         Log.Warn("couldn't preload libgcc_s — Harmony patching may fail");
+    }
+
+    private static IntPtr TryDlopenGlobal(string name)
+    {
+        const int flags = RTLD_NOW | RTLD_GLOBAL;
+        try { return DlopenLibdl(name, flags); }
+        catch (DllNotFoundException) { }
+        try { return DlopenLibc(name, flags); }
+        catch (DllNotFoundException) { }
+        return IntPtr.Zero;
     }
 
     private static async Task AuthenticateAsync()
