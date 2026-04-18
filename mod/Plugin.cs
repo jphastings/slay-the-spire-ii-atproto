@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Modding;
@@ -20,10 +21,25 @@ public static class Plugin
         Strings.Init();
         Config = Config.LoadOrCreate();
         AtProto = new AtProtoClient();
+        PreloadLinuxUnwinder();
         new Harmony(ModId).PatchAll();
         Log.Info($"{ModId} {ModVersion} loaded");
 
         _ = Task.Run(AuthenticateAsync);
+    }
+
+    // HarmonyX's native detour helper (mm-exhelper.so) references
+    // _Unwind_RaiseException from libgcc_s. Inside sandboxed Linux runtimes
+    // like Steam Deck's Steam Runtime "sniper" container, libgcc_s isn't
+    // loaded into the process yet, so dlopen fails and PatchAll throws.
+    private static void PreloadLinuxUnwinder()
+    {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return;
+        foreach (var name in new[] { "libgcc_s.so.1", "libgcc_s.so" })
+        {
+            if (NativeLibrary.TryLoad(name, out _)) return;
+        }
+        Log.Warn("couldn't preload libgcc_s — Harmony patching may fail");
     }
 
     private static async Task AuthenticateAsync()
