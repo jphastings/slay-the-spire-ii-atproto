@@ -1,7 +1,34 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { listReposByCollection } from '$lib/api/lightrail';
+	import { resolveIdentity } from '$lib/api/slingshot';
 
 	let query = $state('');
+	let recent = $state<{ did: string; handle: string }[]>([]);
+
+	$effect(() => {
+		loadRecent();
+	});
+
+	async function loadRecent() {
+		try {
+			const dids = await listReposByCollection('me.byjp.pesos.sts2.run');
+			const picks = dids.slice(0, 5);
+			const resolved = await Promise.all(
+				picks.map(async (did) => {
+					try {
+						const doc = await resolveIdentity(did);
+						return { did, handle: doc.handle };
+					} catch {
+						return null;
+					}
+				})
+			);
+			recent = resolved.filter((r): r is { did: string; handle: string } => r !== null);
+		} catch {
+			/* silent — secondary discovery UI */
+		}
+	}
 
 	function lookup(e: SubmitEvent) {
 		e.preventDefault();
@@ -35,6 +62,15 @@
 		/>
 		<button type="submit">View Runs</button>
 	</form>
+
+	{#if recent.length > 0}
+		<div class="recent">
+			<p>Players:</p>
+			{#each recent as { did, handle } (did)}
+				<a href="/{did}" class="btn btn-ghost">@{handle}</a>
+			{/each}
+		</div>
+	{/if}
 
 	<div class="get-mod">
 		<h2>Get the Mod</h2>
@@ -231,5 +267,34 @@
 
 	.btn-secondary:hover {
 		background: var(--bg-card-hover);
+	}
+
+	.btn-ghost {
+		background: transparent;
+		border: 1px solid var(--border-card);
+		color: var(--text-secondary);
+		font-size: 0.85rem;
+		padding: 0.4rem 0.9rem;
+	}
+
+	.btn-ghost:hover {
+		background: var(--bg-card);
+		color: var(--text-primary);
+	}
+
+	.recent {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		max-width: 28rem;
+	}
+
+	.recent > p {
+		margin: 0;
+		color: var(--text-muted);
+		font-size: 0.85rem;
+		line-height: 1;
 	}
 </style>
