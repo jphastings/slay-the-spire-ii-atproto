@@ -13,13 +13,8 @@ internal static class RunStateExtractor
     /// <summary>Extract from live RunState (run start + mid-run updates).</summary>
     public static RunRecord ExtractLive(RunManager manager, RunState state)
     {
-        var players = state.Players;
-        // First player is the local player in single-player.
-        object? me = null;
-        if (players is not null)
-        {
-            foreach (var p in players) { me = p; break; }
-        }
+        // RunState implements IPlayerCollection; this picks the local player even in multiplayer.
+        var me = LocalContext.GetMe(state);
 
         return new RunRecord
         {
