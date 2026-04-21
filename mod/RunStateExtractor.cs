@@ -27,6 +27,7 @@ internal static class RunStateExtractor
             Deck            = CollectIds(me, "Deck", "Cards"),
             Relics          = CollectIds(me, "Relics"),
             Potions         = CollectIds(me, "Potions"),
+            Allies          = CollectAllies(state, GetULong(me, "NetId")),
             UpdatedAt       = Iso.Now(),
         };
     }
@@ -60,6 +61,7 @@ internal static class RunStateExtractor
             Deck            = CollectIds(me, "Deck"),
             Relics          = CollectIds(me, "Relics"),
             Potions         = CollectIds(me, "Potions"),
+            Allies          = CollectAllies(serialized, GetULong(me, "NetId")),
             UpdatedAt       = Iso.At(endedAt),
         };
     }
@@ -101,8 +103,37 @@ internal static class RunStateExtractor
         };
     }
 
+    public static ulong GetULong(object? obj, params string[] path)
+    {
+        var v = GetMember(obj, path);
+        return v switch
+        {
+            null      => 0UL,
+            ulong ul  => ul,
+            long l    => (ulong)l,
+            uint u    => u,
+            int i     => (ulong)i,
+            _         => ulong.TryParse(v.ToString(), out var x) ? x : 0UL,
+        };
+    }
+
     private static string GetString(object? obj, params string[] path)
         => GetMember(obj, path)?.ToString() ?? "";
+
+    private static List<string>? CollectAllies(object? container, ulong myNetId)
+    {
+        if (GetMember(container, "Players") is not IEnumerable players) return null;
+        var allies = new List<string>();
+        int total = 0;
+        foreach (var p in players)
+        {
+            total++;
+            var netId = GetULong(p, "NetId");
+            if (netId == 0 || netId == myNetId) continue;
+            allies.Add(SteamDidResolver.ResolveUri(netId));
+        }
+        return total > 1 ? allies : null;
+    }
 
     private static List<string> CollectIds(object? owner, params string[] path)
     {

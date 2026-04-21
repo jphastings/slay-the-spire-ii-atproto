@@ -82,6 +82,14 @@
 						},
 						"description": "Potion ids currently held."
 					},
+					"allies": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uri"
+						},
+						"description": "URIs identifying other players in a multiplayer run (atproto DIDs when known, Steam profile URLs otherwise)."
+					},
 					"game": {
 						"type": "string",
 						"format": "at-uri",
