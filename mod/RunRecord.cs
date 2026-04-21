@@ -30,8 +30,9 @@ internal sealed class RunRecord
     [JsonPropertyName("durationSeconds"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public int DurationSeconds { get; set; }
 
-    [JsonPropertyName("deck")]   public List<string> Deck { get; set; } = new();
-    [JsonPropertyName("relics")] public List<string> Relics { get; set; } = new();
+    [JsonPropertyName("deck")]    public List<string> Deck { get; set; } = new();
+    [JsonPropertyName("relics")]  public List<string> Relics { get; set; } = new();
+    [JsonPropertyName("potions")] public List<string> Potions { get; set; } = new();
 
     [JsonPropertyName("game"),     JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Game { get; set; }

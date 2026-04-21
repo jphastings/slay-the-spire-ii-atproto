@@ -32,6 +32,7 @@ internal static class RunStartHook
             RunTracker.PublishUpdate(run);
 
             __instance.RoomExited += OnRoomExited;
+            SaveManager.Instance.Saved += OnSaved;
         }
         catch (Exception ex)
         {
@@ -39,7 +40,11 @@ internal static class RunStartHook
         }
     }
 
-    internal static void OnRoomExited()
+    internal static void OnRoomExited() => PublishLive("room exit");
+
+    internal static void OnSaved() => PublishLive("save");
+
+    private static void PublishLive(string trigger)
     {
         try
         {
@@ -54,7 +59,7 @@ internal static class RunStartHook
         }
         catch (Exception ex)
         {
-            Log.Error("failed to capture room exit", ex);
+            Log.Error($"failed to capture {trigger}", ex);
         }
     }
 }
@@ -70,6 +75,7 @@ internal static class RunEndHook
         try
         {
             __instance.RoomExited -= RunStartHook.OnRoomExited;
+            SaveManager.Instance.Saved -= RunStartHook.OnSaved;
 
             var run = RunStateExtractor.Extract(__instance, isVictory, __result);
             RunTracker.PublishFinal(run);

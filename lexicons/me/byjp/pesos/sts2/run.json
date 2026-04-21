@@ -75,6 +75,13 @@
 						},
 						"description": "Relic ids held at run end."
 					},
+					"potions": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "Potion ids currently held."
+					},
 					"game": {
 						"type": "string",
 						"format": "at-uri",

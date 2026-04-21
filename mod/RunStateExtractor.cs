@@ -26,6 +26,7 @@ internal static class RunStateExtractor
             Act        = (int)GetLong(state, "CurrentActIndex") + 1,
             Deck            = CollectIds(me, "Deck", "Cards"),
             Relics          = CollectIds(me, "Relics"),
+            Potions         = CollectIds(me, "Potions"),
             UpdatedAt       = Iso.Now(),
         };
     }
@@ -58,6 +59,7 @@ internal static class RunStateExtractor
             DurationSeconds = (int)duration,
             Deck            = CollectIds(me, "Deck"),
             Relics          = CollectIds(me, "Relics"),
+            Potions         = CollectIds(me, "Potions"),
             UpdatedAt       = Iso.At(endedAt),
         };
     }
