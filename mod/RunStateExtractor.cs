@@ -93,13 +93,14 @@ internal static class RunStateExtractor
         var v = GetMember(obj, path);
         return v switch
         {
-            null    => 0,
-            long l  => l,
-            int i   => i,
-            uint u  => u,
-            float f => (long)f,
-            double d => (long)d,
-            _       => long.TryParse(v.ToString(), out var x) ? x : 0,
+            null      => 0,
+            long l    => l,
+            int i     => i,
+            uint u    => u,
+            float f   => (long)f,
+            double d  => (long)d,
+            decimal m => (long)m,
+            _         => long.TryParse(v.ToString(), out var x) ? x : 0,
         };
     }
 
@@ -120,17 +121,17 @@ internal static class RunStateExtractor
     private static string GetString(object? obj, params string[] path)
         => GetMember(obj, path)?.ToString() ?? "";
 
-    private static List<string>? CollectAllies(object? container, ulong myNetId)
+    private static List<AllyEntry>? CollectAllies(object? container, ulong myNetId)
     {
         if (GetMember(container, "Players") is not IEnumerable players) return null;
-        var allies = new List<string>();
+        var allies = new List<AllyEntry>();
         int total = 0;
         foreach (var p in players)
         {
             total++;
             var netId = GetULong(p, "NetId");
             if (netId == 0 || netId == myNetId) continue;
-            allies.Add(SteamDidResolver.ResolveUri(netId));
+            allies.Add(SteamDidResolver.ResolveAlly(netId));
         }
         return total > 1 ? allies : null;
     }

@@ -66,7 +66,7 @@
 						"items": {
 							"type": "string"
 						},
-						"description": "Card ids in the final deck."
+						"description": "Card ids in the player's deck."
 					},
 					"relics": {
 						"type": "array",
@@ -85,11 +85,10 @@
 					"allies": {
 						"type": "array",
 						"items": {
-							"type": "string",
-							"format": "did",
-							"minLength": 1
+							"type": "union",
+							"refs": ["#steamid", "#did"]
 						},
-						"description": "DIDs identifying other players in a multiplayer run."
+						"description": "Other players in a multiplayer run. Each entry is either a known atproto identity (#atproto) or a bare SteamID64 (#steamid) for players we haven't resolved to a DID yet."
 					},
 					"game": {
 						"type": "string",
@@ -120,6 +119,28 @@
 					"startedAt",
 					"updatedAt"
 				]
+			}
+		},
+		"steamid": {
+			"type": "object",
+			"required": ["steamID64"],
+			"description": "A bare SteamID64, for players not yet resolved to an atproto identity.",
+			"properties": {
+				"steamID64": {
+					"type": "string",
+					"description": "SteamID64 as a decimal string."
+				}
+			}
+		},
+		"did": {
+			"type": "object",
+			"required": ["did"],
+			"description": "A player identified by their atproto DID.",
+			"properties": {
+				"did": {
+					"type": "string",
+					"format": "did"
+				}
 			}
 		}
 	}

@@ -35,7 +35,7 @@ internal sealed class RunRecord
     [JsonPropertyName("potions")] public List<string> Potions { get; set; } = new();
 
     [JsonPropertyName("allies"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public List<string>? Allies { get; set; }
+    public List<AllyEntry>? Allies { get; set; }
 
     [JsonPropertyName("game"),     JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Game { get; set; }
@@ -48,4 +48,23 @@ internal sealed class RunRecord
     public string? GameVersion { get; set; }
 
     [JsonPropertyName("updatedAt")] public string UpdatedAt { get; set; } = "";
+}
+
+internal sealed class AllyEntry
+{
+    private const string Nsid = "me.byjp.pesos.sts2.run";
+
+    [JsonPropertyName("$type")] public string Type { get; set; } = "";
+
+    [JsonPropertyName("steamID64"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? SteamID64 { get; set; }
+
+    [JsonPropertyName("did"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Did { get; set; }
+
+    public static AllyEntry FromSteam(ulong steamId64) =>
+        new() { Type = $"{Nsid}#steamid", SteamID64 = steamId64.ToString() };
+
+    public static AllyEntry FromDid(string did) =>
+        new() { Type = $"{Nsid}#did", Did = did };
 }
