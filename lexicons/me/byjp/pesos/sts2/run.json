@@ -86,9 +86,10 @@
 						"type": "array",
 						"items": {
 							"type": "string",
-							"format": "uri"
+							"format": "did",
+							"minLength": 1
 						},
-						"description": "URIs identifying other players in a multiplayer run (atproto DIDs when known, Steam profile URLs otherwise)."
+						"description": "DIDs identifying other players in a multiplayer run."
 					},
 					"game": {
 						"type": "string",
