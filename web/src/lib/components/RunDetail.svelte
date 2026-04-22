@@ -124,8 +124,10 @@
 				{@render titleRow()}
 			</div>
 			<aside class="players">
-				<PlayerCard player={selfPlayer} preferLocal compact />
-				<span class="with">with</span>
+				<div class="self-group">
+					<PlayerCard player={selfPlayer} preferLocal compact />
+					<span class="with">with</span>
+				</div>
 				{#each run.allies ?? [] as ally}
 					<PlayerCard player={ally} {tid} compact />
 				{/each}
@@ -299,6 +301,11 @@
 		letter-spacing: 0.05em;
 	}
 
+	/* Narrow layout: let the self card and "with" sit inline alongside allies. */
+	.self-group {
+		display: contents;
+	}
+
 	@media (min-width: 45rem) {
 		.layout {
 			grid-template-columns: 1fr auto;
@@ -312,6 +319,15 @@
 			flex-direction: column;
 			align-items: flex-end;
 			gap: 0.35rem;
+		}
+
+		/* Wide layout: stack self + "with" as a column so "with" centres on
+		   the self card's width (not the full players column's width). */
+		.self-group {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.2rem;
 		}
 	}
 </style>

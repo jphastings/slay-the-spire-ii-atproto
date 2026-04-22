@@ -4,10 +4,15 @@
 	import { listRuns } from '$lib/api/pds';
 	import type { MiniDoc, RecordEntry } from '$lib/api/types';
 	import RunCard from '$lib/components/RunCard.svelte';
+	import PlayerCard from '$lib/components/PlayerCard.svelte';
+	import ClaimPromptCard from '$lib/components/ClaimPromptCard.svelte';
+	import { fetchKeytraceClaim, type KeytraceClaim } from '$lib/utils/player';
 
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 	let identity = $state<MiniDoc | null>(null);
+	// undefined = still checking, null = no claim, object = claim present.
+	let claim = $state<KeytraceClaim | null | undefined>(undefined);
 	let runs = $state<RecordEntry[]>([]);
 	let cursor = $state<string | undefined>(undefined);
 	let loadingMore = $state(false);
@@ -22,13 +27,19 @@
 		error = null;
 		runs = [];
 		cursor = undefined;
+		claim = undefined;
 		try {
 			identity = await resolveIdentity(actor);
-			const result = await listRuns(identity.pds, identity.did);
-			runs = result.records.sort(
+			// Runs + claim in parallel — the claim gates (and feeds) the right-hand card.
+			const [runsResult, claimResult] = await Promise.all([
+				listRuns(identity.pds, identity.did),
+				fetchKeytraceClaim(identity.pds, identity.did)
+			]);
+			claim = claimResult;
+			runs = runsResult.records.sort(
 				(a, b) => new Date(b.value.updatedAt).getTime() - new Date(a.value.updatedAt).getTime()
 			);
-			cursor = result.cursor;
+			cursor = runsResult.cursor;
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Unknown error';
 		} finally {
@@ -65,8 +76,22 @@
 {:else if error}
 	<div class="status error">{error}</div>
 {:else if identity}
-	<h1>@{identity.handle}</h1>
-	<p class="subtitle">Slay the Spire 2 Runs</p>
+	<div class="header">
+		<div class="title">
+			<h1>@{identity.handle}</h1>
+			<p class="tagline">Slay the Spire 2 Runs</p>
+		</div>
+		<div class="actor">
+			{#if claim}
+				<PlayerCard
+					player={{ atproto: identity.did, steam: claim.steamId64 }}
+					preferSteam
+				/>
+			{:else if claim === null}
+				<ClaimPromptCard />
+			{/if}
+		</div>
+	</div>
 
 	{#if runs.length === 0}
 		<p class="status">No runs found.</p>
@@ -90,9 +115,25 @@
 		color: var(--accent-gold);
 	}
 
-	.subtitle {
-		color: var(--text-secondary);
+	.header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
 		margin-bottom: 1.5rem;
+	}
+
+	.title {
+		flex: 1 1 auto;
+	}
+
+	.actor {
+		margin-left: auto;
+	}
+
+	.tagline {
+		color: var(--text-secondary);
+		margin-top: 0.15rem;
 	}
 
 	.runs {

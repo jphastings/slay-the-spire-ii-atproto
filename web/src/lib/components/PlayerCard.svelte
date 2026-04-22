@@ -5,14 +5,22 @@
 		player,
 		tid,
 		preferLocal = false,
+		preferSteam = false,
 		compact = false
-	}: { player: Player; tid?: string; preferLocal?: boolean; compact?: boolean } = $props();
+	}: {
+		player: Player;
+		tid?: string;
+		preferLocal?: boolean;
+		/** Force the external Steam profile link even when a local/companion link is available. */
+		preferSteam?: boolean;
+		compact?: boolean;
+	} = $props();
 
 	let resolved = $state<ResolvedPlayer | null>(null);
 
 	$effect(() => {
 		let cancelled = false;
-		resolvePlayer(player, tid, preferLocal).then((r) => {
+		resolvePlayer(player, tid, { preferLocal, preferSteam }).then((r) => {
 			if (!cancelled) resolved = r;
 		});
 		return () => {
@@ -20,10 +28,11 @@
 		};
 	});
 
-	// Pre-resolution placeholder label, so the card occupies space immediately.
+	// Pre-resolution placeholder, so the card occupies space immediately.
 	const fallbackLabel = $derived(
-		player.atproto ? 'Loading…' : player.steam ? `Steam #${player.steam}` : 'Unknown'
+		player.atproto ? 'Loading…' : player.steam ? 'Steam player' : 'Unknown'
 	);
+	const fallbackSubtitle = $derived(!player.atproto && player.steam ? player.steam : undefined);
 </script>
 
 {#if resolved}
@@ -51,6 +60,9 @@
 		<div class="avatar placeholder" aria-hidden="true"></div>
 		<div class="text">
 			<div class="label">{fallbackLabel}</div>
+			{#if fallbackSubtitle}
+				<div class="subtitle">{fallbackSubtitle}</div>
+			{/if}
 		</div>
 	</span>
 {/if}
@@ -116,6 +128,10 @@
 		font-size: 0.72rem;
 		color: var(--text-muted);
 		margin-top: 0.1rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 14rem;
 	}
 
 	.compact {

@@ -15,44 +15,28 @@ export interface ResolvedPlayer {
 	avatar?: string;
 }
 
-const STEAM_INFO_TTL = 24 * 60 * 60 * 1000;
 const COMPANION_TTL = 5 * 60 * 1000;
-const KEYTRACE_AVATAR_TTL = 24 * 60 * 60 * 1000;
+const KEYTRACE_CLAIM_TTL = 24 * 60 * 60 * 1000;
 const BSKY_AVATAR_TTL = 24 * 60 * 60 * 1000;
 
 export function steamProfileUrl(steamId: string): string {
 	return `https://steamcommunity.com/profiles/${steamId}`;
 }
 
-// --- Steam XML (via corsproxy; Steam doesn't send CORS headers) ---------------
-
-interface SteamInfo {
-	name?: string;
-	avatar?: string;
-}
-
-async function fetchSteamInfo(steamId: string): Promise<SteamInfo | null> {
-	return cached(`steam-info:${steamId}`, STEAM_INFO_TTL, async () => {
-		const target = `https://steamcommunity.com/profiles/${steamId}?xml=1`;
-		const proxied = `https://corsproxy.io/?url=${encodeURIComponent(target)}`;
-		const res = await fetch(proxied);
-		if (!res.ok) return null;
-		const xml = await res.text();
-		const doc = new DOMParser().parseFromString(xml, 'application/xml');
-		if (doc.querySelector('parsererror')) return null;
-		const pick = (tag: string) => doc.querySelector(tag)?.textContent?.trim() || null;
-		return {
-			// Priority: public display name → the URL slug they picked for their profile.
-			name: pick('steamID') ?? pick('customURL') ?? undefined,
-			avatar: pick('avatarMedium') ?? undefined
-		};
-	});
-}
-
 // --- Keytrace claim on the user's own PDS -------------------------------------
 
-async function fetchKeytraceAvatar(pds: string, did: string): Promise<string | null> {
-	return cached(`keytrace-avatar:${did}`, KEYTRACE_AVATAR_TTL, async () => {
+export interface KeytraceClaim {
+	displayName?: string;
+	avatarUrl?: string;
+	/** Only populated when there's a `type: "steam"` claim record. */
+	steamId64?: string;
+}
+
+export async function fetchKeytraceClaim(
+	pds: string,
+	did: string
+): Promise<KeytraceClaim | null> {
+	return cached(`keytrace-claim:${did}`, KEYTRACE_CLAIM_TTL, async () => {
 		try {
 			const url =
 				`${pds}/xrpc/com.atproto.repo.listRecords` +
@@ -60,13 +44,38 @@ async function fetchKeytraceAvatar(pds: string, did: string): Promise<string | n
 				`&collection=dev.keytrace.claim&limit=10`;
 			const res = await fetch(url);
 			if (!res.ok) return null;
-			const body = (await res.json()) as { records?: { value?: { avatarUrl?: string } }[] };
+			const body = (await res.json()) as {
+				records?: {
+					value?: {
+						type?: unknown;
+						identity?: {
+							subject?: unknown;
+							displayName?: unknown;
+							avatarUrl?: unknown;
+						};
+					};
+				}[];
+			};
+			const claim: KeytraceClaim = {};
 			for (const r of body.records ?? []) {
-				if (typeof r.value?.avatarUrl === 'string' && r.value.avatarUrl.length > 0) {
-					return r.value.avatarUrl;
+				const v = r.value ?? {};
+				const id = v.identity ?? {};
+				if (!claim.displayName && typeof id.displayName === 'string' && id.displayName.length > 0) {
+					claim.displayName = id.displayName;
+				}
+				if (!claim.avatarUrl && typeof id.avatarUrl === 'string' && id.avatarUrl.length > 0) {
+					claim.avatarUrl = id.avatarUrl;
+				}
+				if (
+					!claim.steamId64 &&
+					v.type === 'steam' &&
+					typeof id.subject === 'string' &&
+					id.subject.length > 0
+				) {
+					claim.steamId64 = id.subject;
 				}
 			}
-			return null;
+			return claim.displayName || claim.avatarUrl || claim.steamId64 ? claim : null;
 		} catch {
 			return null;
 		}
@@ -109,11 +118,18 @@ async function hasCompanionRun(pds: string, did: string, tid: string): Promise<b
 
 // --- Main resolver ------------------------------------------------------------
 
+export interface ResolveOptions {
+	preferLocal?: boolean;
+	/** Force the external Steam profile link, overriding companion/local routing. */
+	preferSteam?: boolean;
+}
+
 export async function resolvePlayer(
 	player: Player,
 	tid?: string,
-	preferLocal = false
+	opts: ResolveOptions = {}
 ): Promise<ResolvedPlayer> {
+	const { preferLocal = false, preferSteam = false } = opts;
 	let did: string | undefined;
 	let handle: string | undefined;
 	let pds: string | undefined;
@@ -131,53 +147,45 @@ export async function resolvePlayer(
 		}
 	}
 
-	const steamInfo = player.steam ? await fetchSteamInfo(player.steam) : null;
+	// Keytrace claim gives us both the display name and the preferred avatar.
+	const claim = did && pds ? await fetchKeytraceClaim(pds, did) : null;
 
-	// Avatar priority: keytrace claim → Steam XML → Bluesky profile.
-	let avatar: string | undefined;
-	if (did && pds) {
-		avatar = (await fetchKeytraceAvatar(pds, did)) ?? undefined;
-	}
-	if (!avatar && steamInfo?.avatar) {
-		avatar = steamInfo.avatar;
-	}
+	// Avatar priority: keytrace claim → Bluesky profile. (Steam avatars would
+	// require a third-party CORS proxy we're not willing to depend on.)
+	let avatar: string | undefined = claim?.avatarUrl;
 	if (!avatar && did && pds) {
 		avatar = (await fetchBlueskyAvatar(pds, did)) ?? undefined;
 	}
 
-	// Link target + label.
-	// Label priority when we already know we're linking to a local profile: prefer
-	// the Steam display name (or customURL) when present, otherwise fall back to
-	// the atproto handle.
-	const localLabel = steamInfo?.name ?? `@${handle}`;
-	const localSubtitle = handle && localLabel !== `@${handle}` ? `@${handle}` : undefined;
+	// Three display states:
+	//   1. keytrace displayName + handle → "{displayName}" / "@{handle}"
+	//   2. handle, no displayName        → "@{handle}"
+	//   3. Steam only                    → "Steam player" / "{steamId}"
+	let label: string;
+	let subtitle: string | undefined;
+	if (claim?.displayName && handle) {
+		label = claim.displayName;
+		subtitle = `@${handle}`;
+	} else if (handle) {
+		label = `@${handle}`;
+	} else {
+		label = 'Steam player';
+		subtitle = player.steam;
+	}
 
+	// preferSteam short-circuits the local/companion routing when we have a
+	// Steam ID — useful on run pages where the Steam profile is the intended jump.
+	if (preferSteam && player.steam) {
+		return { label, subtitle, href: steamProfileUrl(player.steam), external: true, avatar };
+	}
 	if (handle && companionExists && tid) {
-		return {
-			label: localLabel,
-			subtitle: localSubtitle,
-			href: `/${handle}/${tid}`,
-			external: false,
-			avatar
-		};
+		return { label, subtitle, href: `/${handle}/${tid}`, external: false, avatar };
 	}
 	if (handle && (preferLocal || !player.steam)) {
-		return {
-			label: localLabel,
-			subtitle: localSubtitle,
-			href: `/${handle}`,
-			external: false,
-			avatar
-		};
+		return { label, subtitle, href: `/${handle}`, external: false, avatar };
 	}
 	if (player.steam) {
-		return {
-			label: steamInfo?.name ?? `Steam #${player.steam}`,
-			subtitle: handle ? `@${handle}` : undefined,
-			href: steamProfileUrl(player.steam),
-			external: true,
-			avatar
-		};
+		return { label, subtitle, href: steamProfileUrl(player.steam), external: true, avatar };
 	}
 	// Should be unreachable per the "at least one key" contract.
 	return { label: 'Unknown', href: '#', external: false, avatar };

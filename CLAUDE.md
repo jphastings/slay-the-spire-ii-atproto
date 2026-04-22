@@ -45,15 +45,19 @@ Two files move together: `mod/atproto-tracker.csproj` (`<Version>`) and `mod/man
 
 For a player `{ steam?, atproto? }`, `resolvePlayer` in `web/src/lib/utils/player.ts`:
 
-- **Avatar priority**: `dev.keytrace.claim.avatarUrl` on their PDS → Steam XML `avatarMedium` → `app.bsky.actor.profile/self` blob (CDN URL: `https://cdn.bsky.app/img/avatar_thumbnail/plain/{did}/{cid}@jpeg`). First hit wins.
-- **Steam display name priority**: XML `<steamID>` (display name) → `<customURL>`. `realName` is deliberately excluded for privacy.
+- **Avatar priority**: `dev.keytrace.claim.avatarUrl` on their PDS → `app.bsky.actor.profile/self` blob (CDN URL: `https://cdn.bsky.app/img/avatar_thumbnail/plain/{did}/{cid}@jpeg`). First hit wins. Steam avatars would require a CORS proxy we don't run.
+- **Label + subtitle** (three states):
+  - keytrace `displayName` + handle → `{displayName}` / `@{handle}`
+  - handle, no keytrace → `@{handle}` (no subtitle)
+  - Steam only → `"Steam player"` / `{steamId64}`
+  We don't fetch Steam display names (no CORS proxy).
 - **Link target**: companion run at the same tid on their PDS → their profile page `/{handle}` (when `preferLocal` or no Steam) → external Steam profile.
 
-Caches (see `web/src/lib/utils/cache.ts`): Slingshot identity 30 min, companion record 5 min, Steam info 24 h, keytrace/Bluesky avatars 24 h.
+Caches (see `web/src/lib/utils/cache.ts`): Slingshot identity 30 min, companion record 5 min, keytrace/Bluesky avatars 24 h.
 
 ## CORS
 
-The site is fully static, so any third-party API without CORS headers must be proxied client-side. We use `corsproxy.io` for the Steam XML profile endpoint and (via `SteamDidResolver` on the mod side) directly for keytrace. Each PDS sends CORS headers, so direct `fetch` works for atproto calls.
+The site is fully static, so every third-party API we call must send CORS headers. Each PDS does, so direct `fetch` works for atproto calls. Steam's `steamcommunity.com` XML endpoint does **not** — we deliberately do not fetch it from the browser (no CORS proxy) and fall back to showing "Steam player" / the atproto handle instead of a Steam display name.
 
 ## Temporary code
 
