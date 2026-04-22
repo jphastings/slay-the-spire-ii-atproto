@@ -34,7 +34,7 @@
 		nonNull([
 			tile('Total', stats.damageDealt, 'gold'),
 			tile('Biggest Blow', stats.biggestDamageDealt, 'gold'),
-			tile('Best Turn', stats.biggestTurnDamageDealt, 'gold')
+			tile('Best Attack', stats.biggestTurnDamageDealt, 'gold')
 		])
 	);
 
