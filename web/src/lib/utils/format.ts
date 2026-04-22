@@ -7,25 +7,38 @@ export function formatDuration(seconds: number): string {
 	return `${s}s`;
 }
 
-const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-const units: [Intl.RelativeTimeFormatUnit, number][] = [
-	['year', 365 * 24 * 60 * 60 * 1000],
-	['month', 30 * 24 * 60 * 60 * 1000],
-	['week', 7 * 24 * 60 * 60 * 1000],
-	['day', 24 * 60 * 60 * 1000],
-	['hour', 60 * 60 * 1000],
-	['minute', 60 * 1000],
-	['second', 1000]
-];
-
 export function formatRelativeTime(iso: string): string {
-	const diff = new Date(iso).getTime() - Date.now();
-	for (const [unit, ms] of units) {
-		if (Math.abs(diff) >= ms) {
-			return rtf.format(Math.round(diff / ms), unit);
-		}
-	}
-	return 'just now';
+	const then = new Date(iso);
+	const now = new Date();
+	const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+	const startOfThen = new Date(then.getFullYear(), then.getMonth(), then.getDate());
+	const msPerDay = 24 * 60 * 60 * 1000;
+	const dayDiff = Math.round((startOfToday.getTime() - startOfThen.getTime()) / msPerDay);
+
+	if (dayDiff <= 0) return 'Today';
+	if (dayDiff === 1) return 'Yesterday';
+
+	// Week starts Monday.
+	const weekdayFromMonday = (startOfToday.getDay() + 6) % 7;
+	const startOfThisWeek = new Date(startOfToday);
+	startOfThisWeek.setDate(startOfToday.getDate() - weekdayFromMonday);
+	const startOfLastWeek = new Date(startOfThisWeek);
+	startOfLastWeek.setDate(startOfThisWeek.getDate() - 7);
+
+	if (startOfThen >= startOfThisWeek) return 'This week';
+	if (startOfThen >= startOfLastWeek) return 'Last week';
+
+	const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+	const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+	if (startOfThen >= startOfThisMonth) return 'This month';
+	if (startOfThen >= startOfLastMonth) return 'Last month';
+
+	const startOfThisYear = new Date(now.getFullYear(), 0, 1);
+	const startOfLastYear = new Date(now.getFullYear() - 1, 0, 1);
+	if (startOfThen >= startOfThisYear) return 'This year';
+	if (startOfThen >= startOfLastYear) return 'Last year';
+
+	return 'A long while ago';
 }
 
 import { displayName } from './names';
