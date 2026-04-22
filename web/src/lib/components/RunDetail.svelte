@@ -7,6 +7,7 @@
 	import RelicList from './RelicList.svelte';
 	import PotionList from './PotionList.svelte';
 	import PlayerCard from './PlayerCard.svelte';
+	import StatsPanel from './StatsPanel.svelte';
 
 	let {
 		run,
@@ -89,7 +90,6 @@
 					<dt>Started</dt>
 					<dd>
 						{s.date}
-						<div class="time">{s.time}</div>
 					</dd>
 				</div>
 			{/if}
@@ -99,7 +99,6 @@
 					<dt>Ended</dt>
 					<dd>
 						{e.date}
-						<div class="time">{e.time}</div>
 					</dd>
 				</div>
 			{:else if updated}
@@ -108,7 +107,6 @@
 					<dt>Updated</dt>
 					<dd>
 						{u.date}
-						<div class="time">{u.time}</div>
 					</dd>
 				</div>
 			{/if}
@@ -166,6 +164,10 @@
 			<h3>Potions ({run.potions.length})</h3>
 			<PotionList potions={run.potions} />
 		</section>
+	{/if}
+
+	{#if run.stats}
+		<StatsPanel stats={run.stats} />
 	{/if}
 
 	<div class="meta">

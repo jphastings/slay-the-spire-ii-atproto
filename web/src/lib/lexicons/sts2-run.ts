@@ -75,23 +75,27 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 		}),
 		damageDealt: lx.integer({
 			minimum: 0,
-			description: 'Total unblocked HP damage dealt by the player to enemies.'
+			description: 'Total HP damage dealt by the player to enemies (after block).'
 		}),
 		damageTaken: lx.integer({
 			minimum: 0,
-			description: 'Total unblocked HP damage taken by the player.'
+			description: 'Total HP damage taken by the player (after block).'
 		}),
-		biggestSingleHit: lx.integer({
+		biggestDamageDealt: lx.integer({
 			minimum: 0,
-			description: 'Largest single unblocked hit dealt by the player.'
+			description: 'Largest HP damage dealt by the player in one attack (after block).'
 		}),
-		biggestTurnDamage: lx.integer({
+		biggestDamageTaken: lx.integer({
 			minimum: 0,
-			description: 'Most damage the player dealt in one player turn.'
+			description: 'Largest HP damage taken by the player in one attack (after block).'
+		}),
+		biggestTurnDamageDealt: lx.integer({
+			minimum: 0,
+			description: 'Most HP damage the player dealt in one player turn (after block).'
 		}),
 		biggestTurnDamageTaken: lx.integer({
 			minimum: 0,
-			description: 'Most damage the player took in one enemy turn.'
+			description: 'Most HP damage the player took in one enemy turn (after block).'
 		}),
 		cardsPlayed: lx.integer({ minimum: 0 }),
 		cardsDrawn: lx.integer({ minimum: 0 }),
@@ -104,6 +108,21 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 		highestBlockInTurn: lx.integer({
 			minimum: 0,
 			description: 'Most block gained by the player in a single player turn.'
+		}),
+		hitsDealtDistribution: lx.ref('#distribution', {
+			description:
+				"Hits dealt by the player grouped by the attack's full value (before block). Example: { \"1\": 23, \"2\": 8, \"10\": 1 }."
+		}),
+		hitsTakenDistribution: lx.ref('#distribution', {
+			description:
+				"Hits the player received grouped by the attack's full value (before block). Example: { \"1\": 23, \"2\": 8, \"10\": 1 }."
 		})
-	})
+	}),
+	distribution: lx.object(
+		{},
+		{
+			description:
+				'Generic histogram keyed by decimal-string values mapped to their integer counts. Keys are intentionally undeclared because the set of values is open-ended.'
+		}
+	)
 });

@@ -179,27 +179,32 @@
 				"damageDealt": {
 					"type": "integer",
 					"minimum": 0,
-					"description": "Total unblocked HP damage dealt by the player to enemies."
+					"description": "Total HP damage dealt by the player to enemies (after block)."
 				},
 				"damageTaken": {
 					"type": "integer",
 					"minimum": 0,
-					"description": "Total unblocked HP damage taken by the player."
+					"description": "Total HP damage taken by the player (after block)."
 				},
-				"biggestSingleHit": {
+				"biggestDamageDealt": {
 					"type": "integer",
 					"minimum": 0,
-					"description": "Largest single unblocked hit dealt by the player."
+					"description": "Largest HP damage dealt by the player in one attack (after block)."
 				},
-				"biggestTurnDamage": {
+				"biggestDamageTaken": {
 					"type": "integer",
 					"minimum": 0,
-					"description": "Most damage the player dealt in one player turn."
+					"description": "Largest HP damage taken by the player in one attack (after block)."
+				},
+				"biggestTurnDamageDealt": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Most HP damage the player dealt in one player turn (after block)."
 				},
 				"biggestTurnDamageTaken": {
 					"type": "integer",
 					"minimum": 0,
-					"description": "Most damage the player took in one enemy turn."
+					"description": "Most HP damage the player took in one enemy turn (after block)."
 				},
 				"cardsPlayed": {
 					"type": "integer",
@@ -226,8 +231,23 @@
 					"type": "integer",
 					"minimum": 0,
 					"description": "Most block gained by the player in a single player turn."
+				},
+				"hitsDealtDistribution": {
+					"type": "ref",
+					"ref": "#distribution",
+					"description": "Hits dealt by the player grouped by the attack's full value (before block). Example: { \"1\": 23, \"2\": 8, \"10\": 1 }."
+				},
+				"hitsTakenDistribution": {
+					"type": "ref",
+					"ref": "#distribution",
+					"description": "Hits the player received grouped by the attack's full value (before block). Example: { \"1\": 23, \"2\": 8, \"10\": 1 }."
 				}
 			}
+		},
+		"distribution": {
+			"type": "object",
+			"properties": {},
+			"description": "Generic histogram keyed by decimal-string values mapped to their integer counts. Keys are intentionally undeclared because the set of values is open-ended."
 		}
 	}
 }

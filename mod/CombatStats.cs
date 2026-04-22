@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -27,8 +28,9 @@ internal static class CombatStats
     private static int _longestCombat;
     private static int _damageDealt;
     private static int _damageTaken;
-    private static int _biggestSingleHit;
-    private static int _biggestTurnDamage;
+    private static int _biggestDamageDealt;
+    private static int _biggestDamageTaken;
+    private static int _biggestTurnDamageDealt;
     private static int _biggestTurnDamageTaken;
     private static int _cardsPlayed;
     private static int _cardsDrawn;
@@ -36,6 +38,8 @@ internal static class CombatStats
     private static int _potionsUsed;
     private static int _noDamageTurns;
     private static int _highestBlockInTurn;
+    private static readonly Dictionary<int, int> _hitsDealtDistribution = new();
+    private static readonly Dictionary<int, int> _hitsTakenDistribution = new();
 
     // Per-combat / per-turn rolling state
     private static int _roundsThisCombat;
@@ -111,8 +115,9 @@ internal static class CombatStats
                 LongestCombat          = _longestCombat,
                 DamageDealt            = _damageDealt,
                 DamageTaken            = _damageTaken,
-                BiggestSingleHit       = _biggestSingleHit,
-                BiggestTurnDamage      = _biggestTurnDamage,
+                BiggestDamageDealt     = _biggestDamageDealt,
+                BiggestDamageTaken     = _biggestDamageTaken,
+                BiggestTurnDamageDealt = _biggestTurnDamageDealt,
                 BiggestTurnDamageTaken = _biggestTurnDamageTaken,
                 CardsPlayed            = _cardsPlayed,
                 CardsDrawn             = _cardsDrawn,
@@ -120,6 +125,12 @@ internal static class CombatStats
                 PotionsUsed            = _potionsUsed,
                 NoDamageTurns          = _noDamageTurns,
                 HighestBlockInTurn     = _highestBlockInTurn,
+                HitsDealtDistribution = _hitsDealtDistribution.Count > 0
+                    ? new Dictionary<int, int>(_hitsDealtDistribution)
+                    : null,
+                HitsTakenDistribution = _hitsTakenDistribution.Count > 0
+                    ? new Dictionary<int, int>(_hitsTakenDistribution)
+                    : null,
             };
         }
     }
@@ -133,22 +144,37 @@ internal static class CombatStats
         {
             if (!_attached) return;
             int hpDamage = result.UnblockedDamage;
-            if (hpDamage <= 0) return;
+            int attackDamage = result.TotalDamage;
 
             bool dealerIsMe = dealer is not null && LocalContext.IsMe(dealer);
             bool receiverIsMe = LocalContext.IsMe(receiver);
 
             if (dealerIsMe && receiver.IsEnemy)
             {
-                _damageDealt += hpDamage;
-                if (hpDamage > _biggestSingleHit) _biggestSingleHit = hpDamage;
-                if (_currentSide == CombatSide.Player) _damageDealtThisTurn += hpDamage;
+                if (attackDamage > 0)
+                    _hitsDealtDistribution[attackDamage] =
+                        _hitsDealtDistribution.TryGetValue(attackDamage, out var c) ? c + 1 : 1;
+
+                if (hpDamage > 0)
+                {
+                    _damageDealt += hpDamage;
+                    if (hpDamage > _biggestDamageDealt) _biggestDamageDealt = hpDamage;
+                    if (_currentSide == CombatSide.Player) _damageDealtThisTurn += hpDamage;
+                }
             }
 
             if (receiverIsMe)
             {
-                _damageTaken += hpDamage;
-                if (_currentSide == CombatSide.Enemy) _damageTakenThisTurn += hpDamage;
+                if (attackDamage > 0)
+                    _hitsTakenDistribution[attackDamage] =
+                        _hitsTakenDistribution.TryGetValue(attackDamage, out var c) ? c + 1 : 1;
+
+                if (hpDamage > 0)
+                {
+                    _damageTaken += hpDamage;
+                    if (hpDamage > _biggestDamageTaken) _biggestDamageTaken = hpDamage;
+                    if (_currentSide == CombatSide.Enemy) _damageTakenThisTurn += hpDamage;
+                }
             }
         }
     }
@@ -238,7 +264,7 @@ internal static class CombatStats
                 _turns++;
                 _roundsThisCombat++;
                 if (_roundsThisCombat    > _longestCombat)      _longestCombat      = _roundsThisCombat;
-                if (_damageDealtThisTurn > _biggestTurnDamage)  _biggestTurnDamage  = _damageDealtThisTurn;
+                if (_damageDealtThisTurn > _biggestTurnDamageDealt) _biggestTurnDamageDealt = _damageDealtThisTurn;
                 if (_blockThisTurn       > _highestBlockInTurn) _highestBlockInTurn = _blockThisTurn;
             }
             else if (_currentSide == CombatSide.Enemy)
@@ -253,10 +279,12 @@ internal static class CombatStats
     {
         _combats = _combatsWon = _elitesWon = _bossesWon = 0;
         _turns = _longestCombat = 0;
-        _damageDealt = _damageTaken = _biggestSingleHit = 0;
-        _biggestTurnDamage = _biggestTurnDamageTaken = 0;
+        _damageDealt = _damageTaken = _biggestDamageDealt = _biggestDamageTaken = 0;
+        _biggestTurnDamageDealt = _biggestTurnDamageTaken = 0;
         _cardsPlayed = _cardsDrawn = _cardsExhausted = _potionsUsed = 0;
         _noDamageTurns = _highestBlockInTurn = 0;
+        _hitsDealtDistribution.Clear();
+        _hitsTakenDistribution.Clear();
         _roundsThisCombat = _damageDealtThisTurn = _damageTakenThisTurn = _blockThisTurn = 0;
         _currentSide = CombatSide.None;
     }

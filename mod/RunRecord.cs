@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AtprotoTracker;
@@ -74,8 +75,9 @@ internal sealed class CombatStatsSnapshot
     [JsonPropertyName("longestCombat"),          JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int LongestCombat          { get; set; }
     [JsonPropertyName("damageDealt"),            JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int DamageDealt            { get; set; }
     [JsonPropertyName("damageTaken"),            JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int DamageTaken            { get; set; }
-    [JsonPropertyName("biggestSingleHit"),       JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int BiggestSingleHit       { get; set; }
-    [JsonPropertyName("biggestTurnDamage"),      JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int BiggestTurnDamage      { get; set; }
+    [JsonPropertyName("biggestDamageDealt"),     JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int BiggestDamageDealt     { get; set; }
+    [JsonPropertyName("biggestDamageTaken"),     JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int BiggestDamageTaken     { get; set; }
+    [JsonPropertyName("biggestTurnDamageDealt"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int BiggestTurnDamageDealt { get; set; }
     [JsonPropertyName("biggestTurnDamageTaken"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int BiggestTurnDamageTaken { get; set; }
     [JsonPropertyName("cardsPlayed"),            JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int CardsPlayed            { get; set; }
     [JsonPropertyName("cardsDrawn"),             JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int CardsDrawn             { get; set; }
@@ -83,4 +85,31 @@ internal sealed class CombatStatsSnapshot
     [JsonPropertyName("potionsUsed"),            JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int PotionsUsed            { get; set; }
     [JsonPropertyName("noDamageTurns"),          JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int NoDamageTurns          { get; set; }
     [JsonPropertyName("highestBlockInTurn"),     JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int HighestBlockInTurn     { get; set; }
+
+    [JsonPropertyName("hitsDealtDistribution"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull),
+     JsonConverter(typeof(IntKeyedDictionaryConverter))]
+    public Dictionary<int, int>? HitsDealtDistribution { get; set; }
+
+    [JsonPropertyName("hitsTakenDistribution"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull),
+     JsonConverter(typeof(IntKeyedDictionaryConverter))]
+    public Dictionary<int, int>? HitsTakenDistribution { get; set; }
+}
+
+/// <summary>
+/// Serializes Dictionary&lt;int,int&gt; with string keys sorted numerically ascending
+/// so the emitted JSON is deterministic and reads naturally.
+/// </summary>
+internal sealed class IntKeyedDictionaryConverter : JsonConverter<Dictionary<int, int>>
+{
+    public override Dictionary<int, int> Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
+        => throw new System.NotSupportedException();
+
+    public override void Write(Utf8JsonWriter writer, Dictionary<int, int> value, JsonSerializerOptions options)
+    {
+        writer.WriteStartObject();
+        var keys = new List<int>(value.Keys);
+        keys.Sort();
+        foreach (var k in keys) writer.WriteNumber(k.ToString(System.Globalization.CultureInfo.InvariantCulture), value[k]);
+        writer.WriteEndObject();
+    }
 }
