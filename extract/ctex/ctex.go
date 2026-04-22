@@ -18,6 +18,8 @@ import (
 	_ "image/png" // register PNG decoder
 
 	"golang.org/x/image/webp"
+
+	"github.com/jphastings/slay-the-spire-ii-atproto/extract/bc7"
 )
 
 type DataFormat uint32
@@ -105,7 +107,24 @@ func Decode(buf []byte) (image.Image, error) {
 		return webp.Decode(bytes.NewReader(data))
 
 	case DataFormatImage:
-		return nil, fmt.Errorf("DATA_FORMAT_IMAGE (raw pixel) decoding not implemented")
+		// Raw pixel data. Layout after data_format:
+		//   w (u16) h (u16) mipmaps (u32) format (u32) then raw data.
+		var w, h uint16
+		var mipmaps, imgFormat uint32
+		for _, dst := range []any{&w, &h, &mipmaps, &imgFormat} {
+			if err := binary.Read(r, binary.LittleEndian, dst); err != nil {
+				return nil, err
+			}
+		}
+		// Raw data is the remainder of the buffer (for mip 0 at least).
+		payload := buf[len(buf)-r.Len():]
+		switch imgFormat {
+		case FormatBPTCRGBA:
+			return bc7.DecodeRGBA(payload, int(w), int(h))
+		default:
+			return nil, fmt.Errorf("%w (raw Image::Format=%d not implemented)",
+				ErrGPUCompressed, imgFormat)
+		}
 	case DataFormatBasisUniversal:
 		return nil, fmt.Errorf("DATA_FORMAT_BASIS_UNIVERSAL not implemented")
 	default:
