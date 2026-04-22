@@ -92,6 +92,12 @@
 				<span class="os-label">Code</span>
 			</a>
 		</div>
+		<p class="mod-version">
+			<a
+				href="https://github.com/jphastings/slay-the-spire-ii-atproto/releases/latest"
+				target="_blank"
+				rel="noopener">v{__MOD_VERSION__}</a>
+		</p>
 	</div>
 
 	<div class="links">
@@ -302,6 +308,21 @@
 	.os-links .info-link:hover {
 		background: transparent;
 		border-color: transparent;
+		color: var(--accent-gold);
+	}
+
+	.mod-version {
+		margin: 0;
+		font-size: 0.75rem;
+		color: var(--text-muted);
+	}
+
+	.mod-version a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.mod-version a:hover {
 		color: var(--accent-gold);
 	}
 
