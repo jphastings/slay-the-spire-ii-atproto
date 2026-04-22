@@ -85,10 +85,10 @@
 					"allies": {
 						"type": "array",
 						"items": {
-							"type": "union",
-							"refs": ["#steamid", "#did"]
+							"type": "ref",
+							"ref": "#ally"
 						},
-						"description": "Other players in a multiplayer run. Each entry is either a known atproto identity (#atproto) or a bare SteamID64 (#steamid) for players we haven't resolved to a DID yet."
+						"description": "Other players in a multiplayer run. Each entry always carries the peer's SteamID64; when we've been able to resolve it, the atproto DID is included too."
 					},
 					"game": {
 						"type": "string",
@@ -121,25 +121,19 @@
 				]
 			}
 		},
-		"steamid": {
+		"ally": {
 			"type": "object",
-			"required": ["steamID64"],
-			"description": "A bare SteamID64, for players not yet resolved to an atproto identity.",
+			"required": ["steam"],
+			"description": "A co-op peer. Identified by SteamID64 always; an atproto DID is included when we've resolved one for this Steam user.",
 			"properties": {
-				"steamID64": {
+				"steam": {
 					"type": "string",
 					"description": "SteamID64 as a decimal string."
-				}
-			}
-		},
-		"did": {
-			"type": "object",
-			"required": ["did"],
-			"description": "A player identified by their atproto DID.",
-			"properties": {
-				"did": {
+				},
+				"atproto": {
 					"type": "string",
-					"format": "did"
+					"format": "did",
+					"description": "Atproto DID, when known."
 				}
 			}
 		}

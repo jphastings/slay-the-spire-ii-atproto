@@ -7,7 +7,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>atproto-tracker</AssemblyName>
     <RootNamespace>AtprotoTracker</RootNamespace>
-    <Version>0.6.0</Version>
+    <Version>0.6.1</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>

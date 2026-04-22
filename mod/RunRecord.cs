@@ -52,19 +52,8 @@ internal sealed class RunRecord
 
 internal sealed class AllyEntry
 {
-    private const string Nsid = "me.byjp.pesos.sts2.run";
+    [JsonPropertyName("steam")] public string Steam { get; set; } = "";
 
-    [JsonPropertyName("$type")] public string Type { get; set; } = "";
-
-    [JsonPropertyName("steamID64"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? SteamID64 { get; set; }
-
-    [JsonPropertyName("did"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Did { get; set; }
-
-    public static AllyEntry FromSteam(ulong steamId64) =>
-        new() { Type = $"{Nsid}#steamid", SteamID64 = steamId64.ToString() };
-
-    public static AllyEntry FromDid(string did) =>
-        new() { Type = $"{Nsid}#did", Did = did };
+    [JsonPropertyName("atproto"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Atproto { get; set; }
 }
