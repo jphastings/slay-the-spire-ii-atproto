@@ -30,23 +30,16 @@ internal static class SteamPathFinder
         return Path.Combine(gamePath, "mods");
     }
 
-    /// <summary>Get the user save data root (contains steam/&lt;id&gt;/ dirs).</summary>
+    /// <summary>
+    /// Get Steam's userdata root (contains &lt;steamId&gt;/&lt;appId&gt;/remote/ dirs).
+    /// StS2 stores saves in Steam Cloud remote storage on every platform.
+    /// </summary>
     public static string? GetSaveDataRoot()
     {
-        string dir;
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            dir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                "Library", "Application Support", "SlayTheSpire2");
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            dir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SlayTheSpire2");
-        else
-            dir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".local", "share", "SlayTheSpire2");
-        return Directory.Exists(dir) ? dir : null;
+        var steamRoot = GetSteamRoot();
+        if (steamRoot is null) return null;
+        var userdata = Path.Combine(steamRoot, "userdata");
+        return Directory.Exists(userdata) ? userdata : null;
     }
 
     private static List<string> GetSteamLibraryFolders()

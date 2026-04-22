@@ -39,11 +39,13 @@ The run-end Harmony hook is pinned (`MegaCrit.Sts2.Core.Runs.RunManager.OnEnded`
 
 Slay the Spire 2 keeps **separate save files for modded and unmodded profiles** — the first time you launch with any mod installed, the game will look empty. Your existing progress is still on disk under a sibling folder; copy `progress.save` across:
 
-| OS                 | Unmodded                                                                        | Modded                                                                               |
-| ------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Windows            | `%APPDATA%\SlayTheSpire2\steam\<STEAM_ID>\1\profile1\saves`                     | `%APPDATA%\SlayTheSpire2\steam\<STEAM_ID>\modded\profile1\saves`                     |
-| macOS              | `~/Library/Application Support/SlayTheSpire2/steam/<STEAM_ID>/1/profile1/saves` | `~/Library/Application Support/SlayTheSpire2/steam/<STEAM_ID>/modded/profile1/saves` |
-| Linux / Steam Deck | `~/.local/share/SlayTheSpire2/steam/<STEAM_ID>/1/profile1/saves`                | `~/.local/share/SlayTheSpire2/steam/<STEAM_ID>/modded/profile1/saves`                |
+Saves live in Steam Cloud's remote storage. The `<profileN>` folder is each of `profile1`, `profile2`, `profile3` (copy whichever you use).
+
+| OS                 | Unmodded                                                                            | Modded                                                                                     |
+| ------------------ | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Windows            | `<STEAM_INSTALL>\userdata\<STEAM_ID>\2868840\remote\<profileN>`                     | `<STEAM_INSTALL>\userdata\<STEAM_ID>\2868840\remote\modded\<profileN>`                     |
+| macOS              | `~/Library/Application Support/Steam/userdata/<STEAM_ID>/2868840/remote/<profileN>` | `~/Library/Application Support/Steam/userdata/<STEAM_ID>/2868840/remote/modded/<profileN>` |
+| Linux / Steam Deck | `~/.local/share/Steam/userdata/<STEAM_ID>/2868840/remote/<profileN>`                | `~/.local/share/Steam/userdata/<STEAM_ID>/2868840/remote/modded/<profileN>`                |
 
 Copy (don't move) so you keep an unmodded backup.
 

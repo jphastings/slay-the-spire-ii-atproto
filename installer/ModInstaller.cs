@@ -7,6 +7,8 @@ namespace AtprotoTracker.Installer;
 internal static class ModInstaller
 {
     private const string ModFolderName = "atproto-tracker";
+    private const string Sts2SteamAppId = "2868840";
+    private static readonly string[] ProfileDirs = ["profile1", "profile2", "profile3"];
 
     private static readonly string[] EmbeddedFiles =
         ["atproto-tracker.dll", "manifest.json", "config.example.json"];
@@ -107,27 +109,24 @@ internal static class ModInstaller
     }
 
     /// <summary>
-    /// Copy progress.save from unmodded to modded profile if the modded dir
-    /// doesn't exist yet. Returns true if a copy was made.
+    /// Copy unmodded profile dirs into modded/ for each Steam user, but only
+    /// when modded/ contains none of profile1/profile2/profile3. Returns true
+    /// if anything was copied.
     /// </summary>
     public static bool MigrateSaveIfNeeded(Action<string> onStatus)
     {
-        var root = SteamPathFinder.GetSaveDataRoot();
-        if (root is null) return false;
-
-        var steamDir = Path.Combine(root, "steam");
-        if (!Directory.Exists(steamDir)) return false;
+        var userdataRoot = SteamPathFinder.GetSaveDataRoot();
+        if (userdataRoot is null) return false;
 
         bool copied = false;
-        foreach (var idDir in Directory.GetDirectories(steamDir))
+        foreach (var (idDir, remote, moddedDir) in EnumerateCandidates(userdataRoot))
         {
-            var unmodded = Path.Combine(idDir, "1", "profile1", "saves", "progress.save");
-            var moddedDir = Path.Combine(idDir, "modded", "profile1", "saves");
-            if (File.Exists(unmodded) && !Directory.Exists(moddedDir))
+            foreach (var profile in ProfileDirs)
             {
-                onStatus($"Copying save for {Path.GetFileName(idDir)}…");
-                Directory.CreateDirectory(moddedDir);
-                File.Copy(unmodded, Path.Combine(moddedDir, "progress.save"));
+                var src = Path.Combine(remote, profile);
+                if (!Directory.Exists(src)) continue;
+                onStatus($"Copying {profile} for {Path.GetFileName(idDir)}…");
+                CopyDirectory(src, Path.Combine(moddedDir, profile));
                 copied = true;
             }
         }
@@ -137,17 +136,38 @@ internal static class ModInstaller
     /// <summary>Check if save migration is applicable (for UI toggle visibility).</summary>
     public static bool CanMigrateSave()
     {
-        var root = SteamPathFinder.GetSaveDataRoot();
-        if (root is null) return false;
-        var steamDir = Path.Combine(root, "steam");
-        if (!Directory.Exists(steamDir)) return false;
-        foreach (var idDir in Directory.GetDirectories(steamDir))
+        var userdataRoot = SteamPathFinder.GetSaveDataRoot();
+        if (userdataRoot is null) return false;
+        foreach (var (_, remote, _) in EnumerateCandidates(userdataRoot))
         {
-            var unmodded = Path.Combine(idDir, "1", "profile1", "saves", "progress.save");
-            var moddedDir = Path.Combine(idDir, "modded", "profile1", "saves");
-            if (File.Exists(unmodded) && !Directory.Exists(moddedDir))
+            if (ProfileDirs.Any(p => Directory.Exists(Path.Combine(remote, p))))
                 return true;
         }
         return false;
+    }
+
+    // Yields (idDir, remote, moddedDir) for each Steam ID whose modded/
+    // contains none of profile1/profile2/profile3 yet.
+    private static IEnumerable<(string idDir, string remote, string moddedDir)>
+        EnumerateCandidates(string userdataRoot)
+    {
+        foreach (var idDir in Directory.GetDirectories(userdataRoot))
+        {
+            var remote = Path.Combine(idDir, Sts2SteamAppId, "remote");
+            if (!Directory.Exists(remote)) continue;
+            var moddedDir = Path.Combine(remote, "modded");
+            if (ProfileDirs.Any(p => Directory.Exists(Path.Combine(moddedDir, p))))
+                continue;
+            yield return (idDir, remote, moddedDir);
+        }
+    }
+
+    private static void CopyDirectory(string src, string dst)
+    {
+        Directory.CreateDirectory(dst);
+        foreach (var file in Directory.GetFiles(src))
+            File.Copy(file, Path.Combine(dst, Path.GetFileName(file)));
+        foreach (var sub in Directory.GetDirectories(src))
+            CopyDirectory(sub, Path.Combine(dst, Path.GetFileName(sub)));
     }
 }
