@@ -22,6 +22,9 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 			floor: lx.integer({ minimum: 0 }),
 			act: lx.integer({ minimum: 1, maximum: 4 }),
 			score: lx.integer({ minimum: 0 }),
+			steamID64: lx.string({
+				description: "SteamID64 of the run's owner, when playing on Steam."
+			}),
 			killedBy: lx.string({
 				description: 'Enemy / event that ended the run, if applicable.'
 			}),
@@ -30,6 +33,14 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 			durationSeconds: lx.integer({ minimum: 0 }),
 			deck: lx.array(lx.string(), { description: 'Card ids in the final deck.' }),
 			relics: lx.array(lx.string(), { description: 'Relic ids held at run end.' }),
+			potions: lx.array(lx.string(), { description: 'Potion ids currently held.' }),
+			allies: lx.array(
+				lx.object({
+					steam: lx.string({ required: true, description: 'SteamID64 as a decimal string.' }),
+					atproto: lx.string({ format: 'did', description: 'Atproto DID, when known.' })
+				}),
+				{ description: 'Other players in a multiplayer run.' }
+			),
 			game: lx.string({
 				format: 'at-uri',
 				description:

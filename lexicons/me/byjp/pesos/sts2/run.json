@@ -45,6 +45,10 @@
 						"type": "integer",
 						"minimum": 0
 					},
+					"steamID64": {
+						"type": "string",
+						"description": "SteamID64 of the run's owner, when playing on Steam."
+					},
 					"killedBy": {
 						"type": "string",
 						"description": "Enemy / event that ended the run, if applicable."
@@ -66,7 +70,7 @@
 						"items": {
 							"type": "string"
 						},
-						"description": "Card ids in the player's deck."
+						"description": "Card ids in the final deck."
 					},
 					"relics": {
 						"type": "array",
@@ -85,10 +89,23 @@
 					"allies": {
 						"type": "array",
 						"items": {
-							"type": "ref",
-							"ref": "#ally"
+							"type": "object",
+							"properties": {
+								"steam": {
+									"type": "string",
+									"description": "SteamID64 as a decimal string."
+								},
+								"atproto": {
+									"type": "string",
+									"format": "did",
+									"description": "Atproto DID, when known."
+								}
+							},
+							"required": [
+								"steam"
+							]
 						},
-						"description": "Other players in a multiplayer run. Each entry always carries the peer's SteamID64; when we've been able to resolve it, the atproto DID is included too."
+						"description": "Other players in a multiplayer run."
 					},
 					"game": {
 						"type": "string",
@@ -119,22 +136,6 @@
 					"startedAt",
 					"updatedAt"
 				]
-			}
-		},
-		"ally": {
-			"type": "object",
-			"required": ["steam"],
-			"description": "A co-op peer. Identified by SteamID64 always; an atproto DID is included when we've resolved one for this Steam user.",
-			"properties": {
-				"steam": {
-					"type": "string",
-					"description": "SteamID64 as a decimal string."
-				},
-				"atproto": {
-					"type": "string",
-					"format": "did",
-					"description": "Atproto DID, when known."
-				}
 			}
 		}
 	}

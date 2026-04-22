@@ -15,6 +15,7 @@ internal static class RunStateExtractor
     {
         // RunState implements IPlayerCollection; this picks the local player even in multiplayer.
         var me = LocalContext.GetMe(state);
+        var mySteamId = GetULong(me, "NetId");
 
         return new RunRecord
         {
@@ -22,12 +23,13 @@ internal static class RunStateExtractor
             Character       = GetString(me, "Character", "Id") != "" ? GetString(me, "Character", "Id") : GetString(me, "CharacterId"),
             Ascension       = (int)GetLong(state, "AscensionLevel"),
             Seed            = state.Rng?.StringSeed ?? "",
+            SteamID64       = mySteamId > 0 ? mySteamId.ToString() : null,
             Floor      = (int)GetLong(state, "TotalFloor"),
             Act        = (int)GetLong(state, "CurrentActIndex") + 1,
             Deck            = CollectIds(me, "Deck", "Cards"),
             Relics          = CollectIds(me, "Relics"),
             Potions         = CollectIds(me, "Potions"),
-            Allies          = CollectAllies(state, GetULong(me, "NetId")),
+            Allies          = CollectAllies(state, mySteamId),
             UpdatedAt       = Iso.Now(),
         };
     }
@@ -35,8 +37,9 @@ internal static class RunStateExtractor
     /// <summary>Extract final state from SerializableRun (run end).</summary>
     public static RunRecord Extract(RunManager manager, bool isVictory, SerializableRun serialized)
     {
-        var state = manager.DebugOnlyGetState();
-        var me    = LocalContext.GetMe(serialized);
+        var state     = manager.DebugOnlyGetState();
+        var me        = LocalContext.GetMe(serialized);
+        var mySteamId = GetULong(me, "NetId");
 
         var outcome = isVictory            ? "victory"
                     : manager.IsAbandoned  ? "abandoned"
@@ -53,6 +56,7 @@ internal static class RunStateExtractor
             Character       = GetString(me, "CharacterId"),
             Ascension       = (int)GetLong(serialized, "Ascension"),
             Seed            = state?.Rng?.StringSeed ?? GetString(serialized, "SerializableRng", "Seed"),
+            SteamID64       = mySteamId > 0 ? mySteamId.ToString() : null,
             Floor      = (int)GetLong(state, "TotalFloor"),
             Act        = (int)GetLong(state, "CurrentActIndex") + 1,
             StartedAt       = Iso.At(startedAt),
@@ -61,7 +65,7 @@ internal static class RunStateExtractor
             Deck            = CollectIds(me, "Deck"),
             Relics          = CollectIds(me, "Relics"),
             Potions         = CollectIds(me, "Potions"),
-            Allies          = CollectAllies(serialized, GetULong(me, "NetId")),
+            Allies          = CollectAllies(serialized, mySteamId),
             UpdatedAt       = Iso.At(endedAt),
         };
     }

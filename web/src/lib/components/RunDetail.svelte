@@ -5,8 +5,14 @@
 	import OutcomeBadge from './OutcomeBadge.svelte';
 	import DeckList from './DeckList.svelte';
 	import RelicList from './RelicList.svelte';
+	import PotionList from './PotionList.svelte';
+	import PlayerCard from './PlayerCard.svelte';
 
-	let { run, did, tid }: { run: RunRecord; did: string; tid: string } = $props();
+	let {
+		run,
+		did,
+		tid
+	}: { run: RunRecord; did: string; tid: string } = $props();
 
 	const dateFmt = new Intl.DateTimeFormat('en-GB', {
 		day: 'numeric',
@@ -30,15 +36,18 @@
 	const ended = $derived(splitDate(run.endedAt));
 	const updated = $derived(ended ? null : splitDate(run.updatedAt));
 	const pdslsUrl = $derived(`https://pdsls.dev/at://${did}/${COLLECTION}/${tid}`);
+
+	const hasAllies = $derived(!!run.allies && run.allies.length > 0);
+	const selfPlayer = $derived({ atproto: did, steam: run.steamID64 });
 </script>
 
-<div class="detail">
-	<div class="header">
-		<h2>{humanizeId(run.character)}</h2>
-		<span class="ascension">{formatAscension(run.ascension)}</span>
-		<OutcomeBadge outcome={run.outcome} />
-	</div>
+{#snippet titleRow()}
+	<h2>{humanizeId(run.character)}</h2>
+	<span class="ascension">{formatAscension(run.ascension)}</span>
+	<OutcomeBadge outcome={run.outcome} />
+{/snippet}
 
+{#snippet statsBoxes()}
 	<dl class="fields">
 		{#if run.act != null}
 			<div class="field">
@@ -105,6 +114,36 @@
 			{/if}
 		</dl>
 	{/if}
+{/snippet}
+
+<div class="detail">
+	{#if hasAllies}
+		<!-- With allies: grid with a dedicated players column (wide) or row (narrow). -->
+		<div class="layout">
+			<div class="header">
+				{@render titleRow()}
+			</div>
+			<aside class="players">
+				<PlayerCard player={selfPlayer} preferLocal compact />
+				<span class="with">with</span>
+				{#each run.allies ?? [] as ally}
+					<PlayerCard player={ally} {tid} compact />
+				{/each}
+			</aside>
+			<div class="stats-area">
+				{@render statsBoxes()}
+			</div>
+		</div>
+	{:else}
+		<!-- No allies: current layout — self pinned to the right of the title. -->
+		<div class="header">
+			{@render titleRow()}
+			<div class="actor">
+				<PlayerCard player={selfPlayer} preferLocal compact />
+			</div>
+		</div>
+		{@render statsBoxes()}
+	{/if}
 
 	{#if run.deck && run.deck.length > 0}
 		<section>
@@ -117,6 +156,13 @@
 		<section>
 			<h3>Relics ({run.relics.length})</h3>
 			<RelicList relics={run.relics} />
+		</section>
+	{/if}
+
+	{#if run.potions && run.potions.length > 0}
+		<section>
+			<h3>Potions ({run.potions.length})</h3>
+			<PotionList potions={run.potions} />
 		</section>
 	{/if}
 
@@ -150,6 +196,10 @@
 	.ascension {
 		color: var(--text-secondary);
 		font-size: 1rem;
+	}
+
+	.actor {
+		margin-left: auto;
 	}
 
 	h3 {
@@ -207,5 +257,61 @@
 		font-size: 0.8rem;
 		padding-top: 1rem;
 		border-top: 1px solid var(--border-subtle);
+	}
+
+	/* --- Multiplayer (has-allies) layout ------------------------------------- */
+
+	.layout {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			'title'
+			'players'
+			'stats';
+	}
+
+	.layout > .header {
+		grid-area: title;
+	}
+
+	.stats-area {
+		grid-area: stats;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.players {
+		grid-area: players;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 0.5rem;
+		margin: 0;
+	}
+
+	.with {
+		font-variant: small-caps;
+		color: var(--text-muted);
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
+	}
+
+	@media (min-width: 45rem) {
+		.layout {
+			grid-template-columns: 1fr auto;
+			grid-template-areas:
+				'title   players'
+				'stats   players';
+			column-gap: 1.5rem;
+		}
+
+		.players {
+			flex-direction: column;
+			align-items: flex-end;
+			gap: 0.35rem;
+		}
 	}
 </style>
