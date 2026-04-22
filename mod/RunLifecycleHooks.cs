@@ -25,6 +25,7 @@ internal static class RunStartHook
             var seed = (uint)RunStateExtractor.GetLong(__result, "Rng", "Seed");
 
             RunTracker.Begin(startTime, seed);
+            CombatStats.Attach();
 
             var run = RunStateExtractor.ExtractLive(__instance, __result);
             run.Outcome = "in_progress";
@@ -55,6 +56,7 @@ internal static class RunStartHook
 
             var run = RunStateExtractor.ExtractLive(manager, state);
             run.Outcome = "in_progress";
+            CombatStats.Populate(run);
             RunTracker.PublishUpdate(run);
         }
         catch (Exception ex)
@@ -78,6 +80,8 @@ internal static class RunEndHook
             SaveManager.Instance.Saved -= RunStartHook.OnSaved;
 
             var run = RunStateExtractor.Extract(__instance, isVictory, __result);
+            CombatStats.Populate(run);
+            CombatStats.Detach();
             RunTracker.PublishFinal(run);
         }
         catch (Exception ex)

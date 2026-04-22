@@ -41,6 +41,10 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 				}),
 				{ description: 'Other players in a multiplayer run.' }
 			),
+			stats: lx.ref('lex:me.byjp.pesos.sts2.run#stats', {
+				description:
+					"Aggregated combat stats across the run. All fields optional; counters reflect the local player's own activity."
+			}),
 			game: lx.string({
 				format: 'at-uri',
 				description:
@@ -54,6 +58,52 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 			modVersion: lx.string(),
 			gameVersion: lx.string(),
 			updatedAt: lx.string({ required: true, format: 'datetime' })
+		})
+	}),
+	stats: lx.object({
+		combats: lx.integer({ minimum: 0, description: 'Total combats entered.' }),
+		combatsWon: lx.integer({ minimum: 0, description: "Combats the player's side won." }),
+		elitesWon: lx.integer({ minimum: 0, description: 'Elite combats won.' }),
+		bossesWon: lx.integer({ minimum: 0, description: 'Boss combats won.' }),
+		turns: lx.integer({
+			minimum: 0,
+			description: 'Total player turns taken across all combats.'
+		}),
+		longestCombat: lx.integer({
+			minimum: 0,
+			description: 'Most player turns in a single combat.'
+		}),
+		damageDealt: lx.integer({
+			minimum: 0,
+			description: 'Total unblocked HP damage dealt by the player to enemies.'
+		}),
+		damageTaken: lx.integer({
+			minimum: 0,
+			description: 'Total unblocked HP damage taken by the player.'
+		}),
+		biggestSingleHit: lx.integer({
+			minimum: 0,
+			description: 'Largest single unblocked hit dealt by the player.'
+		}),
+		biggestTurnDamage: lx.integer({
+			minimum: 0,
+			description: 'Most damage the player dealt in one player turn.'
+		}),
+		biggestTurnDamageTaken: lx.integer({
+			minimum: 0,
+			description: 'Most damage the player took in one enemy turn.'
+		}),
+		cardsPlayed: lx.integer({ minimum: 0 }),
+		cardsDrawn: lx.integer({ minimum: 0 }),
+		cardsExhausted: lx.integer({ minimum: 0 }),
+		potionsUsed: lx.integer({ minimum: 0 }),
+		noDamageTurns: lx.integer({
+			minimum: 0,
+			description: 'Enemy turns during which the player took zero unblocked damage.'
+		}),
+		highestBlockInTurn: lx.integer({
+			minimum: 0,
+			description: 'Most block gained by the player in a single player turn.'
 		})
 	})
 });

@@ -107,6 +107,11 @@
 						},
 						"description": "Other players in a multiplayer run."
 					},
+					"stats": {
+						"type": "ref",
+						"ref": "lex:me.byjp.pesos.sts2.run#stats",
+						"description": "Aggregated combat stats across the run. All fields optional; counters reflect the local player's own activity."
+					},
 					"game": {
 						"type": "string",
 						"format": "at-uri",
@@ -136,6 +141,92 @@
 					"startedAt",
 					"updatedAt"
 				]
+			}
+		},
+		"stats": {
+			"type": "object",
+			"properties": {
+				"combats": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Total combats entered."
+				},
+				"combatsWon": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Combats the player's side won."
+				},
+				"elitesWon": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Elite combats won."
+				},
+				"bossesWon": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Boss combats won."
+				},
+				"turns": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Total player turns taken across all combats."
+				},
+				"longestCombat": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Most player turns in a single combat."
+				},
+				"damageDealt": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Total unblocked HP damage dealt by the player to enemies."
+				},
+				"damageTaken": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Total unblocked HP damage taken by the player."
+				},
+				"biggestSingleHit": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Largest single unblocked hit dealt by the player."
+				},
+				"biggestTurnDamage": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Most damage the player dealt in one player turn."
+				},
+				"biggestTurnDamageTaken": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Most damage the player took in one enemy turn."
+				},
+				"cardsPlayed": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"cardsDrawn": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"cardsExhausted": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"potionsUsed": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"noDamageTurns": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Enemy turns during which the player took zero unblocked damage."
+				},
+				"highestBlockInTurn": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Most block gained by the player in a single player turn."
+				}
 			}
 		}
 	}
