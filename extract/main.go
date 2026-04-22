@@ -56,8 +56,13 @@ func main() {
 	if err := extractImages(p, "images/packed/card_portraits/", filepath.Join(*outDir, "card_portraits"), true); err != nil {
 		log.Fatalf("card portraits: %v", err)
 	}
-	if err := extractCardLocalization(p, filepath.Join(*outDir, "cards.json")); err != nil {
-		log.Fatalf("cards.json: %v", err)
+	locDir := filepath.Join(*outDir, "localization", "eng")
+	for _, name := range []string{"cards", "relics", "potions", "characters", "monsters"} {
+		src := "localization/eng/" + name + ".json"
+		dst := filepath.Join(locDir, name+".json")
+		if err := extractLocalization(p, src, dst); err != nil {
+			log.Fatalf("%s: %v", src, err)
+		}
 	}
 }
 
@@ -138,24 +143,27 @@ func firstKey(p godotimport.Paths) string {
 	return ""
 }
 
-// extractCardLocalization reads localization/eng/cards.json from the pack and
-// writes it to outPath with indentation.
-func extractCardLocalization(p *pck.Pack, outPath string) error {
-	data, err := p.Read("localization/eng/cards.json")
+// extractLocalization reads a JSON localization file from the pack and writes
+// it to outPath with indentation.
+func extractLocalization(p *pck.Pack, srcPath, outPath string) error {
+	data, err := p.Read(srcPath)
 	if err != nil {
 		return err
 	}
 	var m map[string]string
 	if err := json.Unmarshal(data, &m); err != nil {
-		return fmt.Errorf("parse cards.json: %w", err)
+		return fmt.Errorf("parse %s: %w", srcPath, err)
 	}
 	pretty, err := json.MarshalIndent(m, "", "  ")
 	if err != nil {
 		return err
 	}
+	if err := os.MkdirAll(filepath.Dir(outPath), 0o755); err != nil {
+		return err
+	}
 	if err := os.WriteFile(outPath, pretty, 0o644); err != nil {
 		return err
 	}
-	fmt.Fprintf(os.Stderr, "cards.json → %d keys in %s\n", len(m), outPath)
+	fmt.Fprintf(os.Stderr, "%s → %d keys in %s\n", srcPath, len(m), outPath)
 	return nil
 }

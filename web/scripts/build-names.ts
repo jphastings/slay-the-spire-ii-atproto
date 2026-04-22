@@ -6,7 +6,7 @@
  *   eg:  node scripts/build-names.ts ~/Downloads/sts2/localization/eng
  */
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const locDir = process.argv[2];
@@ -18,6 +18,15 @@ if (!locDir) {
 function loadJson(file: string): Record<string, string> {
 	return JSON.parse(readFileSync(join(locDir, file), 'utf-8'));
 }
+
+const outPath = join(import.meta.dirname, '..', 'static', 'names.json');
+
+// Start from the existing names.json so deprecated entries are preserved for
+// old runs that still reference them.
+const names: Record<string, string> = existsSync(outPath)
+	? JSON.parse(readFileSync(outPath, 'utf-8'))
+	: {};
+const before = Object.keys(names).length;
 
 function extractTitles(
 	data: Record<string, string>,
@@ -34,8 +43,6 @@ function extractTitles(
 	}
 	return result;
 }
-
-const names: Record<string, string> = {};
 
 // Cards: CARD.BASH → "Bash"
 Object.assign(names, extractTitles(loadJson('cards.json'), 'title', 'CARD.'));
@@ -63,7 +70,9 @@ const sorted = Object.fromEntries(
 	Object.entries(names).sort(([a], [b]) => a.localeCompare(b))
 );
 
-const outPath = join(import.meta.dirname, '..', 'static', 'names.json');
 writeFileSync(outPath, JSON.stringify(sorted, null, '\t') + '\n');
 
-console.log(`Wrote ${Object.keys(sorted).length} names to static/names.json`);
+const after = Object.keys(sorted).length;
+console.log(
+	`Wrote ${after} names to static/names.json (was ${before}, +${after - before})`
+);

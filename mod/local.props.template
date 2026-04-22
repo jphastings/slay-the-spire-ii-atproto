@@ -4,7 +4,7 @@
 -->
 <Project>
   <PropertyGroup>
-    <!-- <Sts2DataDir>/Volumes/Crucial X9/SteamLibrary/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_arm64</Sts2DataDir> -->
-    <!-- <ModsPath>/Volumes/Crucial X9/SteamLibrary/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods</ModsPath> -->
+    <!-- <Sts2DataDir>$(HOME)/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_arm64</Sts2DataDir> -->
+    <!-- <ModsPath>$(HOME)/Library/Application Support/Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods</ModsPath> -->
   </PropertyGroup>
 </Project>

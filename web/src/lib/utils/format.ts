@@ -35,9 +35,11 @@ export function humanizeId(id: string): string {
 	const known = displayName(id);
 	if (known) return known;
 
-	// Fallback: strip namespace prefix and title-case
+	// Fallback: strip namespace prefix, lowercase, then title-case each word.
+	// e.g. 'CARD.LEADING_STRIKE' → 'Leading Strike'
 	const name = id.includes('.') ? id.slice(id.indexOf('.') + 1) : id;
 	return name
+		.toLowerCase()
 		.replace(/[._]/g, ' ')
 		.replace(/\b\w/g, (c) => c.toUpperCase());
 }
