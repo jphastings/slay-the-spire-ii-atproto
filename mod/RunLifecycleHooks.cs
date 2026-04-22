@@ -54,6 +54,16 @@ internal static class RunStartHook
             var state = manager.DebugOnlyGetState();
             if (state is null) return;
 
+            // If the game has flagged the run as over but RunManager.OnEnded
+            // hasn't fired yet (e.g. player quits from the game over screen
+            // without clicking "Return to Main Menu"), treat this autosave as
+            // the terminal write so we don't leave the record "in_progress".
+            if (RunStateExtractor.GetBool(state, "IsGameOver"))
+            {
+                FinalizeFromLive(manager, state);
+                return;
+            }
+
             var run = RunStateExtractor.ExtractLive(manager, state);
             run.Outcome = "in_progress";
             CombatStats.Populate(run);
@@ -63,6 +73,18 @@ internal static class RunStartHook
         {
             Log.Error($"failed to capture {trigger}", ex);
         }
+    }
+
+    private static void FinalizeFromLive(RunManager manager, RunState state)
+    {
+        manager.RoomExited -= OnRoomExited;
+        SaveManager.Instance.Saved -= OnSaved;
+
+        var run = RunStateExtractor.ExtractFromLiveOnGameOver(manager, state);
+        CombatStats.Populate(run);
+        CombatStats.Detach();
+        Log.Info($"finalizing from live state: outcome={run.Outcome}");
+        RunTracker.PublishFinal(run);
     }
 }
 

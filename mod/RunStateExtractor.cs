@@ -34,6 +34,30 @@ internal static class RunStateExtractor
         };
     }
 
+    /// <summary>
+    /// Build a terminal record from live state when RunState.IsGameOver flips
+    /// true before RunManager.OnEnded fires. Outcome is inferred from
+    /// IsAbandoned + local player HP (alive on a game-over = victory).
+    /// </summary>
+    public static RunRecord ExtractFromLiveOnGameOver(RunManager manager, RunState state)
+    {
+        var run = ExtractLive(manager, state);
+
+        var me = LocalContext.GetMe(state);
+        var alive = GetLong(me, "CurrentHp") > 0;
+        var isAbandoned = GetBool(manager, "IsAbandoned");
+
+        run.Outcome = isAbandoned ? "abandoned"
+                    : alive       ? "victory"
+                    :               "death";
+
+        var endedAt = DateTime.UtcNow;
+        var duration = GetLong(manager, "RunTime");
+        run.EndedAt = Iso.At(endedAt);
+        run.DurationSeconds = (int)duration;
+        return run;
+    }
+
     /// <summary>Extract final state from SerializableRun (run end).</summary>
     public static RunRecord Extract(RunManager manager, bool isVictory, SerializableRun serialized)
     {
@@ -107,6 +131,9 @@ internal static class RunStateExtractor
             _         => long.TryParse(v.ToString(), out var x) ? x : 0,
         };
     }
+
+    public static bool GetBool(object? obj, params string[] path)
+        => GetMember(obj, path) is bool b && b;
 
     public static ulong GetULong(object? obj, params string[] path)
     {
