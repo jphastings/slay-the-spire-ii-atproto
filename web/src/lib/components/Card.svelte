@@ -90,25 +90,25 @@
 	{/if}
 	<img
 		class="layer frame"
-		src="/cards/parts/frame/{frameType}_{frameColor}.png"
+		src="/cards/parts/frame/{frameType}_{frameColor}.webp"
 		alt=""
 		loading="lazy"
 	/>
 	<img
 		class="layer portrait-border"
-		src="/cards/parts/portrait_border/{frameType}_{rarity}.png"
+		src="/cards/parts/portrait_border/{frameType}_{rarity}.webp"
 		alt=""
 		loading="lazy"
 	/>
 	<img
 		class="layer banner"
-		src="/cards/parts/banner/{rarity}.png"
+		src="/cards/parts/banner/{rarity}.webp"
 		alt=""
 		loading="lazy"
 	/>
 	<img
 		class="layer plaque"
-		src="/cards/parts/plaque/{rarity}.png"
+		src="/cards/parts/plaque/{rarity}.webp"
 		alt=""
 		loading="lazy"
 	/>
@@ -116,17 +116,17 @@
 	{#if hasCost}
 		<img
 			class="layer orb"
-			src="/cards/parts/orb/{orbChar}.png"
+			src="/cards/parts/orb/{orbChar}.webp"
 			alt=""
 			loading="lazy"
 		/>
 		<span class="cost">{meta?.cost}</span>
 	{/if}
 	{#if enchantment}
-		<img class="layer enchant-tab" src="/cards/parts/enchant/tab.png" alt="" />
+		<img class="layer enchant-tab" src="/cards/parts/enchant/tab.webp" alt="" />
 		<img
 			class="layer enchant-icon"
-			src="/cards/enchantments/{enchantment}.png"
+			src="/cards/enchantments/{enchantment}.webp"
 			alt=""
 			onerror={(e) => ((e.currentTarget as HTMLImageElement).style.visibility = 'hidden')}
 		/>

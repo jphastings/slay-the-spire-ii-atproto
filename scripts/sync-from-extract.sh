@@ -54,29 +54,26 @@ echo "== extracting to $extract_dir =="
 echo "== merging names into web/static/names.json =="
 (cd "$repo_root/web" && node --experimental-strip-types scripts/build-names.ts "$extract_dir/localization/eng")
 
-copy_webps() {
+copy_sprite() {
   local kind="$1" # potions | relics
-  local src_dir="$extract_dir/$kind"
-  local dst_dir="$repo_root/web/static/assets/$kind"
-  mkdir -p "$dst_dir"
-  if [[ ! -d "$src_dir" ]]; then
-    echo "  (no $kind extracted)"
+  local png="$extract_dir/${kind}_sprite.png"
+  local json="$extract_dir/${kind}_sprite.json"
+  local dst_dir="$repo_root/web/static/assets"
+  if [[ ! -f "$png" ]] || [[ ! -f "$json" ]]; then
+    echo "  (no $kind sprite extracted)"
     return
   fi
-  local n=0
-  shopt -s nullglob
-  for png in "$src_dir"/*.png; do
-    cwebp -quiet -q 80 -resize 128 128 -m 6 "$png" -o "${png%.png}.webp"
-    cp "${png%.png}.webp" "$dst_dir/"
-    n=$((n + 1))
-  done
-  shopt -u nullglob
-  echo "  $kind: $n webp(s) in $dst_dir"
+  mkdir -p "$dst_dir"
+  cwebp -quiet -q 80 -m 6 "$png" -o "$dst_dir/${kind}_sprite.webp"
+  cp "$json" "$dst_dir/${kind}_sprite.json"
+  # Drop any previously-committed per-icon webps (superseded by the sprite).
+  rm -rf "$dst_dir/$kind"
+  echo "  $kind: sprite → $dst_dir/${kind}_sprite.webp"
 }
 
-echo "== transcoding PNG → WebP =="
-copy_webps potions
-copy_webps relics
+echo "== building sprite sheets =="
+copy_sprite potions
+copy_sprite relics
 
 copy_portraits() {
   local src_root="$extract_dir/card_portraits"
@@ -111,14 +108,46 @@ copy_cards() {
   fi
   rm -rf "$dst"
   mkdir -p "$dst"
-  # parts/ holds PNGs ready for the web — they're already alpha-compositable
-  # and small (~5 MB total), so no WebP transcoding needed for v1.
-  cp -R "$src/parts" "$src/fonts" "$dst/"
+
+  # Fonts are raw TTFs — no transcoding.
+  cp -R "$src/fonts" "$dst/"
+
+  # cards.json — metadata manifest.
   [[ -f "$src/cards.json" ]] && cp "$src/cards.json" "$dst/"
-  # Prune intermediate bases the extractor uses to bake tints.
-  rm -rf "$dst/parts/frame_base" "$dst/parts/banner_base" \
-         "$dst/parts/portrait_border_base" "$dst/parts/plaque_base.png"
-  echo "  cards: synced parts/fonts/cards.json to $dst"
+
+  # Card parts (frame, portrait_border, banner, plaque, orb, enchant) are
+  # UI sprites with alpha; transcode each to WebP preserving the nested
+  # directory layout. Skip the intermediate base sprites the extractor
+  # uses to bake HSV tints.
+  local parts_count=0
+  if [[ -d "$src/parts" ]]; then
+    while IFS= read -r png; do
+      local rel="${png#$src/parts/}"
+      case "$rel" in
+        frame_base/*|banner_base/*|portrait_border_base/*|plaque_base.png) continue ;;
+      esac
+      local out="$dst/parts/${rel%.png}.webp"
+      mkdir -p "$(dirname "$out")"
+      cwebp -quiet -q 80 -m 6 "$png" -o "$out"
+      parts_count=$((parts_count + 1))
+    done < <(find "$src/parts" -name "*.png" -type f)
+  fi
+
+  # Enchantment icons — small (35×35) PNGs with alpha.
+  local ench_count=0
+  if [[ -d "$src/enchantments" ]]; then
+    mkdir -p "$dst/enchantments"
+    shopt -s nullglob
+    for png in "$src/enchantments"/*.png; do
+      local name
+      name=$(basename "${png%.png}")
+      cwebp -quiet -q 80 -m 6 "$png" -o "$dst/enchantments/$name.webp"
+      ench_count=$((ench_count + 1))
+    done
+    shopt -u nullglob
+  fi
+
+  echo "  cards: $parts_count parts + $ench_count enchantments → webp in $dst"
 }
 copy_cards
 

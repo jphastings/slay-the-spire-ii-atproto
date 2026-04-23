@@ -16,6 +16,7 @@ import (
 	"github.com/jphastings/slay-the-spire-ii-atproto/extract/ctex"
 	"github.com/jphastings/slay-the-spire-ii-atproto/extract/godotimport"
 	"github.com/jphastings/slay-the-spire-ii-atproto/extract/pck"
+	"github.com/jphastings/slay-the-spire-ii-atproto/extract/sprite"
 )
 
 func main() {
@@ -82,6 +83,20 @@ func main() {
 	}
 	if err := cards.Extract(p, filepath.Join(*outDir, "cards"), *decompCS); err != nil {
 		log.Fatalf("cards: %v", err)
+	}
+
+	// Pack relic + potion icons into sprite sheets so the web ships one
+	// file per kind instead of hundreds. Tiles are 128×128 to match the
+	// size RelicList / PotionList already render at.
+	for _, kind := range []string{"relics", "potions"} {
+		srcDir := filepath.Join(*outDir, kind)
+		outPNG := filepath.Join(*outDir, kind+"_sprite.png")
+		outJSON := filepath.Join(*outDir, kind+"_sprite.json")
+		n, err := sprite.BuildUniform(srcDir, outPNG, outJSON, 128)
+		if err != nil {
+			log.Fatalf("sprite %s: %v", kind, err)
+		}
+		fmt.Fprintf(os.Stderr, "sprite %s → %d icons in %s\n", kind, n, outPNG)
 	}
 }
 
