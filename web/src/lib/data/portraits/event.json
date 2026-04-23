@@ -1,0 +1,29 @@
+{
+  "image": "event_sprite.png",
+  "tileW": 356,
+  "tileH": 271,
+  "columns": 5,
+  "items": [
+    "apotheosis",
+    "brightest_flame",
+    "byrd_swoop",
+    "caltrops",
+    "enlightenment",
+    "exterminate",
+    "feeding_frenzy",
+    "hello_world",
+    "mad_science_attack",
+    "mad_science_power",
+    "mad_science_skill",
+    "maul",
+    "metamorphosis",
+    "neows_fury",
+    "peck",
+    "relax",
+    "rip_and_tear",
+    "squash",
+    "toric_toughness",
+    "whistle",
+    "wish"
+  ]
+}

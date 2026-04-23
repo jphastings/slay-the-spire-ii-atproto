@@ -25,6 +25,10 @@ export type Line = Run[];
 
 export interface ParseOptions {
 	upgraded?: boolean;
+	// Numeric values for leaf `{Field:diff()}` placeholders. When a key is
+	// present the literal value is rendered (styled as a highlight) instead
+	// of a `?` chip. Unknown fields still fall back to `?`.
+	values?: Record<string, number>;
 }
 
 export function parseCardText(desc: string, opts: ParseOptions = {}): Line[] {
@@ -84,7 +88,12 @@ export function parseCardText(desc: string, opts: ParseOptions = {}): Line[] {
 				if (ev === null) {
 					const field = inner.slice(0, inner.indexOf(':') === -1 ? inner.length : inner.indexOf(':'));
 					flush();
-					cur.push({ text: '?', style: 'placeholder', field });
+					const v = opts.values?.[field];
+					if (typeof v === 'number' && Number.isFinite(v)) {
+						cur.push({ text: v.toString(), style: 'highlight', field });
+					} else {
+						cur.push({ text: '?', style: 'placeholder', field });
+					}
 				} else {
 					// Recursively process the expanded branch so nested
 					// placeholders and BBCode keep working.

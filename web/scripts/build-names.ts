@@ -19,7 +19,9 @@ function loadJson(file: string): Record<string, string> {
 	return JSON.parse(readFileSync(join(locDir, file), 'utf-8'));
 }
 
-const outPath = join(import.meta.dirname, '..', 'static', 'names.json');
+// names.json lives in src/lib/data so vite bundles it into the JS chunks
+// instead of fetching it at runtime — saves a round trip on every page.
+const outPath = join(import.meta.dirname, '..', 'src', 'lib', 'data', 'names.json');
 
 // Start from the existing names.json so deprecated entries are preserved for
 // old runs that still reference them.
@@ -74,5 +76,5 @@ writeFileSync(outPath, JSON.stringify(sorted, null, '\t') + '\n');
 
 const after = Object.keys(sorted).length;
 console.log(
-	`Wrote ${after} names to static/names.json (was ${before}, +${after - before})`
+	`Wrote ${after} names to src/lib/data/names.json (was ${before}, +${after - before})`
 );

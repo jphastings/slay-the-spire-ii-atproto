@@ -1,0 +1,11 @@
+{
+  "image": "quest_sprite.png",
+  "tileW": 356,
+  "tileH": 271,
+  "columns": 2,
+  "items": [
+    "byrdonis_egg",
+    "lantern_key",
+    "spoils_map"
+  ]
+}

@@ -1,22 +1,16 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { humanizeId } from '$lib/utils/format';
 	import { baseName } from '$lib/utils/assets';
-	import { ensureRelicsLoaded, spriteStyle, type SpriteSheet } from '$lib/utils/sprites';
+	import { relicsSheet, spriteStyle } from '$lib/utils/sprites';
 	import Tooltip from './Tooltip.svelte';
 
 	let { relics }: { relics: string[] } = $props();
-
-	let sheet = $state<SpriteSheet | undefined>(undefined);
-	onMount(async () => {
-		sheet = await ensureRelicsLoaded();
-	});
 </script>
 
 <div class="relics">
 	{#each relics as relic}
 		{@const name = humanizeId(relic)}
-		{@const style = sheet ? spriteStyle(sheet, baseName(relic)) : null}
+		{@const style = spriteStyle(relicsSheet, baseName(relic))}
 		<Tooltip label={name}>
 			<span class="relic" class:ready={!!style} style={style} aria-label={name}></span>
 		</Tooltip>

@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { humanizeId } from '$lib/utils/format';
-	import { cardPortrait, characterFrameColor, orbCharacter } from '$lib/utils/assets';
-	import { cardMeta, ensureCardsLoaded, normaliseId, parseDeckId } from '$lib/utils/cardMeta';
+	import { characterFrameColor, orbCharacter } from '$lib/utils/assets';
+	import { cardMeta, normaliseId, parseDeckId } from '$lib/utils/cardMeta';
 	import { parseCardText } from '$lib/utils/cardtext';
+	import { portraitSheet, spriteStyle } from '$lib/utils/sprites';
+	import { frameFilter, rarityFilter } from '$lib/utils/tints';
 
 	let {
 		id,
@@ -18,21 +19,22 @@
 	} = $props();
 
 	// Deck entries are annotated by the mod's CollectDeckIds with
-	// upgrade + enchantment state; parseDeckId splits them back apart.
+	// upgrade + enchantment + state; parseDeckId splits them back apart.
 	const parsed = $derived(parseDeckId(id));
 	const rawId = $derived(parsed.base);
 	const upgraded = $derived(upgradedProp || parsed.upgraded);
 	const enchantment = $derived(parsed.enchantment);
 
-	let loaded = $state(false);
-	onMount(async () => {
-		await ensureCardsLoaded();
-		loaded = true;
-	});
-
-	const meta = $derived(loaded ? cardMeta(rawId) : undefined);
+	const meta = $derived(cardMeta(rawId));
 	const name = $derived(humanizeId(rawId));
 	const normId = $derived(normaliseId(rawId));
+
+	// Per-character portrait sheet — bundled into the JS, looked up
+	// synchronously. The webp itself loads lazily on first paint.
+	const portraitStyle = $derived.by(() => {
+		const sheet = meta?.character ? portraitSheet(meta.character) : undefined;
+		return sheet ? spriteStyle(sheet, normId) : null;
+	});
 	const frameColor = $derived(
 		meta ? (characterFrameColor[meta.character ?? ''] ?? 'colorless') : 'colorless'
 	);
@@ -67,7 +69,17 @@
 					: humanizeId(frameType)
 	);
 	const descSource = $derived(description ?? meta?.description ?? '');
-	const descLines = $derived(descSource ? parseCardText(descSource, { upgraded }) : []);
+	// Placeholder values: upgrade-appropriate defaults baked by the extractor,
+	// overlaid with live state the mod emits for cards with [SavedProperty]
+	// (e.g. The Scythe's growing damage).
+	const placeholderValues = $derived.by(() => {
+		const defaults = (upgraded ? meta?.upgradedVars : meta?.vars) ?? meta?.vars;
+		if (!defaults && !parsed.state) return undefined;
+		return { ...(defaults ?? {}), ...(parsed.state ?? {}) };
+	});
+	const descLines = $derived(
+		descSource ? parseCardText(descSource, { upgraded, values: placeholderValues }) : []
+	);
 </script>
 
 <!--
@@ -79,38 +91,40 @@
 	<!-- Layer order mirrors scenes/cards/card.tscn child order: Portrait
 	     is added to PortraitCanvasGroup FIRST, then Frame is drawn on top,
 	     then PortraitBorder, then banner/plaque/text. -->
-	{#if meta?.character}
-		<img
-			class="layer portrait"
-			src={cardPortrait(meta.character, normId)}
-			alt=""
-			loading="lazy"
-			onerror={(e) => ((e.currentTarget as HTMLImageElement).style.visibility = 'hidden')}
-		/>
+	{#if portraitStyle}
+		<div class="layer portrait" style={portraitStyle} aria-hidden="true"></div>
 	{/if}
+	<!-- Frame, portrait-border, banner and plaque ship as untinted
+	     base shapes; the per-color/rarity hue tint is applied via CSS
+	     filter, mirroring the game's runtime ShaderMaterial. See
+	     utils/tints.ts. -->
 	<img
 		class="layer frame"
-		src="/cards/parts/frame/{frameType}_{frameColor}.webp"
+		src="/cards/parts/frame/{frameType}.webp"
 		alt=""
 		loading="lazy"
+		style="filter: {frameFilter(frameColor)}"
 	/>
 	<img
 		class="layer portrait-border"
-		src="/cards/parts/portrait_border/{frameType}_{rarity}.webp"
+		src="/cards/parts/portrait_border/{frameType}.webp"
 		alt=""
 		loading="lazy"
+		style="filter: {rarityFilter(rarity)}"
 	/>
 	<img
 		class="layer banner"
-		src="/cards/parts/banner/{rarity}.webp"
+		src="/cards/parts/banner.webp"
 		alt=""
 		loading="lazy"
+		style="filter: {rarityFilter(rarity)}"
 	/>
 	<img
 		class="layer plaque"
-		src="/cards/parts/plaque/{rarity}.webp"
+		src="/cards/parts/plaque.webp"
 		alt=""
 		loading="lazy"
+		style="filter: {rarityFilter(rarity)}"
 	/>
 	<span class="type-label">{typeLabel}</span>
 	{#if hasCost}
@@ -123,7 +137,7 @@
 		<span class="cost">{meta?.cost}</span>
 	{/if}
 	{#if enchantment}
-		<img class="layer enchant-tab" src="/cards/parts/enchant/tab.webp" alt="" />
+		<img class="layer enchant-tab" src="/cards/enchantments/tab.webp" alt="" />
 		<img
 			class="layer enchant-icon"
 			src="/cards/enchantments/{enchantment}.webp"
@@ -169,13 +183,23 @@
 	}
 
 	/* Portrait: card.tscn Portrait (-125,-168)..(125,22) inside frame
-	   (-150,-211)..(150,211) → (25,43)..(275,233). */
+	   (-150,-211)..(150,211) → (25,43)..(275,233). Tile sourced from a
+	   per-character sprite sheet — see ensurePortraitSheet in
+	   utils/sprites.ts. The container's aspect (~1.316) is essentially
+	   identical to the source tile's (356/271 ≈ 1.314), so background
+	   stretching to fill is visually equivalent to the previous
+	   object-fit: cover on an <img>. */
 	.portrait {
 		left: 8.333%;
 		top: 10.19%;
 		width: 83.333%;
 		height: 45.02%;
-		object-fit: cover;
+		background-image: var(--sprite);
+		background-size: calc(100% * var(--cols)) calc(100% * var(--rows));
+		background-position:
+			calc(var(--col) / (var(--cols) - 1) * 100%)
+			calc(var(--row) / (var(--rows) - 1) * 100%);
+		background-repeat: no-repeat;
 	}
 
 	/* PortraitBorder: (-137.5,-164)..(137.5,46) → (12.5,47)..(287.5,257). */

@@ -98,6 +98,48 @@ func main() {
 		}
 		fmt.Fprintf(os.Stderr, "sprite %s → %d icons in %s\n", kind, n, outPNG)
 	}
+
+	// Card orbs + enchantment icons/tab: packed (heterogeneous) sheets so
+	// each tile keeps its native pixel size — orbs vary 71–74 px across
+	// characters, and the enchant tab (100×76) ships in the same sheet as
+	// the 64×64 icons.
+	packed := []struct{ name, srcDir string }{
+		{"orb", filepath.Join(*outDir, "cards", "parts", "orb")},
+		{"enchant", filepath.Join(*outDir, "cards", "enchantments")},
+	}
+	for _, pk := range packed {
+		outPNG := filepath.Join(*outDir, pk.name+"_sprite.png")
+		outJSON := filepath.Join(*outDir, pk.name+"_sprite.json")
+		n, err := sprite.BuildPacked(pk.srcDir, outPNG, outJSON, 512)
+		if err != nil {
+			log.Fatalf("sprite %s: %v", pk.name, err)
+		}
+		fmt.Fprintf(os.Stderr, "sprite %s → %d tiles in %s\n", pk.name, n, outPNG)
+	}
+
+	// Card portraits: one sprite per character pool. 596 raw portraits
+	// across ~11 characters would deploy as 596 PDS records, exceeding
+	// the wisp CLI chunker's per-subfs size. Per-character sheets keep
+	// each chunk small while preserving character-scoped fetches.
+	// Tile is 356×271 to match the per-card webp size we shipped before.
+	portraitsRoot := filepath.Join(*outDir, "card_portraits")
+	chars, err := os.ReadDir(portraitsRoot)
+	if err != nil {
+		log.Fatalf("read card_portraits: %v", err)
+	}
+	for _, c := range chars {
+		if !c.IsDir() {
+			continue
+		}
+		charDir := filepath.Join(portraitsRoot, c.Name())
+		outPNG := filepath.Join(portraitsRoot, c.Name()+"_sprite.png")
+		outJSON := filepath.Join(portraitsRoot, c.Name()+"_sprite.json")
+		n, err := sprite.Build(charDir, outPNG, outJSON, 356, 271)
+		if err != nil {
+			log.Fatalf("sprite portraits %s: %v", c.Name(), err)
+		}
+		fmt.Fprintf(os.Stderr, "sprite portraits %s → %d cards in %s\n", c.Name(), n, outPNG)
+	}
 }
 
 // extractImages scans the pack for *.png.import files under prefix, resolves

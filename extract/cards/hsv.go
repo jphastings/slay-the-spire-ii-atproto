@@ -1,12 +1,11 @@
 package cards
 
 import (
+	"encoding/json"
 	"fmt"
 	"image"
-	"image/png"
 	"math"
 	"os"
-	"path/filepath"
 	"regexp"
 	"strconv"
 
@@ -27,123 +26,44 @@ var bannerRarities = []string{
 	"curse", "status", "event", "quest", "ancient",
 }
 
-// bakeFrames reads each card_frame_<color>_mat.tres, applies its HSV
-// parameters to the three base frame shapes (attack/skill/power), and
-// writes out/parts/frame/<type>_<color>.png for every combination. This
-// mirrors the in-game runtime where the ShaderMaterial is assigned at
-// runtime to the shared card_frame_*_s texture.
-func bakeFrames(p *pck.Pack, partsDir string) error {
-	bases := map[string]*image.RGBA{}
-	for _, t := range []string{"attack", "skill", "power"} {
-		img, err := loadPNGFromParts(partsDir, "frame_base", t)
-		if err != nil {
-			return fmt.Errorf("base frame %s: %w", t, err)
-		}
-		bases[t] = img
-	}
+// TintsManifest is the JSON the web client reads to drive its CSS
+// filters. Each entry mirrors one shader_parameter/{h,s,v} block from
+// the game's ShaderMaterial .tres. The web converts these to
+// `filter: hue-rotate(...) saturate(...) brightness(...)` at render
+// time — see web/src/lib/utils/tints.ts.
+type TintsManifest struct {
+	FrameColors map[string]HSVParams `json:"frameColors"`
+	Rarities    map[string]HSVParams `json:"rarities"`
+	Enchant     HSVParams            `json:"enchant"`
+}
 
+func writeTints(p *pck.Pack, outPath string) error {
+	out := TintsManifest{
+		FrameColors: map[string]HSVParams{},
+		Rarities:    map[string]HSVParams{},
+		// Enchantment tab tint is hard-coded in scenes/cards/card.tscn —
+		// keep it in sync with the value Extract() applies via tintImage.
+		Enchant: HSVParams{H: 0.25, S: 0.4, V: 1.0},
+	}
 	for _, col := range frameColors {
-		matPath := fmt.Sprintf("materials/cards/frames/card_frame_%s_mat.tres", col)
-		params, err := readHSVMaterial(p, matPath)
+		params, err := readHSVMaterial(p, fmt.Sprintf("materials/cards/frames/card_frame_%s_mat.tres", col))
 		if err != nil {
-			return fmt.Errorf("read %s: %w", matPath, err)
+			return fmt.Errorf("read frame %s: %w", col, err)
 		}
-		for cardType, base := range bases {
-			out := tintImage(base, params)
-			dst := filepath.Join(partsDir, "frame", cardType+"_"+col+".png")
-			if err := writePNG(dst, out); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-// bakeBanners applies each banner rarity material to the shared banner
-// sprite and writes out/parts/banner/<rarity>.png.
-func bakeBanners(p *pck.Pack, partsDir string) error {
-	base, err := loadPNGFromParts(partsDir, "banner_base", "shared")
-	if err != nil {
-		return fmt.Errorf("base banner: %w", err)
+		out.FrameColors[col] = params
 	}
 	for _, r := range bannerRarities {
 		params, err := readBannerMaterial(p, r)
 		if err != nil {
 			return err
 		}
-		out := tintImage(base, params)
-		dst := filepath.Join(partsDir, "banner", r+".png")
-		if err := writePNG(dst, out); err != nil {
-			return err
-		}
+		out.Rarities[r] = params
 	}
-	return nil
-}
-
-// bakePortraitBorders applies each banner rarity material to each card-type
-// portrait border and writes out/parts/portrait_border/<type>_<rarity>.png.
-// The scene (scenes/cards/card.tscn) assigns the banner material — not the
-// frame material — to the PortraitBorder node.
-func bakePortraitBorders(p *pck.Pack, partsDir string) error {
-	bases := map[string]*image.RGBA{}
-	for _, t := range []string{"attack", "skill", "power"} {
-		img, err := loadPNGFromParts(partsDir, "portrait_border_base", t)
-		if err != nil {
-			return fmt.Errorf("base border %s: %w", t, err)
-		}
-		bases[t] = img
-	}
-	for _, r := range bannerRarities {
-		params, err := readBannerMaterial(p, r)
-		if err != nil {
-			return err
-		}
-		for cardType, base := range bases {
-			out := tintImage(base, params)
-			dst := filepath.Join(partsDir, "portrait_border", cardType+"_"+r+".png")
-			if err := writePNG(dst, out); err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-// bakePlaque applies each banner rarity material to the title-plaque
-// (card_portrait_border_plaque2.png) and writes
-// out/parts/plaque/<rarity>.png. The plaque is the small "Attack/Skill/
-// Power" pill under the portrait; the scene code assigns the card's
-// BannerMaterial at runtime (see UpdateTypePlaque in sts2.dll).
-func bakePlaque(p *pck.Pack, partsDir string) error {
-	path := filepath.Join(partsDir, "plaque_base.png")
-	f, err := os.Open(path)
+	buf, err := json.MarshalIndent(out, "", "  ")
 	if err != nil {
 		return err
 	}
-	defer f.Close()
-	decoded, err := png.Decode(f)
-	if err != nil {
-		return err
-	}
-	b := decoded.Bounds()
-	base := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
-	for y := 0; y < b.Dy(); y++ {
-		for x := 0; x < b.Dx(); x++ {
-			base.Set(x, y, decoded.At(b.Min.X+x, b.Min.Y+y))
-		}
-	}
-	for _, r := range bannerRarities {
-		params, err := readBannerMaterial(p, r)
-		if err != nil {
-			return err
-		}
-		out := tintImage(base, params)
-		dst := filepath.Join(partsDir, "plaque", r+".png")
-		if err := writePNG(dst, out); err != nil {
-			return err
-		}
-	}
-	return nil
+	return os.WriteFile(outPath, buf, 0o644)
 }
 
 func readBannerMaterial(p *pck.Pack, rarity string) (HSVParams, error) {
@@ -155,32 +75,12 @@ func readBannerMaterial(p *pck.Pack, rarity string) (HSVParams, error) {
 	return params, nil
 }
 
-// loadPNGFromParts reads a PNG we wrote earlier during atlasPart extraction.
-func loadPNGFromParts(partsDir, kind, variant string) (*image.RGBA, error) {
-	path := filepath.Join(partsDir, kind, variant+".png")
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-	img, err := png.Decode(f)
-	if err != nil {
-		return nil, err
-	}
-	b := img.Bounds()
-	out := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
-	for y := 0; y < b.Dy(); y++ {
-		for x := 0; x < b.Dx(); x++ {
-			out.Set(x, y, img.At(b.Min.X+x, b.Min.Y+y))
-		}
-	}
-	return out, nil
-}
-
 // HSVParams holds the three shader_parameter/{h,s,v} values from a
 // ShaderMaterial .tres.
 type HSVParams struct {
-	H, S, V float64
+	H float64 `json:"h"`
+	S float64 `json:"s"`
+	V float64 `json:"v"`
 }
 
 var (
@@ -212,7 +112,9 @@ func readHSVMaterial(p *pck.Pack, path string) (HSVParams, error) {
 }
 
 // tintImage applies the shaders/hsv.gdshader algorithm to every pixel of
-// src and returns a new RGBA image. Alpha is preserved verbatim.
+// src and returns a new RGBA image. Alpha is preserved verbatim. Used by
+// Extract() to bake the fixed enchant-tab tint (the only frame asset
+// whose HSV params don't vary at runtime).
 func tintImage(src *image.RGBA, p HSVParams) *image.RGBA {
 	b := src.Bounds()
 	out := image.NewRGBA(b)
@@ -227,13 +129,12 @@ func tintImage(src *image.RGBA, p HSVParams) *image.RGBA {
 			bl := float64(src.Pix[i+2]) / 255
 			a := src.Pix[i+3]
 
-			// RGB -> YIQ (row = (c0.y, c1.y, c2.y) for each output).
+			// RGB -> YIQ.
 			Y := yiqFwd[0][0]*r + yiqFwd[0][1]*g + yiqFwd[0][2]*bl
 			I := yiqFwd[1][0]*r + yiqFwd[1][1]*g + yiqFwd[1][2]*bl
 			Q := yiqFwd[2][0]*r + yiqFwd[2][1]*g + yiqFwd[2][2]*bl
 
-			// Hue rotation in YZ plane, matching the shader's
-			// `col *= hue_shift` (row × matrix) direction.
+			// Hue rotation in IQ plane.
 			Ih := I*cosH - Q*sinH
 			Qh := I*sinH + Q*cosH
 
@@ -266,8 +167,7 @@ var yiqFwd = [3][3]float64{
 	{0.2115, -0.5229, 0.3114},
 }
 
-// yiqInv is the exact inverse of yiqFwd, computed once so our RGB round-trip
-// matches GLSL's `inverse(RGB_to_YIQ) * col.rgb`.
+// yiqInv is the exact inverse of yiqFwd.
 var yiqInv = invert3x3(yiqFwd)
 
 func invert3x3(m [3][3]float64) [3][3]float64 {

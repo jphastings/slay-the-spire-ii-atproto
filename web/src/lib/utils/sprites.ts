@@ -1,14 +1,32 @@
-// Sprite-sheet loaders for the relic and potion icon sheets emitted by
-// the Go extractor (see extract/sprite). Each sheet is one WebP whose
-// tiles are indexed by the items[] array in the accompanying JSON.
+// Sprite-sheet manifests for the relic, potion and card-portrait sheets
+// emitted by the Go extractor (see extract/sprite). Each sheet is one
+// WebP whose tiles are indexed by the items[] array in the accompanying
+// JSON manifest. The manifests are imported statically so vite bundles
+// them with the JS — no runtime fetches.
 //
-// The web sprites are referenced by asset filename stems (snake_case
-// relic/potion ids), matching the lexicon suffix. baseName() strips the
-// `RELIC.`/`POTION.` namespace prefix before lookup.
+// Lookups use asset filename stems (snake_case relic/potion/card ids),
+// matching the lexicon suffix. Strip the namespace prefix
+// (`RELIC.`/`POTION.`/`CARD.`) before lookup — see baseName / normaliseId.
 
-export interface SpriteManifest {
+import relicsManifest from '$lib/data/relics.json';
+import potionsManifest from '$lib/data/potions.json';
+import colorlessPortraits from '$lib/data/portraits/colorless.json';
+import cursePortraits from '$lib/data/portraits/curse.json';
+import defectPortraits from '$lib/data/portraits/defect.json';
+import eventPortraits from '$lib/data/portraits/event.json';
+import ironcladPortraits from '$lib/data/portraits/ironclad.json';
+import necrobinderPortraits from '$lib/data/portraits/necrobinder.json';
+import questPortraits from '$lib/data/portraits/quest.json';
+import regentPortraits from '$lib/data/portraits/regent.json';
+import silentPortraits from '$lib/data/portraits/silent.json';
+import statusPortraits from '$lib/data/portraits/status.json';
+import tokenPortraits from '$lib/data/portraits/token.json';
+
+interface RawManifest {
 	image: string;
-	tile: number;
+	tileW?: number;
+	tileH?: number;
+	tile?: number;
 	columns: number;
 	items: string[];
 }
@@ -24,44 +42,36 @@ export interface SpriteSheet {
 	indexOf(id: string): number | undefined;
 }
 
-async function load(jsonPath: string, webpPath: string): Promise<SpriteSheet> {
-	const res = await fetch(jsonPath);
-	const m: SpriteManifest = await res.json();
+function build(m: RawManifest, webpUrl: string): SpriteSheet {
 	const index: Record<string, number> = {};
 	m.items.forEach((id, i) => (index[id] = i));
 	return {
 		cols: m.columns,
 		rows: Math.ceil(m.items.length / m.columns),
-		url: webpPath,
+		url: webpUrl,
 		indexOf: (id) => index[id]
 	};
 }
 
-let relicsSheet: SpriteSheet | null = null;
-let potionsSheet: SpriteSheet | null = null;
-let relicsPromise: Promise<SpriteSheet> | null = null;
-let potionsPromise: Promise<SpriteSheet> | null = null;
+export const relicsSheet: SpriteSheet = build(relicsManifest, '/assets/relics_sprite.webp');
+export const potionsSheet: SpriteSheet = build(potionsManifest, '/assets/potions_sprite.webp');
 
-export async function ensureRelicsLoaded(): Promise<SpriteSheet> {
-	if (relicsSheet) return relicsSheet;
-	if (!relicsPromise)
-		relicsPromise = load('/assets/relics_sprite.json', '/assets/relics_sprite.webp').then((s) => {
-			relicsSheet = s;
-			return s;
-		});
-	return relicsPromise;
-}
+const portraitSheets: Record<string, SpriteSheet> = {
+	colorless: build(colorlessPortraits, '/assets/card_portraits/colorless.webp'),
+	curse: build(cursePortraits, '/assets/card_portraits/curse.webp'),
+	defect: build(defectPortraits, '/assets/card_portraits/defect.webp'),
+	event: build(eventPortraits, '/assets/card_portraits/event.webp'),
+	ironclad: build(ironcladPortraits, '/assets/card_portraits/ironclad.webp'),
+	necrobinder: build(necrobinderPortraits, '/assets/card_portraits/necrobinder.webp'),
+	quest: build(questPortraits, '/assets/card_portraits/quest.webp'),
+	regent: build(regentPortraits, '/assets/card_portraits/regent.webp'),
+	silent: build(silentPortraits, '/assets/card_portraits/silent.webp'),
+	status: build(statusPortraits, '/assets/card_portraits/status.webp'),
+	token: build(tokenPortraits, '/assets/card_portraits/token.webp')
+};
 
-export async function ensurePotionsLoaded(): Promise<SpriteSheet> {
-	if (potionsSheet) return potionsSheet;
-	if (!potionsPromise)
-		potionsPromise = load('/assets/potions_sprite.json', '/assets/potions_sprite.webp').then(
-			(s) => {
-				potionsSheet = s;
-				return s;
-			}
-		);
-	return potionsPromise;
+export function portraitSheet(character: string): SpriteSheet | undefined {
+	return portraitSheets[character];
 }
 
 /**

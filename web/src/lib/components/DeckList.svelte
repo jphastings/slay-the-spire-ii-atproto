@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
 	import { humanizeId } from '$lib/utils/format';
-	import { cardMeta, ensureCardsLoaded, parseDeckId } from '$lib/utils/cardMeta';
+	import { cardMeta, parseDeckId } from '$lib/utils/cardMeta';
 
 	let {
 		cards,
@@ -25,12 +24,6 @@
 		})()
 	);
 	const hasPlayCounts = $derived(Object.keys(playCounts).length > 0);
-
-	let loaded = $state(false);
-	onMount(async () => {
-		await ensureCardsLoaded();
-		loaded = true;
-	});
 
 	// Group duplicates. When cardUseDistribution is present, sort within
 	// each type tab by times-played desc so the cards the player leaned
@@ -64,12 +57,9 @@
 	const typeLabel = (t: string) =>
 		typeLabels[t] ?? t.charAt(0).toUpperCase() + t.slice(1) + 's';
 
-	// Bucket counts keyed by each card's meta.type. Pre-load we have
-	// nothing to group by, so the counts stay empty and the tab row
-	// doesn't appear yet.
+	// Bucket counts keyed by each card's meta.type.
 	const byType = $derived.by(() => {
 		const counts = new Map<string, number>();
-		if (!loaded) return counts;
 		for (const g of grouped) {
 			const m = cardMeta(parseDeckId(g.id).base);
 			const t = m?.type ?? 'unknown';
@@ -101,7 +91,7 @@
 	});
 
 	const visible = $derived.by(() => {
-		if (!loaded || !active) return grouped;
+		if (!active) return grouped;
 		return grouped.filter((g) => {
 			const m = cardMeta(parseDeckId(g.id).base);
 			return (m?.type ?? 'unknown') === active;

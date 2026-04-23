@@ -1,0 +1,26 @@
+{
+  "image": "curse_sprite.png",
+  "tileW": 356,
+  "tileH": 271,
+  "columns": 5,
+  "items": [
+    "ascenders_bane",
+    "bad_luck",
+    "clumsy",
+    "curse_of_the_bell",
+    "debt",
+    "decay",
+    "doubt",
+    "enthralled",
+    "folly",
+    "greed",
+    "guilty",
+    "injury",
+    "normality",
+    "poor_sleep",
+    "regret",
+    "shame",
+    "spore_mind",
+    "writhe"
+  ]
+}

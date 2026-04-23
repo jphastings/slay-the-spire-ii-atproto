@@ -1,8 +1,17 @@
 <script>
 	import '../app.css';
+	import { tintFiltersSvg } from '$lib/utils/tints';
 
 	let { children } = $props();
+
+	// One SVG <defs> per page with every card-tint <filter> referenced
+	// by Card.svelte's frame / portrait-border / banner / plaque layers.
+	// Injected verbatim because Svelte sanitizes raw SVG inside <svg>
+	// templates differently than HTML inline.
+	const tintDefs = tintFiltersSvg();
 </script>
+
+{@html tintDefs}
 
 <div class="shell">
 	<header>

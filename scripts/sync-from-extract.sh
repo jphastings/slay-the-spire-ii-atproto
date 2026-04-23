@@ -54,6 +54,12 @@ echo "== extracting to $extract_dir =="
 echo "== merging names into web/static/names.json =="
 (cd "$repo_root/web" && node --experimental-strip-types scripts/build-names.ts "$extract_dir/localization/eng")
 
+# Sprite-sheet manifests and other small JSONs go into src/lib/data so
+# vite bundles them into the JS chunks at build time — saves a round
+# trip per file at runtime. The webp/png binaries stay in static/.
+data_dir="$repo_root/web/src/lib/data"
+mkdir -p "$data_dir"
+
 copy_sprite() {
   local kind="$1" # potions | relics
   local png="$extract_dir/${kind}_sprite.png"
@@ -65,10 +71,13 @@ copy_sprite() {
   fi
   mkdir -p "$dst_dir"
   cwebp -quiet -q 80 -m 6 "$png" -o "$dst_dir/${kind}_sprite.webp"
-  cp "$json" "$dst_dir/${kind}_sprite.json"
+  cp "$json" "$data_dir/${kind}.json"
   # Drop any previously-committed per-icon webps (superseded by the sprite).
   rm -rf "$dst_dir/$kind"
-  echo "  $kind: sprite → $dst_dir/${kind}_sprite.webp"
+  # Old (pre-bundling) layout shipped the manifest in static/assets;
+  # remove it so we don't ship the same data twice.
+  rm -f "$dst_dir/${kind}_sprite.json"
+  echo "  $kind: $dst_dir/${kind}_sprite.webp + $data_dir/${kind}.json"
 }
 
 echo "== building sprite sheets =="
@@ -78,24 +87,26 @@ copy_sprite relics
 copy_portraits() {
   local src_root="$extract_dir/card_portraits"
   local dst_root="$repo_root/web/static/assets/card_portraits"
+  local data_root="$data_dir/portraits"
   if [[ ! -d "$src_root" ]]; then
     echo "  (no card portraits extracted)"
     return
   fi
+  # Replace per-character sheets wholesale; drop any per-card webps from the
+  # previous layout (one webp per portrait would blow past wisp's chunker).
+  rm -rf "$dst_root" "$data_root"
+  mkdir -p "$dst_root" "$data_root"
   shopt -s nullglob
   local total=0
-  for char_dir in "$src_root"/*/; do
+  for png in "$src_root"/*_sprite.png; do
     local char
-    char=$(basename "$char_dir")
-    local dst="$dst_root/$char"
-    mkdir -p "$dst"
-    for png in "$char_dir"*.png; do
-      cwebp -quiet -q 75 -resize 356 0 -m 6 "$png" -o "${dst}/$(basename "${png%.png}").webp"
-      total=$((total + 1))
-    done
+    char=$(basename "${png%_sprite.png}")
+    cwebp -quiet -q 75 -m 6 "$png" -o "$dst_root/$char.webp"
+    cp "$src_root/${char}_sprite.json" "$data_root/$char.json"
+    total=$((total + 1))
   done
   shopt -u nullglob
-  echo "  card_portraits: $total webp(s) in $dst_root"
+  echo "  card_portraits: $total sheets → $dst_root + $data_root"
 }
 copy_portraits
 
@@ -112,20 +123,18 @@ copy_cards() {
   # Fonts are raw TTFs — no transcoding.
   cp -R "$src/fonts" "$dst/"
 
-  # cards.json — metadata manifest.
-  [[ -f "$src/cards.json" ]] && cp "$src/cards.json" "$dst/"
+  # Bundled JSONs: cards.json (metadata) + tints.json (HSV per
+  # frame-color and rarity, used to drive CSS hue-rotate filters).
+  [[ -f "$src/cards.json" ]] && cp "$src/cards.json" "$data_dir/cards.json"
+  [[ -f "$src/tints.json" ]] && cp "$src/tints.json" "$data_dir/tints.json"
 
-  # Card parts (frame, portrait_border, banner, plaque, orb, enchant) are
-  # UI sprites with alpha; transcode each to WebP preserving the nested
-  # directory layout. Skip the intermediate base sprites the extractor
-  # uses to bake HSV tints.
+  # Card parts: frame/portrait_border bases (3 each, hue-tinted in CSS),
+  # banner.png + plaque.png (single shapes, also hue-tinted in CSS),
+  # orbs (per character, no tint), enchant tab.
   local parts_count=0
   if [[ -d "$src/parts" ]]; then
     while IFS= read -r png; do
       local rel="${png#$src/parts/}"
-      case "$rel" in
-        frame_base/*|banner_base/*|portrait_border_base/*|plaque_base.png) continue ;;
-      esac
       local out="$dst/parts/${rel%.png}.webp"
       mkdir -p "$(dirname "$out")"
       cwebp -quiet -q 80 -m 6 "$png" -o "$out"
@@ -150,5 +159,8 @@ copy_cards() {
   echo "  cards: $parts_count parts + $ench_count enchantments → webp in $dst"
 }
 copy_cards
+
+# Old static-fetched copies of the bundled JSONs would otherwise linger.
+rm -f "$repo_root/web/static/names.json" "$repo_root/web/static/cards/cards.json"
 
 echo "done."

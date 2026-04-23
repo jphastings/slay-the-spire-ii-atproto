@@ -5,14 +5,6 @@ export function baseName(id: string): string {
 	return name.toLowerCase();
 }
 
-// cardPortrait maps a (character, id) to the WebP emitted by
-// scripts/sync-from-extract.sh. Character is the game's pool directory
-// (ironclad, silent, defect, necrobinder, regent, colorless, curse, …);
-// id is the snake_case card id.
-export function cardPortrait(character: string, id: string): string {
-	return `/assets/card_portraits/${character}/${baseName(id)}.webp`;
-}
-
 // Frame color per character. The game maps cards to a frame via the
 // `CardFrameMaterialPath` override on each CharacterModel / card pool —
 // e.g. Ironclad → card_frame_red_mat.tres. Keep this table in sync with

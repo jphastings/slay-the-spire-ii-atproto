@@ -34,18 +34,25 @@ func Extract(p *pck.Pack, outDir, decompiledCS string) error {
 
 	// The plaque (TypePlaque node in scenes/cards/card.tscn) uses
 	// card_portrait_border_plaque2.png as a NinePatchRect background —
-	// pulled straight from images/ui/cards/, not atlas-backed.
+	// pulled straight from images/ui/cards/, not atlas-backed. Tinted
+	// per-rarity at render time via CSS filters.
 	if err := extractStandalone(p,
 		"images/ui/cards/card_portrait_border_plaque2.png.import",
-		filepath.Join(partsDir, "plaque_base.png"),
+		filepath.Join(partsDir, "plaque.png"),
 	); err != nil {
-		return fmt.Errorf("plaque base: %w", err)
+		return fmt.Errorf("plaque: %w", err)
+	}
+
+	enchantDir := filepath.Join(outDir, "enchantments")
+	if err := extractEnchantmentIcons(p, enchantDir); err != nil {
+		return fmt.Errorf("enchantment icons: %w", err)
 	}
 
 	// Enchantment tab background (card_enchant_s in the ui atlas) —
 	// the game applies a fixed HSV(0.25, 0.4, 1.0) ShaderMaterial to
-	// it in scenes/cards/card.tscn; we bake that tint here so the
-	// web client just ships a single PNG.
+	// it in scenes/cards/card.tscn; we bake that tint here and drop
+	// it into the enchantments/ dir so the sprite-sheet packer picks
+	// it up alongside the icons.
 	enchantTab, err := loadAtlasPart(p, "images/atlases/ui_atlas.sprites/card/card_enchant_s.tres")
 	if err != nil {
 		return fmt.Errorf("load enchant tab: %w", err)
@@ -53,25 +60,12 @@ func Extract(p *pck.Pack, outDir, decompiledCS string) error {
 	if rgba, ok := enchantTab.(*image.RGBA); ok {
 		enchantTab = tintImage(rgba, HSVParams{H: 0.25, S: 0.4, V: 1.0})
 	}
-	if err := writePNG(filepath.Join(partsDir, "enchant", "tab.png"), enchantTab); err != nil {
+	if err := writePNG(filepath.Join(enchantDir, "tab.png"), enchantTab); err != nil {
 		return fmt.Errorf("enchant tab: %w", err)
 	}
 
-	if err := extractEnchantmentIcons(p, filepath.Join(outDir, "enchantments")); err != nil {
-		return fmt.Errorf("enchantment icons: %w", err)
-	}
-
-	if err := bakeFrames(p, partsDir); err != nil {
-		return fmt.Errorf("bake frames: %w", err)
-	}
-	if err := bakeBanners(p, partsDir); err != nil {
-		return fmt.Errorf("bake banners: %w", err)
-	}
-	if err := bakePortraitBorders(p, partsDir); err != nil {
-		return fmt.Errorf("bake portrait borders: %w", err)
-	}
-	if err := bakePlaque(p, partsDir); err != nil {
-		return fmt.Errorf("bake plaque: %w", err)
+	if err := writeTints(p, filepath.Join(outDir, "tints.json")); err != nil {
+		return fmt.Errorf("tints: %w", err)
 	}
 
 	if err := extractFonts(p, filepath.Join(outDir, "fonts")); err != nil {
@@ -104,25 +98,26 @@ type atlasPart struct {
 	tres    string // path in the pck
 }
 
-// atlasParts are the base sprites we copy out unmodified. Tinted frames,
-// banners, portrait borders, and plaque are produced separately by the
-// bake* functions — each uses the same HSV shader as the game applies at
-// runtime via ShaderMaterial assignments in scenes/cards/card.tscn.
+// atlasParts are the base sprites we copy out unmodified. Frames,
+// portrait-borders, banner, and plaque are tinted client-side via CSS
+// filters using the HSV params recorded in tints.json — see hsv.go's
+// extractTints. The game's shader rotates RGB through YIQ space; CSS's
+// hue-rotate is the same matrix, so the result is visually identical.
 var atlasParts = []atlasPart{
-	// Card frames — get per-character-color tints via bakeFrames.
-	{"frame_base", "attack", "images/atlases/ui_atlas.sprites/card/card_frame_attack_s.tres"},
-	{"frame_base", "skill", "images/atlases/ui_atlas.sprites/card/card_frame_skill_s.tres"},
-	{"frame_base", "power", "images/atlases/ui_atlas.sprites/card/card_frame_power_s.tres"},
+	// Card frames — one shape per type, hue-rotated per character at render time.
+	{"frame", "attack", "images/atlases/ui_atlas.sprites/card/card_frame_attack_s.tres"},
+	{"frame", "skill", "images/atlases/ui_atlas.sprites/card/card_frame_skill_s.tres"},
+	{"frame", "power", "images/atlases/ui_atlas.sprites/card/card_frame_power_s.tres"},
 
-	// Portrait borders — get per-rarity banner-material tints via
-	// bakePortraitBorders (the card scene assigns the banner material
-	// to this layer, not the frame material).
-	{"portrait_border_base", "attack", "images/atlases/ui_atlas.sprites/card/card_portrait_border_attack_s.tres"},
-	{"portrait_border_base", "skill", "images/atlases/ui_atlas.sprites/card/card_portrait_border_skill_s.tres"},
-	{"portrait_border_base", "power", "images/atlases/ui_atlas.sprites/card/card_portrait_border_power_s.tres"},
+	// Portrait borders — one shape per type, hue-rotated per rarity.
+	// (The card scene assigns the banner material — not the frame
+	// material — to this layer.)
+	{"portrait_border", "attack", "images/atlases/ui_atlas.sprites/card/card_portrait_border_attack_s.tres"},
+	{"portrait_border", "skill", "images/atlases/ui_atlas.sprites/card/card_portrait_border_skill_s.tres"},
+	{"portrait_border", "power", "images/atlases/ui_atlas.sprites/card/card_portrait_border_power_s.tres"},
 
-	// Banner — gets per-rarity tints via bakeBanners.
-	{"banner_base", "shared", "images/atlases/ui_atlas.sprites/card/card_banner.tres"},
+	// Banner — one shape, hue-rotated per rarity.
+	{"", "banner", "images/atlases/ui_atlas.sprites/card/card_banner.tres"},
 
 	// Cost orbs, per character (no tinting needed).
 	{"orb", "colorless", "images/atlases/ui_atlas.sprites/card/energy_colorless.tres"},
@@ -171,6 +166,16 @@ func extractStandalone(p *pck.Pack, importPath, outPath string) error {
 
 // LoadImported resolves a .import sidecar inside the pack to the decoded
 // source image. Exported so main.go can reuse it without duplicating logic.
+//
+// BC7 (the .bptc.ctex format Godot uses for most atlas textures) compresses
+// RGB and alpha as separate blocks, so transparent pixels carry whatever
+// chroma happened to pack well — often wildly off-hue noise. When those
+// near-transparent pixels are later HSV-tinted (e.g. the card banner under
+// a rarity material) the stale chroma rotates into a visible wrong-colour
+// speckle on otherwise-transparent edges. Zero RGB below an alpha floor
+// so nothing downstream operates on that garbage; alpha is preserved, so
+// the composite result is indistinguishable for pixels that would always
+// have been near-invisible.
 func LoadImported(p *pck.Pack, importPath string) (image.Image, error) {
 	importData, err := p.Read(importPath)
 	if err != nil {
@@ -188,7 +193,28 @@ func LoadImported(p *pck.Pack, importPath string) (image.Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	return ctex.Decode(ctexData)
+	img, err := ctex.Decode(ctexData)
+	if err != nil {
+		return nil, err
+	}
+	return zeroLowAlphaChroma(img, 32), nil
+}
+
+// zeroLowAlphaChroma returns a copy of src in which every pixel with
+// alpha < threshold has its RGB replaced with zero. See LoadImported for
+// the rationale.
+func zeroLowAlphaChroma(src image.Image, threshold uint8) image.Image {
+	b := src.Bounds()
+	out := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
+	draw.Draw(out, out.Bounds(), src, b.Min, draw.Src)
+	for i := 3; i < len(out.Pix); i += 4 {
+		if out.Pix[i] < threshold {
+			out.Pix[i-3] = 0
+			out.Pix[i-2] = 0
+			out.Pix[i-1] = 0
+		}
+	}
+	return out
 }
 
 // extractEnchantmentIcons writes every images/enchantments/*.png in the

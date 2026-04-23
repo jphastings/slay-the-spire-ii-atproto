@@ -1,0 +1,19 @@
+{
+  "image": "status_sprite.png",
+  "tileW": 356,
+  "tileH": 271,
+  "columns": 4,
+  "items": [
+    "beckon",
+    "burn",
+    "dazed",
+    "debris",
+    "frantic_escape",
+    "infection",
+    "slimed",
+    "soot",
+    "toxic",
+    "void",
+    "wound"
+  ]
+}

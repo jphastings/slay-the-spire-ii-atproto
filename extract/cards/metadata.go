@@ -15,14 +15,16 @@ import (
 // visual parts. ID is the game's snake_case card id (e.g. "bash"); the
 // web app re-uppercases to form lexicon ids like CARD.BASH.
 type CardMeta struct {
-	ID          string `json:"id"`
-	ClassName   string `json:"class"`                 // original C# class name (for debug)
-	Character   string `json:"character,omitempty"`   // ironclad, silent, defect, etc.
-	Cost        string `json:"cost"`                  // "0", "1", "2", or "?" when unknown
-	Type        string `json:"type"`                  // attack | skill | power | ...
-	Rarity      string `json:"rarity"`
-	Title       string `json:"title,omitempty"`       // localized display name
-	Description string `json:"description,omitempty"` // raw game description (BBCode + {Placeholders})
+	ID           string             `json:"id"`
+	ClassName    string             `json:"class"`                   // original C# class name (for debug)
+	Character    string             `json:"character,omitempty"`     // ironclad, silent, defect, etc.
+	Cost         string             `json:"cost"`                    // "0", "1", "2", or "?" when unknown
+	Type         string             `json:"type"`                    // attack | skill | power | ...
+	Rarity       string             `json:"rarity"`
+	Title        string             `json:"title,omitempty"`         // localized display name
+	Description  string             `json:"description,omitempty"`   // raw game description (BBCode + {Placeholders})
+	Vars         map[string]float64 `json:"vars,omitempty"`          // default values for {Field:diff()} placeholders
+	UpgradedVars map[string]float64 `json:"upgradedVars,omitempty"`  // placeholders on the upgraded card; omitted when identical to Vars
 }
 
 var (
@@ -89,16 +91,19 @@ func extractMetadata(csPath, outPath string, charByID, loc, keywordLoc map[strin
 		keywords := parseCanonicalKeywords(body)
 		up := strings.ToUpper(id)
 		desc := composeDescription(loc[up+".description"], keywords, keywordLoc)
+		vars, upgradedVars := parseCardVars(body)
 
 		meta := CardMeta{
-			ID:          id,
-			ClassName:   className,
-			Character:   charByID[id],
-			Cost:        normaliseCost(strings.TrimSpace(string(ctor[1]))),
-			Type:        strings.ToLower(string(ctor[2])),
-			Rarity:      strings.ToLower(string(ctor[3])),
-			Title:       loc[up+".title"],
-			Description: desc,
+			ID:           id,
+			ClassName:    className,
+			Character:    charByID[id],
+			Cost:         normaliseCost(strings.TrimSpace(string(ctor[1]))),
+			Type:         strings.ToLower(string(ctor[2])),
+			Rarity:       strings.ToLower(string(ctor[3])),
+			Title:        loc[up+".title"],
+			Description:  desc,
+			Vars:         vars,
+			UpgradedVars: upgradedVars,
 		}
 		seen[id] = meta
 		_ = classStart

@@ -1,22 +1,16 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { humanizeId } from '$lib/utils/format';
 	import { baseName } from '$lib/utils/assets';
-	import { ensurePotionsLoaded, spriteStyle, type SpriteSheet } from '$lib/utils/sprites';
+	import { potionsSheet, spriteStyle } from '$lib/utils/sprites';
 	import Tooltip from './Tooltip.svelte';
 
 	let { potions }: { potions: string[] } = $props();
-
-	let sheet = $state<SpriteSheet | undefined>(undefined);
-	onMount(async () => {
-		sheet = await ensurePotionsLoaded();
-	});
 </script>
 
 <div class="potions">
 	{#each potions as potion}
 		{@const name = humanizeId(potion)}
-		{@const style = sheet ? spriteStyle(sheet, baseName(potion)) : null}
+		{@const style = spriteStyle(potionsSheet, baseName(potion))}
 		<Tooltip label={name}>
 			<span class="potion" class:ready={!!style} style={style} aria-label={name}></span>
 		</Tooltip>
