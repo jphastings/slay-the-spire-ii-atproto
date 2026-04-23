@@ -55,7 +55,18 @@
 		return out;
 	}
 
+	// Pick a "nice" step so roughly <=12 axis labels are visible.
+	function labelStep(n: number): number {
+		if (n <= 12) return 1;
+		const nice = [2, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
+		for (const s of nice) {
+			if (Math.ceil(n / s) <= 12) return s;
+		}
+		return nice[nice.length - 1];
+	}
+
 	const ticks = $derived(tickValues(maxCount));
+	const step = $derived(labelStep(bars.length));
 </script>
 
 {#if bars.length > 0}
@@ -83,8 +94,14 @@
 			</div>
 		</div>
 		<div class="axis" aria-hidden="true">
-			{#each bars as b}
-				<span class="axis-label" class:major={b.damage % 5 === 0 || b.damage === bars[bars.length - 1].damage}>{b.damage}</span>
+			{#each bars as b, i}
+				{@const lastIdx = bars.length - 1}
+				{@const shown =
+					step <= 1 ||
+					i === 0 ||
+					i === lastIdx ||
+					(b.damage % step === 0 && b.damage + step / 2 < bars[lastIdx].damage)}
+				<span class="axis-label" class:shown>{b.damage}</span>
 			{/each}
 		</div>
 		<figcaption>
@@ -107,6 +124,10 @@
 		border: 1px solid var(--border-subtle);
 		border-radius: var(--radius);
 		min-height: 10rem;
+		/* Hard-clamp width so dense distributions can't push the page wider. */
+		min-width: 0;
+		max-width: 100%;
+		overflow: hidden;
 	}
 
 	.histogram.red {
@@ -156,7 +177,7 @@
 	.bar-col {
 		position: relative;
 		flex: 1 1 0;
-		min-width: 4px;
+		min-width: 0;
 		height: 100%;
 		display: flex;
 		align-items: flex-end;
@@ -167,6 +188,7 @@
 	/* Override the inline-flex the Tooltip wrapper applies so bars stretch. */
 	.bars :global(.tooltip-host) {
 		flex: 1 1 0;
+		min-width: 0;
 		height: 100%;
 		display: flex;
 		align-items: flex-end;
@@ -207,17 +229,17 @@
 
 	.axis-label {
 		flex: 1 1 0;
-		min-width: 4px;
+		min-width: 0;
 		text-align: center;
 		font-size: 0.6rem;
 		font-variant-numeric: tabular-nums;
-		color: var(--text-muted);
-		opacity: 0.35;
+		color: var(--text-secondary);
+		/* Decimated out: keep the slot to stay aligned with the bar, hide the label. */
+		visibility: hidden;
 	}
 
-	.axis-label.major {
-		opacity: 1;
-		color: var(--text-secondary);
+	.axis-label.shown {
+		visibility: visible;
 	}
 
 	figcaption {
