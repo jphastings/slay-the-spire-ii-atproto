@@ -1,6 +1,7 @@
 using System;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Combat.History;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 
 namespace AtprotoTracker;
@@ -36,9 +37,9 @@ internal static class BlockGainedPatch
 internal static class CardPlayFinishedPatch
 {
     [HarmonyPostfix]
-    public static void Postfix()
+    public static void Postfix(CardPlay cardPlay)
     {
-        try { CombatStats.OnCardPlayFinished(); }
+        try { CombatStats.OnCardPlayFinished(cardPlay?.Card?.Id?.ToString()); }
         catch (Exception ex) { Log.Error("CardPlayFinishedPatch failed", ex); }
     }
 }

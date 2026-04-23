@@ -40,6 +40,7 @@ internal static class CombatStats
     private static int _highestBlockInTurn;
     private static readonly Dictionary<int, int> _hitsDealtDistribution = new();
     private static readonly Dictionary<int, int> _hitsTakenDistribution = new();
+    private static readonly Dictionary<string, int> _cardUseDistribution = new();
 
     // Per-combat / per-turn rolling state
     private static int _roundsThisCombat;
@@ -131,6 +132,9 @@ internal static class CombatStats
                 HitsTakenDistribution = _hitsTakenDistribution.Count > 0
                     ? new Dictionary<int, int>(_hitsTakenDistribution)
                     : null,
+                CardUseDistribution = _cardUseDistribution.Count > 0
+                    ? new Dictionary<string, int>(_cardUseDistribution)
+                    : null,
             };
         }
     }
@@ -190,9 +194,16 @@ internal static class CombatStats
         }
     }
 
-    internal static void OnCardPlayFinished()
+    internal static void OnCardPlayFinished(string? cardId)
     {
-        lock (_lock) { if (_attached) _cardsPlayed++; }
+        lock (_lock)
+        {
+            if (!_attached) return;
+            _cardsPlayed++;
+            if (!string.IsNullOrEmpty(cardId))
+                _cardUseDistribution[cardId] =
+                    _cardUseDistribution.TryGetValue(cardId, out var c) ? c + 1 : 1;
+        }
     }
 
     internal static void OnCardDrawn()
@@ -285,6 +296,7 @@ internal static class CombatStats
         _noDamageTurns = _highestBlockInTurn = 0;
         _hitsDealtDistribution.Clear();
         _hitsTakenDistribution.Clear();
+        _cardUseDistribution.Clear();
         _roundsThisCombat = _damageDealtThisTurn = _damageTakenThisTurn = _blockThisTurn = 0;
         _currentSide = CombatSide.None;
     }

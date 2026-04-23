@@ -116,13 +116,17 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 		hitsTakenDistribution: lx.ref('#distribution', {
 			description:
 				"Hits the player received grouped by the attack's full value (before block). Example: { \"1\": 23, \"2\": 8, \"10\": 1 }."
+		}),
+		cardUseDistribution: lx.ref('#distribution', {
+			description:
+				'Cards played, keyed by card name (id) mapped to the number of times that card was played. Example: { "strike": 42, "bash": 6 }.'
 		})
 	}),
 	distribution: lx.object(
 		{},
 		{
 			description:
-				'Generic histogram keyed by decimal-string values mapped to their integer counts. Keys are intentionally undeclared because the set of values is open-ended.'
+				'Generic histogram keyed by arbitrary string values mapped to their integer counts. Keys are intentionally undeclared because the set of values is open-ended.'
 		}
 	)
 });

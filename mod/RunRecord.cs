@@ -93,6 +93,10 @@ internal sealed class CombatStatsSnapshot
     [JsonPropertyName("hitsTakenDistribution"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull),
      JsonConverter(typeof(IntKeyedDictionaryConverter))]
     public Dictionary<int, int>? HitsTakenDistribution { get; set; }
+
+    [JsonPropertyName("cardUseDistribution"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull),
+     JsonConverter(typeof(StringKeyedDictionaryConverter))]
+    public Dictionary<string, int>? CardUseDistribution { get; set; }
 }
 
 /// <summary>
@@ -110,6 +114,25 @@ internal sealed class IntKeyedDictionaryConverter : JsonConverter<Dictionary<int
         var keys = new List<int>(value.Keys);
         keys.Sort();
         foreach (var k in keys) writer.WriteNumber(k.ToString(System.Globalization.CultureInfo.InvariantCulture), value[k]);
+        writer.WriteEndObject();
+    }
+}
+
+/// <summary>
+/// Serializes Dictionary&lt;string,int&gt; with keys sorted alphabetically so
+/// repeated runs produce byte-identical JSON.
+/// </summary>
+internal sealed class StringKeyedDictionaryConverter : JsonConverter<Dictionary<string, int>>
+{
+    public override Dictionary<string, int> Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
+        => throw new System.NotSupportedException();
+
+    public override void Write(Utf8JsonWriter writer, Dictionary<string, int> value, JsonSerializerOptions options)
+    {
+        writer.WriteStartObject();
+        var keys = new List<string>(value.Keys);
+        keys.Sort(System.StringComparer.Ordinal);
+        foreach (var k in keys) writer.WriteNumber(k, value[k]);
         writer.WriteEndObject();
     }
 }
