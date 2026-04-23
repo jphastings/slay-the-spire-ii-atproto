@@ -26,7 +26,7 @@ internal static class RunStateExtractor
             SteamID64       = mySteamId > 0 ? mySteamId.ToString() : null,
             Floor      = (int)GetLong(state, "TotalFloor"),
             Act        = (int)GetLong(state, "CurrentActIndex") + 1,
-            Deck            = CollectIds(me, "Deck", "Cards"),
+            Deck            = CollectDeckIds(me, "Deck", "Cards"),
             Relics          = CollectIds(me, "Relics"),
             Potions         = CollectIds(me, "Potions"),
             Allies          = CollectAllies(state, mySteamId),
@@ -86,7 +86,7 @@ internal static class RunStateExtractor
             StartedAt       = Iso.At(startedAt),
             EndedAt         = Iso.At(endedAt),
             DurationSeconds = (int)duration,
-            Deck            = CollectIds(me, "Deck"),
+            Deck            = CollectDeckIds(me, "Deck"),
             Relics          = CollectIds(me, "Relics"),
             Potions         = CollectIds(me, "Potions"),
             Allies          = CollectAllies(serialized, mySteamId),
@@ -181,6 +181,43 @@ internal static class RunStateExtractor
         {
             var id = GetMember(item, "Id") ?? GetMember(item, "CardId") ?? GetMember(item, "Name") ?? item;
             if (id is not null) list.Add(id.ToString()!);
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// Like <see cref="CollectIds"/>, but annotates each id with upgrade
+    /// and enchantment state so the web client can render the exact
+    /// visual variant without any lexicon change:
+    ///   "bash"              — plain
+    ///   "bash+"             — upgraded
+    ///   "bash/sharp"        — base card carrying the Sharp enchantment
+    ///   "bash+/perfect_fit" — upgraded + Perfect Fit enchantment
+    /// Enchantment ids are the game's own snake_case <c>Id.Entry</c>
+    /// strings (e.g. "sharp", "slumbering_essence"). Combat use stats
+    /// (cardUseDistribution) intentionally keep the plain id.
+    /// </summary>
+    private static List<string> CollectDeckIds(object? owner, params string[] path)
+    {
+        var list = new List<string>();
+        object? target = owner;
+        foreach (var seg in path)
+        {
+            target = GetMember(target, seg);
+            if (target is null) return list;
+        }
+        if (target is not IEnumerable seq) return list;
+        foreach (var item in seq)
+        {
+            var id = GetMember(item, "Id") ?? GetMember(item, "CardId") ?? GetMember(item, "Name") ?? item;
+            if (id is null) continue;
+            var s = id.ToString()!;
+            if (GetMember(item, "IsUpgraded") is bool up && up) s += "+";
+            if (GetMember(item, "Enchantment", "Id", "Entry") is string enchantId && enchantId.Length > 0)
+            {
+                s += "/" + enchantId;
+            }
+            list.Add(s);
         }
         return list;
     }

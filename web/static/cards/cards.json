@@ -1,0 +1,5753 @@
+[
+  {
+    "id": "abrasive",
+    "class": "Abrasive",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Abrasive",
+    "description": "[gold]Sly[/gold].\nGain {DexterityPower:diff()} [gold]Dexterity[/gold].\nGain {ThornsPower:diff()} [gold]Thorns[/gold]."
+  },
+  {
+    "id": "accelerant",
+    "class": "Accelerant",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Accelerant",
+    "description": "[gold]Poison[/gold] is triggered {Accelerant:diff()} additional {Accelerant:plural:time|times}."
+  },
+  {
+    "id": "accuracy",
+    "class": "Accuracy",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Accuracy",
+    "description": "[gold]Shivs[/gold] deal {AccuracyPower:diff()} additional damage."
+  },
+  {
+    "id": "acrobatics",
+    "class": "Acrobatics",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Acrobatics",
+    "description": "Draw {Cards:diff()} cards.\nDiscard 1 card."
+  },
+  {
+    "id": "adaptive_strike",
+    "class": "AdaptiveStrike",
+    "character": "defect",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Adaptive Strike",
+    "description": "Deal {Damage:diff()} damage.\nAdd a 0{energyPrefix:energyIcons(1)} copy of this card into your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "adrenaline",
+    "class": "Adrenaline",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Adrenaline",
+    "description": "Gain {Energy:energyIcons()}.\nDraw 2 cards.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "afterimage",
+    "class": "Afterimage",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Afterimage",
+    "description": "Whenever you play a card, gain {AfterimagePower:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "afterlife",
+    "class": "Afterlife",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Afterlife",
+    "description": "[gold]Summon[/gold] {Summon:diff()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "aggression",
+    "class": "Aggression",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Aggression",
+    "description": "At the start of your turn, put a random Attack from your [gold]Discard Pile[/gold] into your [gold]Hand[/gold] and [gold]Upgrade[/gold] it."
+  },
+  {
+    "id": "alchemize",
+    "class": "Alchemize",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Alchemize",
+    "description": "Procure a random potion.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "alignment",
+    "class": "Alignment",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Alignment",
+    "description": "Gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "all_for_one",
+    "class": "AllForOne",
+    "character": "defect",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "All for One",
+    "description": "Deal {Damage:diff()} damage.\nPut ALL 0{energyPrefix:energyIcons(1)} cards from your [gold]Discard Pile[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "anger",
+    "class": "Anger",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Anger",
+    "description": "Deal {Damage:diff()} damage.\nAdd a copy of this card into your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "anointed",
+    "class": "Anointed",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Anointed",
+    "description": "Put every [gold]Rare[/gold] card from your [gold]Draw Pile[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "anticipate",
+    "class": "Anticipate",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Anticipate",
+    "description": "Gain {DexterityPower:diff()} [gold]Dexterity[/gold] this turn."
+  },
+  {
+    "id": "apotheosis",
+    "class": "Apotheosis",
+    "character": "event",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "ancient",
+    "title": "Apotheosis",
+    "description": "[gold]Innate[/gold].\n[gold]Upgrade[/gold] ALL your cards.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "apparition",
+    "class": "Apparition",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "ancient",
+    "title": "Apparition",
+    "description": "[gold]Ethereal[/gold].\nGain {IntangiblePower:diff()} [gold]Intangible[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "armaments",
+    "class": "Armaments",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Armaments",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Upgrade[/gold] {IfUpgraded:show:ALL cards|a card} in your [gold]Hand[/gold]."
+  },
+  {
+    "id": "arsenal",
+    "class": "Arsenal",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Arsenal",
+    "description": "Whenever you create a card, gain {ArsenalPower:diff()} [gold]Strength[/gold]."
+  },
+  {
+    "id": "ascenders_bane",
+    "class": "AscendersBane",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Ascender's Bane",
+    "description": "[gold]Unplayable[/gold].\n[gold]Ethereal[/gold].\n[gold]Eternal[/gold]."
+  },
+  {
+    "id": "ashen_strike",
+    "class": "AshenStrike",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Ashen Strike",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each card in your [gold]Exhaust Pile[/gold]."
+  },
+  {
+    "id": "assassinate",
+    "class": "Assassinate",
+    "character": "silent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Assassinate",
+    "description": "[gold]Innate[/gold].\nDeal {Damage:diff()} damage.\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "astral_pulse",
+    "class": "AstralPulse",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Astral Pulse",
+    "description": "Deal {Damage:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "automation",
+    "class": "Automation",
+    "character": "colorless",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Automation",
+    "description": "Every 10 cards you draw, gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "backflip",
+    "class": "Backflip",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Backflip",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nDraw 2 cards."
+  },
+  {
+    "id": "backstab",
+    "class": "Backstab",
+    "character": "silent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Backstab",
+    "description": "[gold]Innate[/gold].\nDeal {Damage:diff()} damage.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "bad_luck",
+    "class": "BadLuck",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Bad Luck",
+    "description": "[gold]Unplayable[/gold].\nAt the end of your turn, if this is in your Hand, lose {HpLoss:diff()} HP.\n[gold]Eternal[/gold]."
+  },
+  {
+    "id": "ball_lightning",
+    "class": "BallLightning",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Ball Lightning",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Channel[/gold] 1 [gold]Lightning[/gold]."
+  },
+  {
+    "id": "banshees_cry",
+    "class": "BansheesCry",
+    "character": "necrobinder",
+    "cost": "9",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Banshee's Cry",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\nCosts {Energy:energyIcons()} less for each [gold]Ethereal[/gold] card played this combat."
+  },
+  {
+    "id": "barrage",
+    "class": "Barrage",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Barrage",
+    "description": "Deal {Damage:diff()} damage for each [gold]Channeled[/gold] Orb.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "barricade",
+    "class": "Barricade",
+    "character": "ironclad",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Barricade",
+    "description": "[gold]Block[/gold] is not removed at the start of your turn."
+  },
+  {
+    "id": "bash",
+    "class": "Bash",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Bash",
+    "description": "Deal {Damage:diff()} damage.\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "battle_trance",
+    "class": "BattleTrance",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Battle Trance",
+    "description": "Draw {Cards:diff()} cards.\nYou cannot draw additional cards this turn."
+  },
+  {
+    "id": "beacon_of_hope",
+    "class": "BeaconOfHope",
+    "character": "colorless",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Beacon of Hope",
+    "description": "Whenever you gain [gold]Block[/gold] on your turn, other players gain half that much [gold]Block[/gold]."
+  },
+  {
+    "id": "beam_cell",
+    "class": "BeamCell",
+    "character": "defect",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Beam Cell",
+    "description": "Deal {Damage:diff()} damage.\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "beat_down",
+    "class": "BeatDown",
+    "character": "colorless",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Beat Down",
+    "description": "Play {Cards:diff()} random Attacks from your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "beat_into_shape",
+    "class": "BeatIntoShape",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Beat into Shape",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Forge[/gold] {CalculatedForge:diff()}.\n[gold]Forges[/gold] an additional {CalculationExtra:diff()} for every other time you've hit the enemy this turn."
+  },
+  {
+    "id": "beckon",
+    "class": "Beckon",
+    "character": "status",
+    "cost": "1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Beckon",
+    "description": "At the end of your turn, if this is in your [gold]Hand[/gold],\n lose {HpLoss} HP."
+  },
+  {
+    "id": "begone",
+    "class": "Begone",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "BEGONE!",
+    "description": "Choose a card in your [gold]Hand[/gold] to [gold]Transform[/gold] into [gold]{IfUpgraded:show:Minion Strike+|Minion Strike}[/gold]."
+  },
+  {
+    "id": "believe_in_you",
+    "class": "BelieveInYou",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Believe in You",
+    "description": "Another player gains {Energy:energyIcons()}."
+  },
+  {
+    "id": "biased_cognition",
+    "class": "BiasedCognition",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "ancient",
+    "title": "Biased Cognition",
+    "description": "Gain {FocusPower:diff()} [gold]Focus[/gold].\nAt the start of your turn, lose {BiasedCognitionPower:diff()} [gold]Focus[/gold]."
+  },
+  {
+    "id": "big_bang",
+    "class": "BigBang",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Big Bang",
+    "description": "Draw {Cards:diff()} {Cards:plural:card|cards}.\nGain {Energy:energyIcons()}.\nGain {Stars:starIcons()}.\n[gold]Forge[/gold] {Forge:diff()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "black_hole",
+    "class": "BlackHole",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Black Hole",
+    "description": "Whenever you spend or gain {singleStarIcon}, deal {BlackHolePower:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "blade_dance",
+    "class": "BladeDance",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Blade Dance",
+    "description": "Add {Cards:diff()} [gold]{Cards:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "blade_of_ink",
+    "class": "BladeOfInk",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Blade of Ink",
+    "description": "Add {Cards:diff()} [purple]Inky[/purple] [gold]{Cards:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "blight_strike",
+    "class": "BlightStrike",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Blight Strike",
+    "description": "Deal {Damage:diff()} damage.\nApply [gold]Doom[/gold] equal to damage dealt."
+  },
+  {
+    "id": "blood_wall",
+    "class": "BloodWall",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Blood Wall",
+    "description": "Lose {HpLoss:diff()} HP.\nGain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "bloodletting",
+    "class": "Bloodletting",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Bloodletting",
+    "description": "Lose {HpLoss:diff()} HP.\nGain {Energy:energyIcons()}."
+  },
+  {
+    "id": "bludgeon",
+    "class": "Bludgeon",
+    "character": "ironclad",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Bludgeon",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "blur",
+    "class": "Blur",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Blur",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Block[/gold] is not removed at the start of your next turn."
+  },
+  {
+    "id": "body_slam",
+    "class": "BodySlam",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Body Slam",
+    "description": "Deal damage equal to your [gold]Block[/gold].{InCombat:\n(Deals {CalculatedDamage:diff()} damage)|}"
+  },
+  {
+    "id": "bodyguard",
+    "class": "Bodyguard",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Bodyguard",
+    "description": "[gold]Summon[/gold] {Summon:diff()}."
+  },
+  {
+    "id": "bolas",
+    "class": "Bolas",
+    "character": "colorless",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Bolas",
+    "description": "Deal {Damage:diff()} damage.\nAt the start of your next turn, return this to your [gold]Hand[/gold]."
+  },
+  {
+    "id": "bombardment",
+    "class": "Bombardment",
+    "character": "regent",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Bombardment",
+    "description": "Deal {Damage:diff()} damage.\nAt the start of your turn, if this is in your [gold]Exhaust Pile[/gold], play it.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "bone_shards",
+    "class": "BoneShards",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Bone Shards",
+    "description": "If [gold]Osty[/gold] is alive, he deals {OstyDamage:diff()} damage to ALL enemies and you gain {Block:diff()} [gold]Block[/gold].\n[gold]Osty[/gold] dies."
+  },
+  {
+    "id": "boost_away",
+    "class": "BoostAway",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Boost Away",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAdd a [gold]Dazed[/gold] into your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "boot_sequence",
+    "class": "BootSequence",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Boot Sequence",
+    "description": "[gold]Innate[/gold].\nGain {Block:diff()} [gold]Block[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "borrowed_time",
+    "class": "BorrowedTime",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Borrowed Time",
+    "description": "Gain {Energy:energyIcons()}.\nCards cost an additional {ExtraCost:energyIcons()} this turn."
+  },
+  {
+    "id": "bouncing_flask",
+    "class": "BouncingFlask",
+    "character": "silent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Bouncing Flask",
+    "description": "Apply {PoisonPower:diff()} [gold]Poison[/gold] to a random enemy {Repeat:diff()} times."
+  },
+  {
+    "id": "brand",
+    "class": "Brand",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Brand",
+    "description": "Lose {HpLoss:diff()} HP.\n[gold]Exhaust[/gold] 1 card.\nGain {StrengthPower:diff()} [gold]Strength[/gold]."
+  },
+  {
+    "id": "break",
+    "class": "Break",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "ancient",
+    "title": "Break",
+    "description": "Deal {Damage:diff()} damage.\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "breakthrough",
+    "class": "Breakthrough",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Breakthrough",
+    "description": "Lose {HpLoss:diff()} HP.\nDeal {Damage:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "brightest_flame",
+    "class": "BrightestFlame",
+    "character": "event",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "ancient",
+    "title": "Brightest Flame",
+    "description": "Gain {Energy:energyIcons()}.\nDraw {Cards:diff()} {Cards:plural:card|cards}.\nLose {MaxHp:diff()} Max HP."
+  },
+  {
+    "id": "bubble_bubble",
+    "class": "BubbleBubble",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Bubble Bubble",
+    "description": "If the enemy has [gold]Poison[/gold], apply {PoisonPower:diff()} [gold]Poison[/gold]."
+  },
+  {
+    "id": "buffer",
+    "class": "Buffer",
+    "character": "defect",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Buffer",
+    "description": "Prevent the next {BufferPower:plural:time|{BufferPower:diff()} times} you would lose HP."
+  },
+  {
+    "id": "bulk_up",
+    "class": "BulkUp",
+    "character": "defect",
+    "cost": "2",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Bulk Up",
+    "description": "Lose {OrbSlots:diff()} Orb {OrbSlots:plural:Slot|Slots}.\nGain {StrengthPower:diff()} [gold]Strength[/gold].\nGain {DexterityPower:diff()} [gold]Dexterity[/gold]."
+  },
+  {
+    "id": "bullet_time",
+    "class": "BulletTime",
+    "character": "silent",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Bullet Time",
+    "description": "You cannot draw additional cards this turn. ALL cards in your [gold]Hand[/gold] are free to play this turn."
+  },
+  {
+    "id": "bully",
+    "class": "Bully",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Bully",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each [gold]Vulnerable[/gold] on the enemy."
+  },
+  {
+    "id": "bulwark",
+    "class": "Bulwark",
+    "character": "regent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Bulwark",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Forge[/gold] {Forge:diff()}."
+  },
+  {
+    "id": "bundle_of_joy",
+    "class": "BundleOfJoy",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Bundle of Joy",
+    "description": "Add {Cards:diff()} random Colorless {Cards:plural:card|cards} into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "burn",
+    "class": "Burn",
+    "character": "status",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Burn",
+    "description": "[gold]Unplayable[/gold].\nAt the end of your turn, if this is in your [gold]Hand[/gold], take {Damage:diff()} damage."
+  },
+  {
+    "id": "burning_pact",
+    "class": "BurningPact",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Burning Pact",
+    "description": "[gold]Exhaust[/gold] 1 card.\nDraw {Cards:diff()} cards."
+  },
+  {
+    "id": "burst",
+    "class": "Burst",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Burst",
+    "description": "This turn, your next {Skills:plural:Skill is|{:diff()} Skills are} played an extra time."
+  },
+  {
+    "id": "bury",
+    "class": "Bury",
+    "character": "necrobinder",
+    "cost": "4",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Bury",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "byrd_swoop",
+    "class": "ByrdSwoop",
+    "character": "event",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "event",
+    "title": "Byrd Swoop",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "byrdonis_egg",
+    "class": "ByrdonisEgg",
+    "character": "quest",
+    "cost": "-1",
+    "type": "quest",
+    "rarity": "quest",
+    "title": "Byrdonis Egg",
+    "description": "[gold]Unplayable[/gold].\nCan be hatched at a [gold]Rest Site[/gold]."
+  },
+  {
+    "id": "calamity",
+    "class": "Calamity",
+    "character": "colorless",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Calamity",
+    "description": "Whenever you play an Attack, add a random Attack into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "calcify",
+    "class": "Calcify",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Calcify",
+    "description": "[gold]Osty's[/gold] attacks deal {CalcifyPower:diff()} additional damage."
+  },
+  {
+    "id": "calculated_gamble",
+    "class": "CalculatedGamble",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Calculated Gamble",
+    "description": "Discard your [gold]Hand[/gold],\nthen draw that many cards.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "call_of_the_void",
+    "class": "CallOfTheVoid",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Call of the Void",
+    "description": "At the start of your turn, add {Cards:diff()} random {Cards:plural:card|cards} into your [gold]Hand[/gold]. {Cards:plural:It gains|They gain} [gold]Ethereal[/gold]."
+  },
+  {
+    "id": "caltrops",
+    "class": "Caltrops",
+    "character": "event",
+    "cost": "1",
+    "type": "power",
+    "rarity": "event",
+    "title": "Caltrops",
+    "description": "Whenever you are attacked, deal {ThornsPower:diff()} damage back."
+  },
+  {
+    "id": "capacitor",
+    "class": "Capacitor",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Capacitor",
+    "description": "Gain {Repeat:diff()} Orb Slots."
+  },
+  {
+    "id": "capture_spirit",
+    "class": "CaptureSpirit",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Capture Spirit",
+    "description": "Enemy loses {Damage:diff()} HP.\nAdd {Cards:diff()} [gold]{Cards:plural:Soul|Souls}[/gold] into your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "cascade",
+    "class": "Cascade",
+    "character": "ironclad",
+    "cost": "-1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Cascade",
+    "description": "Play the top X{IfUpgraded:show:+1} cards of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "catastrophe",
+    "class": "Catastrophe",
+    "character": "colorless",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Catastrophe",
+    "description": "Play {Cards:diff()} random {Cards:plural:card|cards} from your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "celestial_might",
+    "class": "CelestialMight",
+    "character": "regent",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Celestial Might",
+    "description": "Deal {Damage:diff()} damage {Repeat:diff()} {Repeat:plural:time|times}."
+  },
+  {
+    "id": "chaos",
+    "class": "Chaos",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Chaos",
+    "description": "[gold]Channel[/gold] {Repeat:diff()} random {Repeat:plural:Orb|Orbs}."
+  },
+  {
+    "id": "charge",
+    "class": "Charge",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "CHARGE!!",
+    "description": "Choose {Cards:diff()} {Cards:plural:card|cards} in your [gold]Draw Pile[/gold] to [gold]Transform[/gold] into\n[gold]{Cards:plural:{IfUpgraded:show:Minion Dive Bomb+|Minion Dive Bomb}[/gold]|{IfUpgraded:show:Minion Dive Bombs+|Minion Dive Bombs}[/gold]}."
+  },
+  {
+    "id": "charge_battery",
+    "class": "ChargeBattery",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Charge Battery",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nNext turn, gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "child_of_the_stars",
+    "class": "ChildOfTheStars",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Child of the Stars",
+    "description": "Whenever you spend {singleStarIcon}, gain {BlockForStars:diff()} [gold]Block[/gold] for each {singleStarIcon} spent."
+  },
+  {
+    "id": "chill",
+    "class": "Chill",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Chill",
+    "description": "[gold]Channel[/gold] 1 [gold]Frost[/gold] for each enemy.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "cinder",
+    "class": "Cinder",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Cinder",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Exhaust[/gold] 1 card at random."
+  },
+  {
+    "id": "clash",
+    "class": "Clash",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "event",
+    "title": "Clash",
+    "description": "Can only be played if every card in your [gold]Hand[/gold] is an Attack.\nDeal {Damage:diff()} damage."
+  },
+  {
+    "id": "claw",
+    "class": "Claw",
+    "character": "defect",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Claw",
+    "description": "Deal {Damage:diff()} damage.\nIncrease the damage of ALL Claw cards by {Increase:diff()} this combat."
+  },
+  {
+    "id": "cleanse",
+    "class": "Cleanse",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Cleanse",
+    "description": "[gold]Summon[/gold] {Summon:diff()}.\n[gold]Exhaust[/gold] 1 card from your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "cloak_and_dagger",
+    "class": "CloakAndDagger",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Cloak and Dagger",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAdd {Cards:diff()} [gold]{Cards:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "cloak_of_stars",
+    "class": "CloakOfStars",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Cloak of Stars",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "clumsy",
+    "class": "Clumsy",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Clumsy",
+    "description": "[gold]Unplayable[/gold].\n[gold]Ethereal[/gold]."
+  },
+  {
+    "id": "cold_snap",
+    "class": "ColdSnap",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Cold Snap",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Channel[/gold] 1 [gold]Frost[/gold]."
+  },
+  {
+    "id": "collision_course",
+    "class": "CollisionCourse",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Collision Course",
+    "description": "Deal {Damage:diff()} damage.\nAdd a [gold]Debris[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "colossus",
+    "class": "Colossus",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Colossus",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nYou receive 50% less damage from [gold]Vulnerable[/gold] enemies this turn."
+  },
+  {
+    "id": "comet",
+    "class": "Comet",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Comet",
+    "description": "Deal {Damage:diff()} damage.\nApply {WeakPower:diff()} [gold]Weak[/gold].\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "compact",
+    "class": "Compact",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Compact",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Transform[/gold] all Status cards in your [gold]Hand[/gold] into [gold]{IfUpgraded:show:Fuel+|Fuel}[/gold]."
+  },
+  {
+    "id": "compile_driver",
+    "class": "CompileDriver",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Compile Driver",
+    "description": "Deal {Damage:diff()} damage.\nDraw 1 card for each unique Orb you have.{InCombat:\n(Draw {CalculatedCards:diff()} {CalculatedCards:plural:card|cards})|}"
+  },
+  {
+    "id": "conflagration",
+    "class": "Conflagration",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Conflagration",
+    "description": "Deal {CalculatedDamage:diff()} damage to ALL enemies.\nDeals {ExtraDamage:diff()} additional damage for each other Attack you've played this turn."
+  },
+  {
+    "id": "conqueror",
+    "class": "Conqueror",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Conqueror",
+    "description": "[gold]Forge[/gold] {Forge:diff()}.\n[gold]Sovereign Blade[/gold] deals double damage to the enemy this turn."
+  },
+  {
+    "id": "consuming_shadow",
+    "class": "ConsumingShadow",
+    "character": "defect",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Consuming Shadow",
+    "description": "[gold]Channel[/gold] {Repeat:diff()} [gold]Dark[/gold].\nAt the end of your turn, [gold]Evoke[/gold] your leftmost Orb."
+  },
+  {
+    "id": "convergence",
+    "class": "Convergence",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Convergence",
+    "description": "Next turn,\ngain {Energy:energyIcons()} and {Stars:starIcons()}.\n[gold]Retain[/gold] your [gold]Hand[/gold] this turn."
+  },
+  {
+    "id": "coolant",
+    "class": "Coolant",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Coolant",
+    "description": "At the start of your turn, gain {CoolantPower:diff()} [gold]Block[/gold] for each unique Orb you have."
+  },
+  {
+    "id": "coolheaded",
+    "class": "Coolheaded",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Coolheaded",
+    "description": "[gold]Channel[/gold] 1 [gold]Frost[/gold].\nDraw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "coordinate",
+    "class": "Coordinate",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Coordinate",
+    "description": "Give another player {StrengthPower:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "corrosive_wave",
+    "class": "CorrosiveWave",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Corrosive Wave",
+    "description": "Whenever you draw a card this turn, apply {CorrosiveWave:diff()} [gold]Poison[/gold] to ALL enemies."
+  },
+  {
+    "id": "corruption",
+    "class": "Corruption",
+    "character": "ironclad",
+    "cost": "3",
+    "type": "power",
+    "rarity": "ancient",
+    "title": "Corruption",
+    "description": "Skills cost 0 {energyPrefix:energyIcons(1)}.\nWhenever you play a Skill, [gold]Exhaust[/gold] it."
+  },
+  {
+    "id": "cosmic_indifference",
+    "class": "CosmicIndifference",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Cosmic Indifference",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nPut a card from your [gold]Discard Pile[/gold] on top of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "countdown",
+    "class": "Countdown",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Countdown",
+    "description": "At the start of your turn, apply {CountdownPower:diff()} [gold]Doom[/gold] to a random enemy."
+  },
+  {
+    "id": "crash_landing",
+    "class": "CrashLanding",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Crash Landing",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\nFill your [gold]Hand[/gold] with [gold]Debris[/gold]."
+  },
+  {
+    "id": "creative_ai",
+    "class": "CreativeAi",
+    "character": "defect",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Creative AI",
+    "description": "At the start of your turn, add a random Power into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "crescent_spear",
+    "class": "CrescentSpear",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Crescent Spear",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for ALL your cards that have a {singleStarIcon} cost."
+  },
+  {
+    "id": "crimson_mantle",
+    "class": "CrimsonMantle",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Crimson Mantle",
+    "description": "At the start of your turn, lose 1 HP and gain {CrimsonMantlePower:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "cruelty",
+    "class": "Cruelty",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Cruelty",
+    "description": "[gold]Vulnerable[/gold] enemies take an additional {CrueltyPower:diff()}% damage."
+  },
+  {
+    "id": "crush_under",
+    "class": "CrushUnder",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Crush Under",
+    "description": "Deal {Damage:diff()} damage to ALL enemies. All enemies lose {StrengthLoss:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "curse_of_the_bell",
+    "class": "CurseOfTheBell",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Curse of the Bell",
+    "description": "[gold]Unplayable[/gold].\n[gold]Eternal[/gold]."
+  },
+  {
+    "id": "dagger_spray",
+    "class": "DaggerSpray",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Dagger Spray",
+    "description": "Deal {Damage:diff()} damage to ALL enemies twice."
+  },
+  {
+    "id": "dagger_throw",
+    "class": "DaggerThrow",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Dagger Throw",
+    "description": "Deal {Damage:diff()} damage.\nDraw 1 card.\nDiscard 1 card."
+  },
+  {
+    "id": "danse_macabre",
+    "class": "DanseMacabre",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Danse Macabre",
+    "description": "Whenever you play a card that costs {Energy:energyIcons()} or more, gain {DanseMacabrePower:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "dark_embrace",
+    "class": "DarkEmbrace",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Dark Embrace",
+    "description": "Whenever a card is [gold]Exhausted[/gold],\ndraw 1 card."
+  },
+  {
+    "id": "dark_shackles",
+    "class": "DarkShackles",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Dark Shackles",
+    "description": "Enemy loses {StrengthLoss:diff()} [gold]Strength[/gold] this turn.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "darkness",
+    "class": "Darkness",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Darkness",
+    "description": "[gold]Channel[/gold] 1 [gold]Dark[/gold].\nTrigger the passive ability of all [gold]Dark[/gold] Orbs{IfUpgraded:show: twice|}."
+  },
+  {
+    "id": "dash",
+    "class": "Dash",
+    "character": "silent",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Dash",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nDeal {Damage:diff()} damage."
+  },
+  {
+    "id": "dazed",
+    "class": "Dazed",
+    "character": "status",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Dazed",
+    "description": "[gold]Unplayable[/gold].\n[gold]Ethereal[/gold]."
+  },
+  {
+    "id": "deadly_poison",
+    "class": "DeadlyPoison",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Deadly Poison",
+    "description": "Apply {PoisonPower:diff()} [gold]Poison[/gold]."
+  },
+  {
+    "id": "death_march",
+    "class": "DeathMarch",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Death March",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each card drawn during your turn."
+  },
+  {
+    "id": "deathbringer",
+    "class": "Deathbringer",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Deathbringer",
+    "description": "Apply {DoomPower:diff()} [gold]Doom[/gold] and {WeakPower:diff()} [gold]Weak[/gold] to ALL enemies."
+  },
+  {
+    "id": "deaths_door",
+    "class": "DeathsDoor",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Death's Door",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nIf you applied [gold]Doom[/gold] this turn, gain [gold]Block[/gold] {Repeat:diff()} additional {Repeat:plural:time|times}."
+  },
+  {
+    "id": "debilitate",
+    "class": "Debilitate",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Debilitate",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Vulnerable[/gold] and [gold]Weak[/gold] are twice as effective against the enemy for the next {DebilitatePower:diff()} {DebilitatePower:plural:turn|turns}."
+  },
+  {
+    "id": "debris",
+    "class": "Debris",
+    "character": "status",
+    "cost": "1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Debris",
+    "description": "[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "debt",
+    "class": "Debt",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Debt",
+    "description": "[gold]Unplayable[/gold].\nAt the end of your turn, if this is in your [gold]Hand[/gold], lose {Gold:diff()} [gold]Gold[/gold]."
+  },
+  {
+    "id": "decay",
+    "class": "Decay",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Decay",
+    "description": "[gold]Unplayable[/gold].\nAt the end of your turn, if this is in your [gold]Hand[/gold], take {Damage:diff()} damage."
+  },
+  {
+    "id": "decisions_decisions",
+    "class": "DecisionsDecisions",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Decisions, Decisions",
+    "description": "Draw {Cards:diff()} cards.\nChoose a Skill in your [gold]Hand[/gold] and play it {Repeat:diff()} times.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "defend_defect",
+    "class": "DefendDefect",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Defend",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "defend_ironclad",
+    "class": "DefendIronclad",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Defend",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "defend_necrobinder",
+    "class": "DefendNecrobinder",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Defend",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "defend_regent",
+    "class": "DefendRegent",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Defend",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "defend_silent",
+    "class": "DefendSilent",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Defend",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "defile",
+    "class": "Defile",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Defile",
+    "description": "[gold]Ethereal[/gold].\nDeal {Damage:diff()} damage."
+  },
+  {
+    "id": "deflect",
+    "class": "Deflect",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Deflect",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "defragment",
+    "class": "Defragment",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Defragment",
+    "description": "Gain {FocusPower:diff()} [gold]Focus[/gold]."
+  },
+  {
+    "id": "defy",
+    "class": "Defy",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Defy",
+    "description": "[gold]Ethereal[/gold].\nGain {Block:diff()} [gold]Block[/gold].\nApply {WeakPower:diff()} [gold]Weak[/gold]."
+  },
+  {
+    "id": "delay",
+    "class": "Delay",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Delay",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nNext turn,\ngain {Energy:energyIcons()}."
+  },
+  {
+    "id": "demesne",
+    "class": "Demesne",
+    "character": "necrobinder",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Demesne",
+    "description": "[gold]Ethereal[/gold].\nAt the start of your turn, gain {Energy:energyIcons()} and draw {Cards:diff()} additional {Cards:plural:card|cards}."
+  },
+  {
+    "id": "demon_form",
+    "class": "DemonForm",
+    "character": "ironclad",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Demon Form",
+    "description": "At the start of your turn, gain {StrengthPower:diff()} [gold]Strength[/gold]."
+  },
+  {
+    "id": "demonic_shield",
+    "class": "DemonicShield",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Demonic Shield",
+    "description": "Lose {HpLoss:diff()} HP.\nGive another player [gold]Block[/gold] equal to your [gold]Block[/gold].{InCombat:\n(Gives {CalculatedBlock:diff()} [gold]Block[/gold])|}\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "deprecated_card",
+    "class": "DeprecatedCard",
+    "cost": "0",
+    "type": "status",
+    "rarity": "status",
+    "title": "Deprecated Card",
+    "description": "[blue]This card was removed in a recent update.[/blue]\nDraw 1 card.\nRemove this from your [gold]Deck[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "devastate",
+    "class": "Devastate",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Devastate",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "devour_life",
+    "class": "DevourLife",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Devour Life",
+    "description": "Whenever you play a [gold]Soul[/gold], [gold]Summon[/gold] {DevourLifePower:diff()}."
+  },
+  {
+    "id": "dirge",
+    "class": "Dirge",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Dirge",
+    "description": "[gold]Summon[/gold] {Summon:diff()} X times.\nAdd X [gold]{IfUpgraded:show:Souls+|Souls}[/gold] into your [gold]Draw Pile[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "discovery",
+    "class": "Discovery",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Discovery",
+    "description": "Choose 1 of 3 random cards to add into your [gold]Hand[/gold]. It's free to play this turn.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "disintegration",
+    "class": "Disintegration",
+    "character": "token",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Disintegration",
+    "description": "At the end of your turn, take {DisintegrationPower:diff()} damage."
+  },
+  {
+    "id": "dismantle",
+    "class": "Dismantle",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Dismantle",
+    "description": "Deal {Damage:diff()} damage.\nIf the enemy is [gold]Vulnerable[/gold], hits twice."
+  },
+  {
+    "id": "distraction",
+    "class": "Distraction",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Distraction",
+    "description": "Add a random Skill into your [gold]Hand[/gold]. It's free to play this turn.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "dodge_and_roll",
+    "class": "DodgeAndRoll",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Dodge and Roll",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nNext turn, gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "dominate",
+    "class": "Dominate",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Dominate",
+    "description": "Apply {VulnerablePower:diff()} [gold]Vulnerable[/gold].\nGain {StrengthPerVulnerable:diff()} [gold]Strength[/gold] for each [gold]Vulnerable[/gold] on the enemy.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "double_energy",
+    "class": "DoubleEnergy",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Double Energy",
+    "description": "Double your Energy.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "doubt",
+    "class": "Doubt",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Doubt",
+    "description": "[gold]Unplayable[/gold].\nAt the end of your turn, if this is in your [gold]Hand[/gold], gain {WeakPower:diff()} [gold]Weak[/gold]."
+  },
+  {
+    "id": "drain_power",
+    "class": "DrainPower",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Drain Power",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Upgrade[/gold] {Cards:diff()} random {Cards:plural:card|cards} in your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "dramatic_entrance",
+    "class": "DramaticEntrance",
+    "character": "colorless",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Dramatic Entrance",
+    "description": "[gold]Innate[/gold].\nDeal {Damage:diff()} damage to ALL enemies.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "dredge",
+    "class": "Dredge",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Dredge",
+    "description": "Put {Cards:diff()} {Cards:plural:card|cards} from your [gold]Discard Pile[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "drum_of_battle",
+    "class": "DrumOfBattle",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Drum of Battle",
+    "description": "Draw {Cards:diff()} cards.\nAt the start of your turn, [gold]Exhaust[/gold] the top card of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "dual_wield",
+    "class": "DualWield",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Dual Wield",
+    "description": "Choose an Attack or Power card. Add {IfUpgraded:show:{Cards} copies|a copy} of that card into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "dualcast",
+    "class": "Dualcast",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Dualcast",
+    "description": "[gold]Evoke[/gold] your rightmost Orb twice."
+  },
+  {
+    "id": "dying_star",
+    "class": "DyingStar",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Dying Star",
+    "description": "[gold]Ethereal[/gold].\nDeal {Damage:diff()} damage to ALL enemies. ALL enemies lose {StrengthLoss:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "echo_form",
+    "class": "EchoForm",
+    "character": "defect",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Echo Form",
+    "description": "[gold]Ethereal[/gold].\nThe first card you play each turn is played an extra time."
+  },
+  {
+    "id": "echoing_slash",
+    "class": "EchoingSlash",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Echoing Slash",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\nRepeat this effect for each enemy killed."
+  },
+  {
+    "id": "eidolon",
+    "class": "Eidolon",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Eidolon",
+    "description": "[gold]Exhaust[/gold] your [gold]Hand[/gold].\nIf 9 cards were [gold]Exhausted[/gold] this way, gain 1 [gold]Intangible[/gold]."
+  },
+  {
+    "id": "end_of_days",
+    "class": "EndOfDays",
+    "character": "necrobinder",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "End of Days",
+    "description": "Apply {DoomPower:diff()} [gold]Doom[/gold] to ALL enemies.\nKill enemies with at least as much [gold]Doom[/gold] as HP."
+  },
+  {
+    "id": "energy_surge",
+    "class": "EnergySurge",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Energy Surge",
+    "description": "ALL players gain {Energy:energyIcons()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "enfeebling_touch",
+    "class": "EnfeeblingTouch",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Enfeebling Touch",
+    "description": "[gold]Ethereal[/gold].\nEnemy loses {StrengthLoss:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "enlightenment",
+    "class": "Enlightenment",
+    "character": "event",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Enlightenment",
+    "description": "Reduce the cost of ALL cards in your [gold]Hand[/gold] to 1 this {IfUpgraded:show:combat|turn}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "enthralled",
+    "class": "Enthralled",
+    "character": "curse",
+    "cost": "2",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Enthralled",
+    "description": "If this is in your [gold]Hand[/gold], it must be played before other cards.\n[gold]Eternal[/gold]."
+  },
+  {
+    "id": "entrench",
+    "class": "Entrench",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Entrench",
+    "description": "Double your [gold]Block[/gold]."
+  },
+  {
+    "id": "entropy",
+    "class": "Entropy",
+    "character": "colorless",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Entropy",
+    "description": "At the start of your turn, [gold]Transform[/gold] {Cards:diff()} {Cards:plural:card|cards} in your [gold]Hand[/gold]."
+  },
+  {
+    "id": "envenom",
+    "class": "Envenom",
+    "character": "silent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Envenom",
+    "description": "Whenever an Attack deals unblocked damage, apply {EnvenomPower:diff()} [gold]Poison[/gold]."
+  },
+  {
+    "id": "equilibrium",
+    "class": "Equilibrium",
+    "character": "colorless",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Equilibrium",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Retain[/gold] your [gold]Hand[/gold] this turn."
+  },
+  {
+    "id": "eradicate",
+    "class": "Eradicate",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Eradicate",
+    "description": "[gold]Retain[/gold].\nDeal {Damage:diff()} damage X times."
+  },
+  {
+    "id": "escape_plan",
+    "class": "EscapePlan",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Escape Plan",
+    "description": "Draw 1 card.\nIf you draw a Skill, gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "eternal_armor",
+    "class": "EternalArmor",
+    "character": "colorless",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Eternal Armor",
+    "description": "Gain {PlatingPower:diff()} [gold]Plating[/gold]."
+  },
+  {
+    "id": "evil_eye",
+    "class": "EvilEye",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Evil Eye",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nGain another {Block:diff()} [gold]Block[/gold] if you have [gold]Exhausted[/gold] a card this turn."
+  },
+  {
+    "id": "expect_a_fight",
+    "class": "ExpectAFight",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Expect a Fight",
+    "description": "Gain {energyPrefix:energyIcons(1)} for each Attack in your [gold]Hand[/gold].\nYou cannot gain\nadditional {energyPrefix:energyIcons(1)} this turn.{InCombat:\n(Gain {CalculatedEnergy:energyIcons()})|}"
+  },
+  {
+    "id": "expertise",
+    "class": "Expertise",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Expertise",
+    "description": "Draw cards until you have {Cards:diff()} in your [gold]Hand[/gold]."
+  },
+  {
+    "id": "expose",
+    "class": "Expose",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Expose",
+    "description": "Remove all [gold]Artifact[/gold] and [gold]Block[/gold] from the enemy.\nApply {Power:diff()} [gold]Vulnerable[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "exterminate",
+    "class": "Exterminate",
+    "character": "event",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "event",
+    "title": "Exterminate",
+    "description": "Deal {Damage:diff()} damage {Repeat:diff()} times to ALL enemies."
+  },
+  {
+    "id": "falling_star",
+    "class": "FallingStar",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Falling Star",
+    "description": "Deal {Damage:diff()} damage.\nApply {WeakPower:diff()} [gold]Weak[/gold].\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "fan_of_knives",
+    "class": "FanOfKnives",
+    "character": "silent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Fan of Knives",
+    "description": "[gold]Shivs[/gold] now hit ALL enemies.\nAdd {Shivs:diff()} [gold]Shivs[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "fasten",
+    "class": "Fasten",
+    "character": "colorless",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Fasten",
+    "description": "Gain an additional {ExtraBlock:diff()} [gold]Block[/gold] from Defend cards."
+  },
+  {
+    "id": "fear",
+    "class": "Fear",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Fear",
+    "description": "[gold]Ethereal[/gold].\nDeal {Damage:diff()} damage.\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "feed",
+    "class": "Feed",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Feed",
+    "description": "Deal {Damage:diff()} damage.\nIf [gold]Fatal[/gold], raise your Max HP by {MaxHp:diff()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "feeding_frenzy",
+    "class": "FeedingFrenzy",
+    "character": "event",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Feeding Frenzy",
+    "description": "Gain {StrengthPower:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "feel_no_pain",
+    "class": "FeelNoPain",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Feel No Pain",
+    "description": "Whenever a card is [gold]Exhausted[/gold], gain {Power:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "feral",
+    "class": "Feral",
+    "cost": "2",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Feral",
+    "description": "The first {FeralPower:plural:time|{FeralPower:diff()} times} you play a\n0{energyPrefix:energyIcons(1)} Attack each turn,\nreturn it to your [gold]Hand[/gold]."
+  },
+  {
+    "id": "fetch",
+    "class": "Fetch",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Fetch",
+    "description": "[gold]Osty[/gold] deals {OstyDamage:diff()} damage.\nIf this is the first time this card has been played this turn, draw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "fiend_fire",
+    "class": "FiendFire",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Fiend Fire",
+    "description": "[gold]Exhaust[/gold] your [gold]Hand[/gold].\nDeal {Damage:diff()} damage for each card [gold]Exhausted[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "fight_me",
+    "class": "FightMe",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Fight Me!",
+    "description": "Deal {Damage:diff()} damage twice.\nGain {StrengthPower:diff()} [gold]Strength[/gold].\nThe enemy gains {EnemyStrength:diff()} [gold]Strength[/gold]."
+  },
+  {
+    "id": "fight_through",
+    "class": "FightThrough",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Fight Through",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAdd 2 [gold]Wounds[/gold] into your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "finesse",
+    "class": "Finesse",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Finesse",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nDraw 1 card."
+  },
+  {
+    "id": "finisher",
+    "class": "Finisher",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Finisher",
+    "description": "Deal {Damage:diff()} damage for each Attack already played this turn.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "fisticuffs",
+    "class": "Fisticuffs",
+    "character": "colorless",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Fisticuffs",
+    "description": "Deal {Damage:diff()} damage.\nGain [gold]Block[/gold] equal to damage dealt."
+  },
+  {
+    "id": "flak_cannon",
+    "class": "FlakCannon",
+    "character": "defect",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Flak Cannon",
+    "description": "[gold]Exhaust[/gold] ALL your Status cards.\nDeal {Damage:diff()} damage to a random enemy for each card [gold]Exhausted[/gold].{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "flame_barrier",
+    "class": "FlameBarrier",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Flame Barrier",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nWhenever you are attacked this turn, deal {DamageBack:diff()} damage back."
+  },
+  {
+    "id": "flanking",
+    "class": "Flanking",
+    "character": "silent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Flanking",
+    "description": "The enemy takes double attack damage from other players this turn."
+  },
+  {
+    "id": "flash_of_steel",
+    "class": "FlashOfSteel",
+    "character": "colorless",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Flash of Steel",
+    "description": "Deal {Damage:diff()} damage.\nDraw 1 card."
+  },
+  {
+    "id": "flatten",
+    "class": "Flatten",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Flatten",
+    "description": "[gold]Osty[/gold] deals {OstyDamage:diff()} damage.\nThis card costs 0 {energyPrefix:energyIcons(1)} if [gold]Osty[/gold] has attacked this turn."
+  },
+  {
+    "id": "flechettes",
+    "class": "Flechettes",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Flechettes",
+    "description": "Deal {Damage:diff()} damage for each Skill in your [gold]Hand[/gold].{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "flick_flack",
+    "class": "FlickFlack",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Flick-Flack",
+    "description": "[gold]Sly[/gold].\nDeal {Damage:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "focused_strike",
+    "class": "FocusedStrike",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Focused Strike",
+    "description": "Deal {Damage:diff()} damage.\nGain {FocusPower:diff()} [gold]Focus[/gold] this turn."
+  },
+  {
+    "id": "follow_through",
+    "class": "FollowThrough",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Follow Through",
+    "description": "Deal {Damage:diff()} damage.\nIf you have {CardCount} or more other {CardCount:plural:card|cards} in your [gold]Hand[/gold], hits an additional time."
+  },
+  {
+    "id": "folly",
+    "class": "Folly",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Folly",
+    "description": "[gold]Unplayable[/gold].\n[gold]Innate[/gold].\n[gold]Ethereal[/gold].\n[gold]Eternal[/gold]."
+  },
+  {
+    "id": "footwork",
+    "class": "Footwork",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Footwork",
+    "description": "Gain {DexterityPower:diff()} [gold]Dexterity[/gold]."
+  },
+  {
+    "id": "forbidden_grimoire",
+    "class": "ForbiddenGrimoire",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "power",
+    "rarity": "ancient",
+    "title": "Forbidden Grimoire",
+    "description": "At the end of combat, you may remove a card from your [gold]Deck[/gold].\n[gold]Eternal[/gold]."
+  },
+  {
+    "id": "foregone_conclusion",
+    "class": "ForegoneConclusion",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Foregone Conclusion",
+    "description": "Next turn, put {Cards:diff()} cards from your [gold]Draw Pile[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "forgotten_ritual",
+    "class": "ForgottenRitual",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Forgotten Ritual",
+    "description": "If you [gold]Exhausted[/gold] a card this turn, gain {Energy:energyIcons()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "frantic_escape",
+    "class": "FranticEscape",
+    "character": "status",
+    "cost": "1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Frantic Escape",
+    "description": "Get farther away.\nIncrease [gold]Sandpit[/gold] by 1.\nIncrease the cost of this card by 1."
+  },
+  {
+    "id": "friendship",
+    "class": "Friendship",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Friendship",
+    "description": "Lose {StrengthPower:inverseDiff()} [gold]Strength[/gold].\nGain {Energy:energyIcons()} at the start of each turn."
+  },
+  {
+    "id": "ftl",
+    "class": "Ftl",
+    "character": "defect",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "FTL",
+    "description": "Deal {Damage:diff()} damage.\nIf you have played fewer than {PlayMax:diff()} cards this turn, draw 1 card."
+  },
+  {
+    "id": "fuel",
+    "class": "Fuel",
+    "character": "token",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "token",
+    "title": "Fuel",
+    "description": "Gain {Energy:energyIcons()}.\nDraw {Cards:diff()} {Cards:plural:card|cards}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "furnace",
+    "class": "Furnace",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Furnace",
+    "description": "At the start of your turn, [gold]Forge[/gold] {Forge:diff()}."
+  },
+  {
+    "id": "fusion",
+    "class": "Fusion",
+    "character": "defect",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Fusion",
+    "description": "[gold]Channel[/gold] 1 [gold]Plasma[/gold]."
+  },
+  {
+    "id": "gamma_blast",
+    "class": "GammaBlast",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Gamma Blast",
+    "description": "Deal {Damage:diff()} damage.\nApply {WeakPower:diff()} [gold]Weak[/gold].\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "gang_up",
+    "class": "GangUp",
+    "character": "colorless",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Gang Up",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each time another player has attacked the enemy this turn."
+  },
+  {
+    "id": "gather_light",
+    "class": "GatherLight",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Gather Light",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nGain {Stars:starIcons()}."
+  },
+  {
+    "id": "genesis",
+    "class": "Genesis",
+    "character": "regent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Genesis",
+    "description": "At the start of your turn, gain {StarsPerTurn:starIcons()}."
+  },
+  {
+    "id": "genetic_algorithm",
+    "class": "GeneticAlgorithm",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Genetic Algorithm",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nPermanently increase this card's [gold]Block[/gold] by {Increase:diff()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "giant_rock",
+    "class": "GiantRock",
+    "character": "token",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "token",
+    "title": "Giant Rock",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "glacier",
+    "class": "Glacier",
+    "character": "defect",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Glacier",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Channel[/gold] 2 [gold]Frost[/gold]."
+  },
+  {
+    "id": "glasswork",
+    "class": "Glasswork",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Glasswork",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Channel[/gold] 1 [gold]Glass[/gold]."
+  },
+  {
+    "id": "glimmer",
+    "class": "Glimmer",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Glimmer",
+    "description": "Draw {Cards:diff()} {Cards:plural:card|cards}.\nPut {PutBack:diff()} {PutBack:plural:card|cards} from your [gold]Hand[/gold] on top of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "glimpse_beyond",
+    "class": "GlimpseBeyond",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Glimpse Beyond",
+    "description": "ALL players add {Cards:diff()} [gold]{Cards:plural:Soul|Souls}[/gold] into their [gold]Draw Pile[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "glitterstream",
+    "class": "Glitterstream",
+    "character": "regent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Glitterstream",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nNext turn, gain {BlockNextTurn:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "glow",
+    "class": "Glow",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Glow",
+    "description": "Gain {Stars:starIcons()}.\nDraw {Cards:diff()} {Cards:plural:card|cards}.\nNext turn, draw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "go_for_the_eyes",
+    "class": "GoForTheEyes",
+    "character": "defect",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Go for the Eyes",
+    "description": "Deal {Damage:diff()} damage.\nIf the enemy intends to attack, apply {WeakPower:diff()} [gold]Weak[/gold]."
+  },
+  {
+    "id": "gold_axe",
+    "class": "GoldAxe",
+    "character": "colorless",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Gold Axe",
+    "description": "Deal damage equal to the number of cards played this combat.{InCombat:\n(Deals {CalculatedDamage:diff()} damage)|}"
+  },
+  {
+    "id": "grand_finale",
+    "class": "GrandFinale",
+    "character": "silent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Grand Finale",
+    "description": "Can only be played if there are no cards in your [gold]Draw Pile[/gold]. Deal {Damage:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "grave_warden",
+    "class": "GraveWarden",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Grave Warden",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAdd a [gold]Soul[/gold] into your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "graveblast",
+    "class": "Graveblast",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Graveblast",
+    "description": "Deal {Damage:diff()} damage.\nPut a card from your [gold]Discard Pile[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "greed",
+    "class": "Greed",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Greed",
+    "description": "[gold]Unplayable[/gold].\n[gold]Eternal[/gold]."
+  },
+  {
+    "id": "guards",
+    "class": "Guards",
+    "character": "regent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "GUARDS!!!",
+    "description": "[gold]Transform[/gold] any number of cards in your [gold]Hand[/gold] into [gold]{IfUpgraded:show:Minion Sacrifice+|Minion Sacrifice}[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "guiding_star",
+    "class": "GuidingStar",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Guiding Star",
+    "description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "guilty",
+    "class": "Guilty",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Guilty",
+    "description": "[gold]Unplayable[/gold].\nRemoved from your [gold]Deck[/gold] after {Combats:diff()} {Combats:plural:combat|combats}."
+  },
+  {
+    "id": "gunk_up",
+    "class": "GunkUp",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Gunk Up",
+    "description": "Deal {Damage:diff()} damage {Repeat:diff()} {Repeat:plural:time|times}.\nAdd a [gold]Slimed[/gold] into your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "hailstorm",
+    "class": "Hailstorm",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Hailstorm",
+    "description": "At the end of your turn, if you have [gold]Frost[/gold], deal {HailstormPower:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "hammer_time",
+    "class": "HammerTime",
+    "character": "regent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Hammer Time",
+    "description": "Whenever you [gold]Forge[/gold], all allies [gold]Forge[/gold] as well."
+  },
+  {
+    "id": "hand_of_greed",
+    "class": "HandOfGreed",
+    "character": "colorless",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Hand of Greed",
+    "description": "Deal {Damage:diff()} damage.\nIf [gold]Fatal[/gold], gain {Gold:diff()} [gold]Gold[/gold]."
+  },
+  {
+    "id": "hand_trick",
+    "class": "HandTrick",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Hand Trick",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAdd [gold]Sly[/gold] to a Skill in your [gold]Hand[/gold] this turn."
+  },
+  {
+    "id": "hang",
+    "class": "Hang",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Hang",
+    "description": "Deal {Damage:diff()} damage.\nDouble the damage ALL Hang cards deal to this enemy."
+  },
+  {
+    "id": "haunt",
+    "class": "Haunt",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Haunt",
+    "description": "Whenever you play a [gold]Soul[/gold], a random enemy loses {HpLoss:diff()} HP."
+  },
+  {
+    "id": "havoc",
+    "class": "Havoc",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Havoc",
+    "description": "Play the top card of your [gold]Draw Pile[/gold] and [gold]Exhaust[/gold] it."
+  },
+  {
+    "id": "haze",
+    "class": "Haze",
+    "character": "silent",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Haze",
+    "description": "[gold]Sly[/gold].\nApply {PoisonPower:diff()} [gold]Poison[/gold] to ALL enemies."
+  },
+  {
+    "id": "headbutt",
+    "class": "Headbutt",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Headbutt",
+    "description": "Deal {Damage:diff()} damage.\nPut a card from your [gold]Discard Pile[/gold] on top of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "heavenly_drill",
+    "class": "HeavenlyDrill",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Heavenly Drill",
+    "description": "Deal {Damage:diff()} damage X times.\nDouble X if it's {Energy:diff()} or more."
+  },
+  {
+    "id": "hegemony",
+    "class": "Hegemony",
+    "character": "regent",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Hegemony",
+    "description": "Deal {Damage:diff()} damage.\nNext turn, gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "heirloom_hammer",
+    "class": "HeirloomHammer",
+    "character": "regent",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Heirloom Hammer",
+    "description": "Deal {Damage:diff()} damage.\nChoose a Colorless card in your [gold]Hand[/gold]. Add a copy of that card into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "helix_drill",
+    "class": "HelixDrill",
+    "character": "defect",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Helix Drill",
+    "description": "Deal {Damage:diff()} damage for each {energyPrefix:energyIcons(1)} previously spent this turn.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "hello_world",
+    "class": "HelloWorld",
+    "character": "event",
+    "cost": "1",
+    "type": "power",
+    "rarity": "event",
+    "title": "Hello World",
+    "description": "At the start of your turn, add a random Common card into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "hellraiser",
+    "class": "Hellraiser",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Hellraiser",
+    "description": "Whenever you draw a card containing “Strike”, it is played against a random enemy."
+  },
+  {
+    "id": "hemokinesis",
+    "class": "Hemokinesis",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Hemokinesis",
+    "description": "Lose {HpLoss:diff()} HP.\nDeal {Damage:diff()} damage."
+  },
+  {
+    "id": "hidden_cache",
+    "class": "HiddenCache",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Hidden Cache",
+    "description": "Gain {Stars:starIcons()}.\nNext turn, gain {StarNextTurnPower:starIcons()}."
+  },
+  {
+    "id": "hidden_daggers",
+    "class": "HiddenDaggers",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Hidden Daggers",
+    "description": "Discard {Cards:diff()} {Cards:plural:card|cards}.\nAdd {Shivs:diff()} [gold]{Cards:plural:{IfUpgraded:show:Shiv+|Shiv}|{IfUpgraded:show:Shivs+|Shivs}}[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "hidden_gem",
+    "class": "HiddenGem",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Hidden Gem",
+    "description": "A random card without [gold]Replay[/gold] in your [gold]Draw Pile[/gold] gains [gold]Replay[/gold] {Replay:diff()}."
+  },
+  {
+    "id": "high_five",
+    "class": "HighFive",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "High Five",
+    "description": "[gold]Osty[/gold] deals {OstyDamage:diff()} damage\nand applies {VulnerablePower:diff()} [gold]Vulnerable[/gold]\nto ALL enemies."
+  },
+  {
+    "id": "hologram",
+    "class": "Hologram",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Hologram",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nPut a card from your [gold]Discard Pile[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "hotfix",
+    "class": "Hotfix",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Hotfix",
+    "description": "Gain {FocusPower:diff()} [gold]Focus[/gold] this turn.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "howl_from_beyond",
+    "class": "HowlFromBeyond",
+    "character": "ironclad",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Howl from Beyond",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\nAt the start of your turn, if this is in your [gold]Exhaust Pile[/gold], play it."
+  },
+  {
+    "id": "huddle_up",
+    "class": "HuddleUp",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Huddle Up",
+    "description": "ALL players draw {Cards:diff()} cards.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "hyperbeam",
+    "class": "Hyperbeam",
+    "character": "defect",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Hyperbeam",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\nLose {FocusPower:diff()} [gold]Focus[/gold]."
+  },
+  {
+    "id": "i_am_invincible",
+    "class": "IAmInvincible",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "I Am Invincible",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAt the end of your turn, if this is on top of your [gold]Draw Pile[/gold], play it."
+  },
+  {
+    "id": "ice_lance",
+    "class": "IceLance",
+    "character": "defect",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Ice Lance",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Channel[/gold] {Repeat:diff()} [gold]Frost[/gold]."
+  },
+  {
+    "id": "ignition",
+    "class": "Ignition",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Ignition",
+    "description": "Another player [gold]Channels[/gold] [gold]Plasma[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "impatience",
+    "class": "Impatience",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Impatience",
+    "description": "If you have no Attacks in your [gold]Hand[/gold], draw {Cards:diff()} cards."
+  },
+  {
+    "id": "impervious",
+    "class": "Impervious",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Impervious",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "infection",
+    "class": "Infection",
+    "character": "status",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Infection",
+    "description": "[gold]Unplayable[/gold].\nAt the end of your turn, if this is in your [gold]Hand[/gold], take {Damage:diff()} damage."
+  },
+  {
+    "id": "infernal_blade",
+    "class": "InfernalBlade",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Infernal Blade",
+    "description": "Add a random Attack into your [gold]Hand[/gold]. It's free to play this turn.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "inferno",
+    "class": "Inferno",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Inferno",
+    "description": "At the start of your turn, lose 1 HP.\nWhenever you lose HP on your turn, deal {InfernoPower:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "infinite_blades",
+    "class": "InfiniteBlades",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Infinite Blades",
+    "description": "At the start of your turn, add 1 [gold]Shiv[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "inflame",
+    "class": "Inflame",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Inflame",
+    "description": "Gain {StrengthPower:diff()} [gold]Strength[/gold]."
+  },
+  {
+    "id": "injury",
+    "class": "Injury",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Injury",
+    "description": "[gold]Unplayable[/gold]."
+  },
+  {
+    "id": "intercept",
+    "class": "Intercept",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Intercept",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nRedirect all incoming attacks that would be dealt to another player this turn to you."
+  },
+  {
+    "id": "invoke",
+    "class": "Invoke",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Invoke",
+    "description": "Next turn, [gold]Summon[/gold] {Summon:diff()} and gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "iron_wave",
+    "class": "IronWave",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Iron Wave",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nDeal {Damage:diff()} damage."
+  },
+  {
+    "id": "iteration",
+    "class": "Iteration",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Iteration",
+    "description": "The first time you draw a Status each turn, draw {IterationPower:diff()} {IterationPower:plural:card|cards}."
+  },
+  {
+    "id": "jack_of_all_trades",
+    "class": "JackOfAllTrades",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Jack of All Trades",
+    "description": "Add {Cards:diff()} random Colorless {Cards:plural:card|cards} into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "jackpot",
+    "class": "Jackpot",
+    "character": "colorless",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Jackpot",
+    "description": "Deal {Damage:diff()} damage.\nAdd {Cards:diff()} random{IfUpgraded:show: [gold]Upgraded[/gold]} 0{energyPrefix:energyIcons(1)} {Cards:plural:card|cards} into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "juggernaut",
+    "class": "Juggernaut",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Juggernaut",
+    "description": "Whenever you gain [gold]Block[/gold], deal {JuggernautPower:diff()} damage to a random enemy."
+  },
+  {
+    "id": "juggling",
+    "class": "Juggling",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Juggling",
+    "description": "Add a copy of the third [gold]Attack[/gold] you play each turn into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "kingly_kick",
+    "class": "KinglyKick",
+    "character": "regent",
+    "cost": "4",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Kingly Kick",
+    "description": "Deal {Damage:diff()} damage.\nWhenever you draw this card, reduce its cost by 1."
+  },
+  {
+    "id": "kingly_punch",
+    "class": "KinglyPunch",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Kingly Punch",
+    "description": "Deal {Damage:diff()} damage.\nWhenever you draw this card, increase its damage by {Increase:diff()} this combat."
+  },
+  {
+    "id": "knife_trap",
+    "class": "KnifeTrap",
+    "character": "silent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Knife Trap",
+    "description": "{IfUpgraded:show:[gold]Upgrade[/gold] and play|Play} every [gold]Shiv[/gold] in your [gold]Exhaust Pile[/gold] on the enemy.{InCombat:\n(Plays {CalculatedShivs:diff()} [gold]{CalculatedShivs:plural:Shiv|Shivs}[/gold])|}"
+  },
+  {
+    "id": "knockdown",
+    "class": "Knockdown",
+    "character": "colorless",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Knockdown",
+    "description": "Deal {Damage:diff()} damage.\nThe enemy takes {IfUpgraded:show:triple|double} damage from other players this turn."
+  },
+  {
+    "id": "knockout_blow",
+    "class": "KnockoutBlow",
+    "character": "regent",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Knockout Blow",
+    "description": "Deal {Damage:diff()} damage.\nIf this kills an enemy, gain {Stars:starIcons()}."
+  },
+  {
+    "id": "know_thy_place",
+    "class": "KnowThyPlace",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Know Thy Place",
+    "description": "Apply {WeakPower:diff()} [gold]Weak[/gold].\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "lantern_key",
+    "class": "LanternKey",
+    "character": "quest",
+    "cost": "-1",
+    "type": "quest",
+    "rarity": "quest",
+    "title": "Lantern Key",
+    "description": "[gold]Unplayable[/gold].\nUnlocks a special event in the next Act."
+  },
+  {
+    "id": "largesse",
+    "class": "Largesse",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Largesse",
+    "description": "Another player adds 1 random{IfUpgraded:show: [gold]Upgraded[/gold]} Colorless card to their [gold]Hand[/gold]."
+  },
+  {
+    "id": "leading_strike",
+    "class": "LeadingStrike",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Leading Strike",
+    "description": "Deal {Damage:diff()} damage.\nAdd {Shivs:diff()} [gold]{Shivs:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "leap",
+    "class": "Leap",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Leap",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "leg_sweep",
+    "class": "LegSweep",
+    "character": "silent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Leg Sweep",
+    "description": "Apply {WeakPower:diff()} [gold]Weak[/gold].\nGain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "legion_of_bone",
+    "class": "LegionOfBone",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Legion of Bone",
+    "description": "ALL players [gold]Summon[/gold] {Summon:diff()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "lethality",
+    "class": "Lethality",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Lethality",
+    "description": "[gold]Ethereal[/gold].\nThe first Attack each turn deals {LethalityPower:diff()}% additional damage."
+  },
+  {
+    "id": "lift",
+    "class": "Lift",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Lift",
+    "description": "Give another player {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "lightning_rod",
+    "class": "LightningRod",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Lightning Rod",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAt the start of the next {LightningRodPower:plural:turn|{:diff()} turns}, [gold]Channel[/gold] 1 [gold]Lightning[/gold]."
+  },
+  {
+    "id": "loop",
+    "class": "Loop",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Loop",
+    "description": "At the start of your turn, trigger the passive ability of your rightmost Orb{IfUpgraded:show: 2 times}."
+  },
+  {
+    "id": "luminesce",
+    "class": "Luminesce",
+    "character": "token",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "token",
+    "title": "Luminesce",
+    "description": "[gold]Retain[/gold].\nGain {Energy:energyIcons()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "lunar_blast",
+    "class": "LunarBlast",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Lunar Blast",
+    "description": "Deal {Damage:diff()} damage for each Skill already played this turn.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "machine_learning",
+    "class": "MachineLearning",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Machine Learning",
+    "description": "At the start of your turn, draw {Cards:diff()} additional {Cards:plural:card|cards}."
+  },
+  {
+    "id": "mad_science",
+    "class": "MadScience",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "event",
+    "title": "Mad Science",
+    "description": "{CardType:choose(Attack|Skill|Power):Deal {Damage:diff()} damage{Violence: {ViolenceHits:diff()} times|}.|Gain {Block:diff()} [gold]Block[/gold].|}{HasRider:{Sapping:\nApply {SappingWeak:diff()} [gold]Weak[/gold].\nApply {SappingVulnerable:diff()} [gold]Vulnerable[/gold].|}{Choking:\nWhenever you play a card this turn, the enemy loses {ChokingDamage:diff()} HP.|}{Energized:\nGain {EnergizedEnergy:energyIcons()}.|}{Wisdom:\nDraw {WisdomCards:diff()} cards.|}{Chaos:\nAdd a random card into your [gold]Hand[/gold]. It's free to play this turn.|}{Expertise:Gain {ExpertiseStrength:diff()} [gold]Strength[/gold].\nGain {ExpertiseDexterity:diff()} [gold]Dexterity[/gold].|}{Curious:Powers cost {CuriousReduction:diff()} {energyPrefix:energyIcons(1)} less.|}{Improvement:At the end of combat, [gold]Upgrade[/gold] a random card.|}|{CardType:choose(Attack|Skill|Power):\n???|\n???|???}}"
+  },
+  {
+    "id": "make_it_so",
+    "class": "MakeItSo",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Make It So",
+    "description": "Deal {Damage:diff()} damage.\nEvery {Cards:diff()} {Cards:plural:Skill|Skills} you play in a turn, put this into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "malaise",
+    "class": "Malaise",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Malaise",
+    "description": "Enemy loses X{IfUpgraded:show:+1} [gold]Strength[/gold]. Apply X{IfUpgraded:show:+1} [gold]Weak[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "mangle",
+    "class": "Mangle",
+    "character": "ironclad",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Mangle",
+    "description": "Deal {Damage:diff()} damage.\nEnemy loses {StrengthLoss:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "manifest_authority",
+    "class": "ManifestAuthority",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Manifest Authority",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAdd 1 random{IfUpgraded:show: [gold]Upgraded[/gold]} Colorless card into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "master_of_strategy",
+    "class": "MasterOfStrategy",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Master of Strategy",
+    "description": "Draw {Cards:diff()} cards.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "master_planner",
+    "class": "MasterPlanner",
+    "character": "silent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Master Planner",
+    "description": "When you play a Skill, it gains [gold]Sly[/gold]."
+  },
+  {
+    "id": "maul",
+    "class": "Maul",
+    "character": "event",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "ancient",
+    "title": "Maul",
+    "description": "Deal {Damage:diff()} damage twice.\nIncrease the damage of ALL Maul cards by {Increase:diff()} this combat."
+  },
+  {
+    "id": "mayhem",
+    "class": "Mayhem",
+    "character": "colorless",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Mayhem",
+    "description": "At the start of your turn, play the top card of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "melancholy",
+    "class": "Melancholy",
+    "character": "necrobinder",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Melancholy",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nReduce this card's cost by {Energy:energyIcons()} whenever ANYONE dies."
+  },
+  {
+    "id": "memento_mori",
+    "class": "MementoMori",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Memento Mori",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each card discarded this turn."
+  },
+  {
+    "id": "metamorphosis",
+    "class": "Metamorphosis",
+    "character": "event",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Metamorphosis",
+    "description": "Add {Cards:diff()} random Attacks into your [gold]Draw Pile[/gold]. They're free to play this combat.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "meteor_shower",
+    "class": "MeteorShower",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "ancient",
+    "title": "Meteor Shower",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\nApply {WeakPower:diff()} [gold]Weak[/gold] and [gold]Vulnerable[/gold] to ALL enemies."
+  },
+  {
+    "id": "meteor_strike",
+    "class": "MeteorStrike",
+    "character": "defect",
+    "cost": "5",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Meteor Strike",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Channel[/gold] 3 [gold]Plasma[/gold]."
+  },
+  {
+    "id": "mimic",
+    "class": "Mimic",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Mimic",
+    "description": "Gain [gold]Block[/gold] equal to the [gold]Block[/gold] on another player.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "mind_blast",
+    "class": "MindBlast",
+    "character": "colorless",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Mind Blast",
+    "description": "[gold]Innate[/gold].\nDeal damage equal to the number of cards in your [gold]Draw Pile[/gold].{InCombat:\n(Deals {CalculatedDamage:diff()} damage)|}"
+  },
+  {
+    "id": "mind_rot",
+    "class": "MindRot",
+    "character": "token",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Mind Rot",
+    "description": "Draw {MindRotPower:diff()} fewer {MindRotPower:plural:card|cards} each turn."
+  },
+  {
+    "id": "minion_dive_bomb",
+    "class": "MinionDiveBomb",
+    "character": "token",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "token",
+    "title": "Minion Dive Bomb",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "minion_sacrifice",
+    "class": "MinionSacrifice",
+    "character": "token",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "token",
+    "title": "Minion Sacrifice",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "minion_strike",
+    "class": "MinionStrike",
+    "character": "token",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "token",
+    "title": "Minion Strike",
+    "description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} {Cards:plural:card|cards}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "mirage",
+    "class": "Mirage",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Mirage",
+    "description": "Gain [gold]Block[/gold] equal to [gold]Poison[/gold] on ALL enemies.{InCombat:\n(Gain {CalculatedBlock:diff()} [gold]Block[/gold])|}\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "misery",
+    "class": "Misery",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Misery",
+    "description": "Deal {Damage:diff()} damage.\nApply any debuffs on the enemy to ALL other enemies."
+  },
+  {
+    "id": "modded",
+    "class": "Modded",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Modded",
+    "description": "Gain {Repeat:diff()} Orb {Repeat:plural:Slot|Slots}.\nDraw {Cards:diff()} {Cards:plural:card|cards}. Increase this card's cost by 1."
+  },
+  {
+    "id": "molten_fist",
+    "class": "MoltenFist",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Molten Fist",
+    "description": "Deal {Damage:diff()} damage.\nDouble the enemy's [gold]Vulnerable[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "momentum_strike",
+    "class": "MomentumStrike",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Momentum Strike",
+    "description": "Deal {Damage:diff()} damage.\nReduce this card's cost to 0 {energyPrefix:energyIcons(1)}."
+  },
+  {
+    "id": "monarchs_gaze",
+    "class": "MonarchsGaze",
+    "character": "regent",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Monarch's Gaze",
+    "description": "Whenever you attack an enemy, it loses {StrengthLoss:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "monologue",
+    "class": "Monologue",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Monologue",
+    "description": "Whenever you play a card this turn, gain {Power:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "multi_cast",
+    "class": "MultiCast",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Multi-Cast",
+    "description": "[gold]Evoke[/gold] your rightmost Orb {IfUpgraded:show:X+1|X} times."
+  },
+  {
+    "id": "murder",
+    "class": "Murder",
+    "character": "silent",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Murder",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each card drawn this combat."
+  },
+  {
+    "id": "necro_mastery",
+    "class": "NecroMastery",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Necro Mastery",
+    "description": "[gold]Summon[/gold] {Summon:diff()}.\nWhenever [gold]Osty[/gold] loses HP,\nALL enemies lose that much HP as well."
+  },
+  {
+    "id": "negative_pulse",
+    "class": "NegativePulse",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Negative Pulse",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nApply {DoomPower:diff()} [gold]Doom[/gold] to ALL enemies."
+  },
+  {
+    "id": "neows_fury",
+    "class": "NeowsFury",
+    "character": "event",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "ancient",
+    "title": "Neow's Fury",
+    "description": "Deal {Damage:diff()} damage.\nPut {Cards:plural:a random card|{:diff()} random cards} from your [gold]Discard Pile[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "neurosurge",
+    "class": "Neurosurge",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Neurosurge",
+    "description": "Gain {Energy:energyIcons()}.\nDraw {Cards:diff()} {Cards:plural:card|cards}.\nAt the start of your turn, apply {NeurosurgePower:diff()} [gold]Doom[/gold] to yourself."
+  },
+  {
+    "id": "neutralize",
+    "class": "Neutralize",
+    "character": "silent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Neutralize",
+    "description": "Deal {Damage:diff()} damage.\nApply {WeakPower:diff()} [gold]Weak[/gold]."
+  },
+  {
+    "id": "neutron_aegis",
+    "class": "NeutronAegis",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Neutron Aegis",
+    "description": "Gain {PlatingPower:diff()} [gold]Plating[/gold]."
+  },
+  {
+    "id": "nightmare",
+    "class": "Nightmare",
+    "character": "silent",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Nightmare",
+    "description": "Choose a card.\nNext turn, add 3 copies of that card into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "no_escape",
+    "class": "NoEscape",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "No Escape",
+    "description": "Apply {CalculationBase:diff()} [gold]Doom[/gold], plus an additional {CalculationExtra:diff()} [gold]Doom[/gold] for every {DoomThreshold:diff()} [gold]Doom[/gold] already on this enemy.{IsTargeting:\n(Apply {CalculatedDoom:diff()} [gold]Doom[/gold])|}"
+  },
+  {
+    "id": "normality",
+    "class": "Normality",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Normality",
+    "description": "[gold]Unplayable[/gold].\nYou cannot play more than 3 cards this turn.{InCombat:\n({CalculatedCards:plural:{} card|{} cards} left)|}"
+  },
+  {
+    "id": "nostalgia",
+    "class": "Nostalgia",
+    "character": "colorless",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Nostalgia",
+    "description": "The first Attack or Skill you play each turn is placed on top of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "not_yet",
+    "class": "NotYet",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Not Yet",
+    "description": "Heal {Heal:diff()} HP.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "noxious_fumes",
+    "class": "NoxiousFumes",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Noxious Fumes",
+    "description": "At the start of your turn, apply {PoisonPerTurn:diff()} [gold]Poison[/gold] to ALL enemies."
+  },
+  {
+    "id": "null",
+    "class": "Null",
+    "character": "defect",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Null",
+    "description": "Deal {Damage:diff()} damage.\nApply {WeakPower:diff()} [gold]Weak[/gold].\n[gold]Channel[/gold] 1 [gold]Dark[/gold]."
+  },
+  {
+    "id": "oblivion",
+    "class": "Oblivion",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Oblivion",
+    "description": "Whenever you play a card this turn, apply {DoomPower:diff()} [gold]Doom[/gold] to the enemy."
+  },
+  {
+    "id": "offering",
+    "class": "Offering",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Offering",
+    "description": "Lose {HpLoss:diff()} HP.\nGain {Energy:energyIcons()}.\nDraw {Cards:diff()} cards.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "omnislice",
+    "class": "Omnislice",
+    "character": "colorless",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Omnislice",
+    "description": "Deal {Damage:diff()} damage.\nDamage ALL other enemies equal to the damage dealt."
+  },
+  {
+    "id": "one_two_punch",
+    "class": "OneTwoPunch",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "One-Two Punch",
+    "description": "This turn, your next {Attacks:cond:\u003e1?{Attacks:diff()} Attacks are|Attack is} played an extra time."
+  },
+  {
+    "id": "orbit",
+    "class": "Orbit",
+    "character": "regent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Orbit",
+    "description": "Every {energyPrefix:energyIcons(4)} you spend,\ngain {Energy:energyIcons()}."
+  },
+  {
+    "id": "outbreak",
+    "class": "Outbreak",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Outbreak",
+    "description": "Every {Repeat:plural:time|{Repeat:diff()} times} you apply [gold]Poison[/gold], deal {OutbreakPower:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "outmaneuver",
+    "class": "Outmaneuver",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Outmaneuver",
+    "description": "Next turn, gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "overclock",
+    "class": "Overclock",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Overclock",
+    "description": "Draw {Cards:diff()} cards.\nAdd a [gold]Burn[/gold] into your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "pacts_end",
+    "class": "PactsEnd",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Pact's End",
+    "description": "Can only be played if you have {Cards:diff()} or more {Cards:plural:card|cards} in your [gold]Exhaust Pile[/gold].\nDeal {Damage:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "pagestorm",
+    "class": "Pagestorm",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Pagestorm",
+    "description": "Whenever you draw an [gold]Ethereal[/gold] card, draw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "pale_blue_dot",
+    "class": "PaleBlueDot",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Pale Blue Dot",
+    "description": "If you play {CardPlay} or more cards in a turn, draw {Cards:diff()} {Cards:plural:card|cards} at the start of your next turn."
+  },
+  {
+    "id": "panache",
+    "class": "Panache",
+    "character": "colorless",
+    "cost": "0",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Panache",
+    "description": "Every time you play 5 cards in a single turn, deal {PanacheDamage:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "panic_button",
+    "class": "PanicButton",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Panic Button",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nYou cannot gain [gold]Block[/gold] from cards for {Turns:diff()} {Turns:plural:turn|turns}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "parry",
+    "class": "Parry",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Parry",
+    "description": "Whenever you play [gold]Sovereign Blade[/gold], gain {ParryPower:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "parse",
+    "class": "Parse",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Parse",
+    "description": "[gold]Ethereal[/gold].\nDraw {Cards:diff()} cards."
+  },
+  {
+    "id": "particle_wall",
+    "class": "ParticleWall",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Particle Wall",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nReturn this card to your [gold]Hand[/gold]."
+  },
+  {
+    "id": "patter",
+    "class": "Patter",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Patter",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nGain {VigorPower:diff()} [gold]Vigor[/gold]."
+  },
+  {
+    "id": "peck",
+    "class": "Peck",
+    "character": "event",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "event",
+    "title": "Peck",
+    "description": "Deal {Damage:diff()} damage {Repeat:diff()} times."
+  },
+  {
+    "id": "perfected_strike",
+    "class": "PerfectedStrike",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Perfected Strike",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for ALL your cards containing “Strike”."
+  },
+  {
+    "id": "phantom_blades",
+    "class": "PhantomBlades",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Phantom Blades",
+    "description": "[gold]Shivs[/gold] gain [gold]Retain[/gold].\nThe first [gold]Shiv[/gold] you play each turn deals {PhantomBladesPower:diff()} additional damage."
+  },
+  {
+    "id": "photon_cut",
+    "class": "PhotonCut",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Photon Cut",
+    "description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} {Cards:plural:card|cards}.\nPut 1 card from your [gold]Hand[/gold] on top of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "piercing_wail",
+    "class": "PiercingWail",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Piercing Wail",
+    "description": "ALL enemies lose {StrengthLoss:diff()} [gold]Strength[/gold] this turn.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "pillage",
+    "class": "Pillage",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Pillage",
+    "description": "Deal {Damage:diff()} damage.\nDraw cards until you draw a non-Attack card."
+  },
+  {
+    "id": "pillar_of_creation",
+    "class": "PillarOfCreation",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Pillar of Creation",
+    "description": "Whenever you create a card, gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "pinpoint",
+    "class": "Pinpoint",
+    "character": "silent",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Pinpoint",
+    "description": "Deal {Damage:diff()} damage.\nCosts 1 less {energyPrefix:energyIcons(1)} for each Skill played this turn."
+  },
+  {
+    "id": "poisoned_stab",
+    "class": "PoisonedStab",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Poisoned Stab",
+    "description": "Deal {Damage:diff()} damage.\nApply {PoisonPower:diff()} [gold]Poison[/gold]."
+  },
+  {
+    "id": "poke",
+    "class": "Poke",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Poke",
+    "description": "[gold]Osty[/gold] deals {OstyDamage:diff()} damage."
+  },
+  {
+    "id": "pommel_strike",
+    "class": "PommelStrike",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Pommel Strike",
+    "description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "poor_sleep",
+    "class": "PoorSleep",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Poor Sleep",
+    "description": "[gold]Unplayable[/gold].\n[gold]Retain[/gold]."
+  },
+  {
+    "id": "pounce",
+    "class": "Pounce",
+    "character": "silent",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Pounce",
+    "description": "Deal {Damage:diff()} damage.\nThe next Skill you play costs 0 {energyPrefix:energyIcons(1)}."
+  },
+  {
+    "id": "precise_cut",
+    "class": "PreciseCut",
+    "character": "silent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Precise Cut",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:inverseDiff()} less damage for each other card in your [gold]Hand[/gold]."
+  },
+  {
+    "id": "predator",
+    "class": "Predator",
+    "character": "silent",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Predator",
+    "description": "Deal {Damage:diff()} damage.\nNext turn, draw 2 cards."
+  },
+  {
+    "id": "prep_time",
+    "class": "PrepTime",
+    "character": "colorless",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Prep Time",
+    "description": "At the start of your turn, gain {PrepTimePower:diff()} [gold]Vigor[/gold]."
+  },
+  {
+    "id": "prepared",
+    "class": "Prepared",
+    "character": "silent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Prepared",
+    "description": "Draw {Cards:diff()} {Cards:plural:card|cards}.\nDiscard {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "primal_force",
+    "class": "PrimalForce",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Primal Force",
+    "description": "Transform all Attacks in your [gold]Hand[/gold] into [gold]{IfUpgraded:show:Giant Rock+|Giant Rock}[/gold]."
+  },
+  {
+    "id": "production",
+    "class": "Production",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Production",
+    "description": "Gain {Energy:energyIcons()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "prolong",
+    "class": "Prolong",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Prolong",
+    "description": "Next turn, gain [gold]Block[/gold] equal to your current [gold]Block[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "prophesize",
+    "class": "Prophesize",
+    "character": "regent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Prophesize",
+    "description": "Draw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "protector",
+    "class": "Protector",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "ancient",
+    "title": "Protector",
+    "description": "[gold]Osty[/gold] deals {CalculatedDamage:diff()} damage.\nDeals additional damage equal to [gold]Osty's[/gold] [gold]Max HP[/gold]."
+  },
+  {
+    "id": "prowess",
+    "class": "Prowess",
+    "character": "colorless",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Prowess",
+    "description": "Gain {StrengthPower:diff()} [gold]Strength[/gold].\nGain {DexterityPower:diff()} [gold]Dexterity[/gold]."
+  },
+  {
+    "id": "pull_aggro",
+    "class": "PullAggro",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Pull Aggro",
+    "description": "[gold]Summon[/gold] {Summon:diff()}.\nGain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "pull_from_below",
+    "class": "PullFromBelow",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Pull from Below",
+    "description": "Deal {Damage:diff()} damage for each [gold]Ethereal[/gold] card played this combat.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "purity",
+    "class": "Purity",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Purity",
+    "description": "[gold]Retain[/gold].\nExhaust up to {Cards:diff()} cards in your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "putrefy",
+    "class": "Putrefy",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Putrefy",
+    "description": "Apply {Power:diff()} [gold]Weak[/gold].\nApply {Power:diff()} [gold]Vulnerable[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "pyre",
+    "class": "Pyre",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Pyre",
+    "description": "Gain {Energy:energyIcons()} at the start of each turn."
+  },
+  {
+    "id": "quadcast",
+    "class": "Quadcast",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "ancient",
+    "title": "Quadcast",
+    "description": "[gold]Evoke[/gold] your rightmost Orb {Repeat:diff()} {Repeat:plural:time|times}."
+  },
+  {
+    "id": "quasar",
+    "class": "Quasar",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Quasar",
+    "description": "Choose 1 of 3 random{IfUpgraded:show: [gold]Upgraded[/gold]|} Colorless cards to add into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "radiate",
+    "class": "Radiate",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Radiate",
+    "description": "Deal {Damage:diff()} damage to ALL enemies for each {Stars:starIcons()} gained this turn.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "rage",
+    "class": "Rage",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Rage",
+    "description": "Whenever you play an Attack this turn, gain {Power:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "rainbow",
+    "class": "Rainbow",
+    "character": "defect",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Rainbow",
+    "description": "[gold]Channel[/gold] 1 [gold]Lightning[/gold].\n[gold]Channel[/gold] 1 [gold]Frost[/gold].\n[gold]Channel[/gold] 1 [gold]Dark[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "rally",
+    "class": "Rally",
+    "character": "colorless",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Rally",
+    "description": "ALL players gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "rampage",
+    "class": "Rampage",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Rampage",
+    "description": "Deal {Damage:diff()} damage.\nIncrease this card's damage by {Increase:diff()} this combat."
+  },
+  {
+    "id": "rattle",
+    "class": "Rattle",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Rattle",
+    "description": "[gold]Osty[/gold] deals {OstyDamage:diff()} damage.\nHits an additional time for each other time he has attacked this turn.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "reanimate",
+    "class": "Reanimate",
+    "character": "necrobinder",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Reanimate",
+    "description": "[gold]Summon[/gold] {Summon:diff()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "reap",
+    "class": "Reap",
+    "character": "necrobinder",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Reap",
+    "description": "[gold]Retain[/gold].\nDeal {Damage:diff()} damage."
+  },
+  {
+    "id": "reaper_form",
+    "class": "ReaperForm",
+    "character": "necrobinder",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Reaper Form",
+    "description": "Whenever Attacks deal damage, they also apply that much [gold]Doom[/gold]."
+  },
+  {
+    "id": "reave",
+    "class": "Reave",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Reave",
+    "description": "Deal {Damage:diff()} damage.\nAdd a [gold]{IfUpgraded:show:Soul+|Soul}[/gold] into your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "reboot",
+    "class": "Reboot",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Reboot",
+    "description": "Shuffle ALL your cards into your [gold]Draw Pile[/gold].\nDraw {Cards:diff()} {Cards:plural:card|cards}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "rebound",
+    "class": "Rebound",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "event",
+    "title": "Rebound",
+    "description": "Deal {Damage:diff()} damage.\nPut the next card you play this turn on top of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "refine_blade",
+    "class": "RefineBlade",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Refine Blade",
+    "description": "[gold]Forge[/gold] {Forge:diff()}.\nNext turn, gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "reflect",
+    "class": "Reflect",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Reflect",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nBlocked attack damage is reflected to your attacker this turn."
+  },
+  {
+    "id": "reflex",
+    "class": "Reflex",
+    "character": "silent",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Reflex",
+    "description": "[gold]Sly[/gold].\nDraw {Cards:diff()} cards."
+  },
+  {
+    "id": "refract",
+    "class": "Refract",
+    "character": "defect",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Refract",
+    "description": "Deal {Damage:diff()} damage twice.\n[gold]Channel[/gold] {Repeat:diff()} [gold]Glass[/gold]."
+  },
+  {
+    "id": "regret",
+    "class": "Regret",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Regret",
+    "description": "[gold]Unplayable[/gold].\nAt the end of your turn, if this is in your [gold]Hand[/gold], lose 1 HP for each card in your [gold]Hand[/gold]."
+  },
+  {
+    "id": "relax",
+    "class": "Relax",
+    "character": "event",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "ancient",
+    "title": "Relax",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nNext turn, draw {Cards:diff()} {Cards:plural:card|cards} and gain {Energy:energyIcons()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "rend",
+    "class": "Rend",
+    "character": "colorless",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Rend",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each unique debuff on the enemy."
+  },
+  {
+    "id": "resonance",
+    "class": "Resonance",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Resonance",
+    "description": "Gain {StrengthPower:diff()} [gold]Strength[/gold]. ALL enemies lose 1 [gold]Strength[/gold]."
+  },
+  {
+    "id": "restlessness",
+    "class": "Restlessness",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Restlessness",
+    "description": "[gold]Retain[/gold].\nIf your [gold]Hand[/gold] is empty, draw {Cards:diff()} cards and gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "ricochet",
+    "class": "Ricochet",
+    "character": "silent",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Ricochet",
+    "description": "[gold]Sly[/gold].\nDeal {Damage:diff()} damage to a random enemy {Repeat:diff()} times."
+  },
+  {
+    "id": "right_hand_hand",
+    "class": "RightHandHand",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Right Hand Hand",
+    "description": "[gold]Osty[/gold] deals {OstyDamage:diff()} damage.\nWhenever you play a card that costs {Energy:energyIcons()} or more, return this to your [gold]Hand[/gold] from the [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "rip_and_tear",
+    "class": "RipAndTear",
+    "character": "event",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "event",
+    "title": "Rip and Tear",
+    "description": "Deal {Damage:diff()} damage to a random enemy twice."
+  },
+  {
+    "id": "rocket_punch",
+    "class": "RocketPunch",
+    "character": "defect",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Rocket Punch",
+    "description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} {Cards:plural:card|cards}.\nWhenever you create a Status, reduce this card's cost to 0 {energyPrefix:energyIcons(1)} until played."
+  },
+  {
+    "id": "rolling_boulder",
+    "class": "RollingBoulder",
+    "character": "colorless",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Rolling Boulder",
+    "description": "At the start of your turn, deal {RollingBoulderPower:diff()} damage to ALL enemies and increase this damage by {IncrementAmount:diff()}."
+  },
+  {
+    "id": "royal_gamble",
+    "class": "RoyalGamble",
+    "character": "regent",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Royal Gamble",
+    "description": "Gain {Stars:diff()} {singleStarIcon}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "royalties",
+    "class": "Royalties",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Royalties",
+    "description": "At the end of combat, gain {Gold:diff()} [gold]Gold[/gold]."
+  },
+  {
+    "id": "rupture",
+    "class": "Rupture",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Rupture",
+    "description": "Whenever you lose HP on your turn, gain {StrengthPower:diff()} [gold]Strength[/gold]."
+  },
+  {
+    "id": "sacrifice",
+    "class": "Sacrifice",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Sacrifice",
+    "description": "[gold]Retain[/gold].\nIf [gold]Osty[/gold] is alive, he dies and you gain [gold]Block[/gold] equal to double his Max HP."
+  },
+  {
+    "id": "salvo",
+    "class": "Salvo",
+    "character": "colorless",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Salvo",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Retain[/gold] your [gold]Hand[/gold] this turn."
+  },
+  {
+    "id": "scavenge",
+    "class": "Scavenge",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Scavenge",
+    "description": "[gold]Exhaust[/gold] a card.\nNext turn, gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "scourge",
+    "class": "Scourge",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Scourge",
+    "description": "Apply {DoomPower:diff()} [gold]Doom[/gold].\nDraw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "scrape",
+    "class": "Scrape",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Scrape",
+    "description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} cards.\nDiscard all cards drawn this way that do not cost 0 {energyPrefix:energyIcons(1)}."
+  },
+  {
+    "id": "scrawl",
+    "class": "Scrawl",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Scrawl",
+    "description": "Draw cards until your [gold]Hand[/gold] is full.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "sculpting_strike",
+    "class": "SculptingStrike",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Sculpting Strike",
+    "description": "Deal {Damage:diff()} damage.\nAdd [gold]Ethereal[/gold] to a card in your [gold]Hand[/gold]."
+  },
+  {
+    "id": "seance",
+    "class": "Seance",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Seance",
+    "description": "[gold]Ethereal[/gold].\nTransform a card in your [gold]Draw Pile[/gold] into [gold]Soul[/gold]."
+  },
+  {
+    "id": "second_wind",
+    "class": "SecondWind",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Second Wind",
+    "description": "[gold]Exhaust[/gold] all non-Attack cards in your [gold]Hand[/gold]. Gain {Block:diff()} [gold]Block[/gold] for each card [gold]Exhausted[/gold]."
+  },
+  {
+    "id": "secret_technique",
+    "class": "SecretTechnique",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Secret Technique",
+    "description": "Put a Skill from your [gold]Draw Pile[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "secret_weapon",
+    "class": "SecretWeapon",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Secret Weapon",
+    "description": "Put an Attack from your [gold]Draw Pile[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "seeker_strike",
+    "class": "SeekerStrike",
+    "character": "colorless",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Seeker Strike",
+    "description": "Deal {Damage:diff()} damage.\nChoose 1 of {Cards:diff()} cards in your [gold]Draw Pile[/gold] to add into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "seeking_edge",
+    "class": "SeekingEdge",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Seeking Edge",
+    "description": "[gold]Forge[/gold] {Forge:diff()}.\n[gold]Sovereign Blade[/gold] now deals damage to ALL enemies."
+  },
+  {
+    "id": "sentry_mode",
+    "class": "SentryMode",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Sentry Mode",
+    "description": "At the start of your turn, add {SentryModePower:diff()} [gold]Sweeping Gaze[/gold] into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "serpent_form",
+    "class": "SerpentForm",
+    "character": "silent",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Serpent Form",
+    "description": "Whenever you play a card, deal {SerpentFormPower:diff()} damage to a random enemy."
+  },
+  {
+    "id": "setup_strike",
+    "class": "SetupStrike",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Setup Strike",
+    "description": "Deal {Damage:diff()} damage.\nGain {StrengthPower:diff()} [gold]Strength[/gold] this turn."
+  },
+  {
+    "id": "seven_stars",
+    "class": "SevenStars",
+    "character": "regent",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Seven Stars",
+    "description": "Deal {Damage:diff()} damage to ALL enemies {Repeat:plural:{} time|{} times}."
+  },
+  {
+    "id": "severance",
+    "class": "Severance",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Severance",
+    "description": "Deal {Damage:diff()} damage.\nAdd a [gold]Soul[/gold] into your [gold]Draw Pile[/gold], [gold]Hand[/gold], and [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "shadow_shield",
+    "class": "ShadowShield",
+    "character": "defect",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Shadow Shield",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Channel[/gold] 1 [gold]Dark[/gold]."
+  },
+  {
+    "id": "shadow_step",
+    "class": "ShadowStep",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Shadow Step",
+    "description": "Discard your [gold]Hand[/gold].\nNext turn, Attacks deal double damage."
+  },
+  {
+    "id": "shadowmeld",
+    "class": "Shadowmeld",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Shadowmeld",
+    "description": "Double your [gold]Block[/gold] gain this turn."
+  },
+  {
+    "id": "shame",
+    "class": "Shame",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Shame",
+    "description": "[gold]Unplayable[/gold].\nAt the end of your turn, if this is in your [gold]Hand[/gold], gain {Frail:diff()} [gold]Frail[/gold]."
+  },
+  {
+    "id": "shared_fate",
+    "class": "SharedFate",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Shared Fate",
+    "description": "Lose {PlayerStrengthLoss:diff()} [gold]Strength[/gold].\nEnemy loses {EnemyStrengthLoss:diff()} [gold]Strength[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "shatter",
+    "class": "Shatter",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Shatter",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\n[gold]Evoke[/gold] all of your Orbs."
+  },
+  {
+    "id": "shining_strike",
+    "class": "ShiningStrike",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Shining Strike",
+    "description": "Deal {Damage:diff()} damage.\nGain {Stars:starIcons()}.\nPut this card on top of your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "shiv",
+    "class": "Shiv",
+    "character": "token",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "token",
+    "title": "Shiv",
+    "description": "Deal {Damage:diff()} damage{TargetType:choose(AllEnemies): to ALL enemies|}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "shockwave",
+    "class": "Shockwave",
+    "character": "colorless",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Shockwave",
+    "description": "Apply {Power:diff()} [gold]Weak[/gold] and [gold]Vulnerable[/gold] to ALL enemies.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "shroud",
+    "class": "Shroud",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Shroud",
+    "description": "Whenever you apply [gold]Doom[/gold], gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "shrug_it_off",
+    "class": "ShrugItOff",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Shrug It Off",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nDraw {Cards:diff()} card."
+  },
+  {
+    "id": "sic_em",
+    "class": "SicEm",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Sic 'Em",
+    "description": "[gold]Osty[/gold] deals {OstyDamage:diff()} damage.\nWhenever [gold]Osty[/gold] hits this enemy this turn, [gold]Summon[/gold] {SicEmPower:diff()}."
+  },
+  {
+    "id": "signal_boost",
+    "class": "SignalBoost",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Signal Boost",
+    "description": "The next Power you play is played an additional time.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "skewer",
+    "class": "Skewer",
+    "character": "silent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Skewer",
+    "description": "Deal {Damage:diff()} damage X times."
+  },
+  {
+    "id": "skim",
+    "class": "Skim",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Skim",
+    "description": "Draw {Cards:diff()} cards."
+  },
+  {
+    "id": "sleight_of_flesh",
+    "class": "SleightOfFlesh",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Sleight of Flesh",
+    "description": "Whenever you apply a debuff to an enemy, they take {SleightOfFleshPower:diff()} damage."
+  },
+  {
+    "id": "slice",
+    "class": "Slice",
+    "character": "silent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Slice",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "slimed",
+    "class": "Slimed",
+    "character": "status",
+    "cost": "1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Slimed",
+    "description": "Draw 1 card.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "sloth",
+    "class": "Sloth",
+    "character": "token",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Sloth",
+    "description": "You cannot play more than {SlothPower:diff()} {SlothPower:plural:card|cards} each turn."
+  },
+  {
+    "id": "smokestack",
+    "class": "Smokestack",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Smokestack",
+    "description": "Whenever you create a Status, deal {SmokestackPower:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "snakebite",
+    "class": "Snakebite",
+    "character": "silent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Snakebite",
+    "description": "[gold]Retain[/gold].\nApply {PoisonPower:diff()} [gold]Poison[/gold]."
+  },
+  {
+    "id": "snap",
+    "class": "Snap",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Snap",
+    "description": "[gold]Osty[/gold] deals {OstyDamage:diff()} damage.\nAdd [gold]Retain[/gold] to a card in your [gold]Hand[/gold]."
+  },
+  {
+    "id": "sneaky",
+    "class": "Sneaky",
+    "character": "silent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Sneaky",
+    "description": "[gold]Sly[/gold].\nWhenever another player attacks an enemy, gain {SneakyPower:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "solar_strike",
+    "class": "SolarStrike",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Solar Strike",
+    "description": "Deal {Damage:diff()} damage.\nGain {Stars:starIcons()}."
+  },
+  {
+    "id": "soot",
+    "class": "Soot",
+    "character": "status",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Soot",
+    "description": "[gold]Unplayable[/gold]."
+  },
+  {
+    "id": "soul",
+    "class": "Soul",
+    "character": "token",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "token",
+    "title": "Soul",
+    "description": "Draw {Cards:diff()} {Cards:plural:card|cards}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "soul_storm",
+    "class": "SoulStorm",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Soul Storm",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each [gold]Soul[/gold] in your [gold]Exhaust Pile[/gold]."
+  },
+  {
+    "id": "sovereign_blade",
+    "class": "SovereignBlade",
+    "character": "token",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "token",
+    "title": "Sovereign Blade",
+    "description": "[gold]Retain[/gold].\nDeal {Damage:diff()} damage{SeekingEdgeAmount:cond:\u003e0? to ALL enemies|}{Repeat:plural:| {} times}."
+  },
+  {
+    "id": "sow",
+    "class": "Sow",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Sow",
+    "description": "[gold]Retain[/gold].\nDeal {Damage:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "spectrum_shift",
+    "class": "SpectrumShift",
+    "character": "regent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Spectrum Shift",
+    "description": "At the start of your turn, add {Cards:diff()} random Colorless {Cards:plural:card|cards} into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "speedster",
+    "class": "Speedster",
+    "character": "silent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Speedster",
+    "description": "Whenever you draw a card during your turn, deal {SpeedsterPower:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "spinner",
+    "class": "Spinner",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Spinner",
+    "description": "{IfUpgraded:show:[gold]Channel[/gold] 1 [gold]Glass[/gold].\n|}At the start of your turn, [gold]Channel[/gold] 1 [gold]Glass[/gold]."
+  },
+  {
+    "id": "spirit_of_ash",
+    "class": "SpiritOfAsh",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Spirit of Ash",
+    "description": "Whenever you play an [gold]Ethereal[/gold] card, gain {BlockOnExhaust:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "spite",
+    "class": "Spite",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Spite",
+    "description": "Deal {Damage:diff()} damage.\nIf you lost HP this turn,\nhits {Repeat:diff()} times."
+  },
+  {
+    "id": "splash",
+    "class": "Splash",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Splash",
+    "description": "Choose 1 of 3 random{IfUpgraded:show: [gold]Upgraded[/gold]} Attacks from another character to add into your [gold]Hand[/gold]. It's free to play this turn."
+  },
+  {
+    "id": "spoils_map",
+    "class": "SpoilsMap",
+    "character": "quest",
+    "cost": "-1",
+    "type": "quest",
+    "rarity": "quest",
+    "title": "Spoils Map",
+    "description": "[gold]Unplayable[/gold].\nMarks a site of {Gold:diff()} extra [gold]Gold[/gold] in the next Act."
+  },
+  {
+    "id": "spoils_of_battle",
+    "class": "SpoilsOfBattle",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Spoils of Battle",
+    "description": "[gold]Forge[/gold] {Forge:diff()}.\nDraw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "spore_mind",
+    "class": "SporeMind",
+    "character": "curse",
+    "cost": "1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Spore Mind",
+    "description": "[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "spur",
+    "class": "Spur",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Spur",
+    "description": "[gold]Retain[/gold].\n[gold]Summon[/gold] {Summon:diff()}.\n[gold]Osty[/gold] heals {Heal:diff()} HP."
+  },
+  {
+    "id": "squash",
+    "class": "Squash",
+    "character": "event",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "event",
+    "title": "Squash",
+    "description": "Deal {Damage:diff()} damage.\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "squeeze",
+    "class": "Squeeze",
+    "character": "necrobinder",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Squeeze",
+    "description": "[gold]Osty[/gold] deals {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for ALL your other [gold]Osty[/gold] Attacks."
+  },
+  {
+    "id": "stack",
+    "class": "Stack",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Stack",
+    "description": "Gain [gold]Block[/gold] equal to the number of cards in your [gold]Discard Pile[/gold]{IfUpgraded:show: +{CalculationBase}|}.{InCombat:\n(Gain {CalculatedBlock:diff()} [gold]Block[/gold])|}"
+  },
+  {
+    "id": "stampede",
+    "class": "Stampede",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Stampede",
+    "description": "At the end of your turn, {Power:diff()} random {Power:plural:Attack in your [gold]Hand[/gold] is played against a random enemy.|Attacks in your [gold]Hand[/gold] are played against random enemies.}"
+  },
+  {
+    "id": "stardust",
+    "class": "Stardust",
+    "character": "regent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Stardust",
+    "description": "Deal {Damage:diff()} damage to a random enemy X times."
+  },
+  {
+    "id": "stoke",
+    "class": "Stoke",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Stoke",
+    "description": "[gold]Exhaust[/gold] your [gold]Hand[/gold].\nAdd 1 random {IfUpgraded:show:[gold]Upgraded[/gold] |}card into your [gold]Hand[/gold] for each card [gold]Exhausted[/gold]."
+  },
+  {
+    "id": "stomp",
+    "class": "Stomp",
+    "character": "ironclad",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Stomp",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\nCosts 1 less {energyPrefix:energyIcons(1)} for each Attack played this turn."
+  },
+  {
+    "id": "stone_armor",
+    "class": "StoneArmor",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Stone Armor",
+    "description": "Gain {PlatingPower:diff()} [gold]Plating[/gold]."
+  },
+  {
+    "id": "storm",
+    "class": "Storm",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Storm",
+    "description": "Whenever you play a Power, [gold]Channel[/gold] {StormPower:diff()} [gold]Lightning[/gold]."
+  },
+  {
+    "id": "storm_of_steel",
+    "class": "StormOfSteel",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Storm of Steel",
+    "description": "Discard your [gold]Hand[/gold].\nAdd 1 [gold]{IfUpgraded:show:Shiv+|Shiv}[/gold] into your [gold]Hand[/gold] for each card discarded."
+  },
+  {
+    "id": "strangle",
+    "class": "Strangle",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Strangle",
+    "description": "Deal {Damage:diff()} damage.\nWhenever you play a card this turn, the enemy loses {StranglePower:diff()} HP."
+  },
+  {
+    "id": "stratagem",
+    "class": "Stratagem",
+    "character": "colorless",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Stratagem",
+    "description": "Whenever you shuffle your [gold]Draw Pile[/gold], choose a card from it to put into your [gold]Hand[/gold]."
+  },
+  {
+    "id": "strike_defect",
+    "class": "StrikeDefect",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Strike",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "strike_ironclad",
+    "class": "StrikeIronclad",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Strike",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "strike_necrobinder",
+    "class": "StrikeNecrobinder",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Strike",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "strike_regent",
+    "class": "StrikeRegent",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Strike",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "strike_silent",
+    "class": "StrikeSilent",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Strike",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "subroutine",
+    "class": "Subroutine",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Subroutine",
+    "description": "Whenever you play a Power, gain {energyPrefix:energyIcons(1)}."
+  },
+  {
+    "id": "sucker_punch",
+    "class": "SuckerPunch",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Sucker Punch",
+    "description": "Deal {Damage:diff()} damage.\nApply {WeakPower:diff()} [gold]Weak[/gold]."
+  },
+  {
+    "id": "summon_forth",
+    "class": "SummonForth",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Summon Forth",
+    "description": "[gold]Forge[/gold] {Forge:diff()}.\nPut [gold]Sovereign Blade[/gold] into your [gold]Hand[/gold] from anywhere."
+  },
+  {
+    "id": "sunder",
+    "class": "Sunder",
+    "character": "defect",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Sunder",
+    "description": "Deal {Damage:diff()} damage.\nIf this kills an enemy, gain {Energy:energyIcons()}."
+  },
+  {
+    "id": "supercritical",
+    "class": "Supercritical",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Supercritical",
+    "description": "Gain {Energy:energyIcons()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "supermassive",
+    "class": "Supermassive",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Supermassive",
+    "description": "Deal {CalculatedDamage:diff()} damage.\nDeals {ExtraDamage:diff()} additional damage for each card you created this combat."
+  },
+  {
+    "id": "suppress",
+    "class": "Suppress",
+    "character": "silent",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "ancient",
+    "title": "Suppress",
+    "description": "[gold]Innate[/gold].\nDeal {Damage:diff()} damage.\nApply {WeakPower:diff()} [gold]Weak[/gold]."
+  },
+  {
+    "id": "survivor",
+    "class": "Survivor",
+    "character": "silent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Survivor",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nDiscard 1 card."
+  },
+  {
+    "id": "sweeping_beam",
+    "class": "SweepingBeam",
+    "character": "defect",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Sweeping Beam",
+    "description": "Deal {Damage:diff()} damage to ALL enemies.\nDraw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "sweeping_gaze",
+    "class": "SweepingGaze",
+    "character": "token",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "token",
+    "title": "Sweeping Gaze",
+    "description": "[gold]Ethereal[/gold].\n[gold]Osty[/gold] deals {OstyDamage:diff()} damage to a random enemy.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "sword_boomerang",
+    "class": "SwordBoomerang",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Sword Boomerang",
+    "description": "Deal {Damage:diff()} damage to a random enemy {Repeat:diff()} times."
+  },
+  {
+    "id": "sword_sage",
+    "class": "SwordSage",
+    "character": "regent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Sword Sage",
+    "description": "[gold]Sovereign Blade[/gold] now hits an additional time."
+  },
+  {
+    "id": "synchronize",
+    "class": "Synchronize",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Synchronize",
+    "description": "Gain {CalculationExtra:diff()} [gold]Focus[/gold] this turn for each unique Orb you have.{InCombat:\n(Gain {CalculatedFocus:diff()} [gold]Focus[/gold])|}\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "synthesis",
+    "class": "Synthesis",
+    "character": "defect",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Synthesis",
+    "description": "Deal {Damage:diff()} damage.\nThe next Power you play costs 0 {energyPrefix:energyIcons(1)}."
+  },
+  {
+    "id": "tactician",
+    "class": "Tactician",
+    "character": "silent",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Tactician",
+    "description": "[gold]Sly[/gold].\nGain {Energy:energyIcons()}."
+  },
+  {
+    "id": "tag_team",
+    "class": "TagTeam",
+    "character": "colorless",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Tag Team",
+    "description": "Deal {Damage:diff()} damage.\nThe next Attack another player plays on the enemy is played an extra time."
+  },
+  {
+    "id": "tank",
+    "class": "Tank",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Tank",
+    "description": "Take double damage from enemies.\nAllies take half damage from enemies."
+  },
+  {
+    "id": "taunt",
+    "class": "Taunt",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Taunt",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nApply {VulnerablePower:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "tear_asunder",
+    "class": "TearAsunder",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Tear Asunder",
+    "description": "Deal {Damage:diff()} damage.\nHits an additional time for each time you lost HP this combat.{InCombat:\n(Hits {CalculatedHits:diff()} {CalculatedHits:plural:time|times})|}"
+  },
+  {
+    "id": "tempest",
+    "class": "Tempest",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Tempest",
+    "description": "[gold]Channel[/gold] {IfUpgraded:show:X+1|X} [gold]Lightning[/gold]."
+  },
+  {
+    "id": "terraforming",
+    "class": "Terraforming",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Terraforming",
+    "description": "Gain {VigorPower:diff()} [gold]Vigor[/gold]."
+  },
+  {
+    "id": "tesla_coil",
+    "class": "TeslaCoil",
+    "character": "defect",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Tesla Coil",
+    "description": "Deal {Damage:diff()} damage.\nTrigger all [gold]Lightning[/gold] against the enemy."
+  },
+  {
+    "id": "the_bomb",
+    "class": "TheBomb",
+    "character": "colorless",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "The Bomb",
+    "description": "At the end of {Turns:diff()} {Turns:plural:turn|turns}, deal {BombDamage:diff()} damage to ALL enemies."
+  },
+  {
+    "id": "the_gambit",
+    "class": "TheGambit",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "The Gambit",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nIf you take unblocked attack damage this combat, die."
+  },
+  {
+    "id": "the_hunt",
+    "class": "TheHunt",
+    "character": "silent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "The Hunt",
+    "description": "Deal {Damage:diff()} damage.\nIf [gold]Fatal[/gold], gain an additional card reward.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "the_scythe",
+    "class": "TheScythe",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "The Scythe",
+    "description": "Deal {Damage:diff()} damage.\nPermanently increase this card's damage by {Increase:diff()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "the_sealed_throne",
+    "class": "TheSealedThrone",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "ancient",
+    "title": "The Sealed Throne",
+    "description": "Whenever you play a card, gain {singleStarIcon}."
+  },
+  {
+    "id": "the_smith",
+    "class": "TheSmith",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "The Smith",
+    "description": "[gold]Forge[/gold] {Forge:diff()}."
+  },
+  {
+    "id": "thinking_ahead",
+    "class": "ThinkingAhead",
+    "character": "colorless",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Thinking Ahead",
+    "description": "Draw {Cards:diff()} {Cards:plural:card|cards}.\nPut 1 card from your [gold]Hand[/gold] on top of your [gold]Draw Pile[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "thrash",
+    "class": "Thrash",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Thrash",
+    "description": "Deal {Damage:diff()} damage twice.\n[gold]Exhaust[/gold] a random Attack in your [gold]Hand[/gold] and add its damage to this card."
+  },
+  {
+    "id": "thrumming_hatchet",
+    "class": "ThrummingHatchet",
+    "character": "colorless",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Thrumming Hatchet",
+    "description": "Deal {Damage:diff()} damage.\nAt the start of your next turn, return this to your [gold]Hand[/gold]."
+  },
+  {
+    "id": "thunder",
+    "class": "Thunder",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Thunder",
+    "description": "Whenever you [gold]Evoke Lightning[/gold], deal {ThunderPower:diff()} damage to each enemy hit."
+  },
+  {
+    "id": "thunderclap",
+    "class": "Thunderclap",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Thunderclap",
+    "description": "Deal {Damage:diff()} damage and apply {VulnerablePower:diff()} [gold]Vulnerable[/gold] to ALL enemies."
+  },
+  {
+    "id": "times_up",
+    "class": "TimesUp",
+    "character": "necrobinder",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "rare",
+    "title": "Time's Up",
+    "description": "Deal damage equal to the enemy's [gold]Doom[/gold].{IsTargeting:\n(Deals {CalculatedDamage:diff()} damage)|}\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "tools_of_the_trade",
+    "class": "ToolsOfTheTrade",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Tools of the Trade",
+    "description": "At the start of your turn, draw 1 card and discard 1 card."
+  },
+  {
+    "id": "toric_toughness",
+    "class": "ToricToughness",
+    "character": "event",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "event",
+    "title": "Toric Toughness",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nGain {Block:diff()} [gold]Block[/gold] at the start of the next {Turns:diff()} {Turns:plural:turn|turns}."
+  },
+  {
+    "id": "toxic",
+    "class": "Toxic",
+    "character": "status",
+    "cost": "1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Toxic",
+    "description": "At the end of your turn, if this is in your [gold]Hand[/gold], take {Damage:diff()} damage.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "tracking",
+    "class": "Tracking",
+    "character": "silent",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Tracking",
+    "description": "[gold]Weak[/gold] enemies take double damage from Attacks."
+  },
+  {
+    "id": "transfigure",
+    "class": "Transfigure",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Transfigure",
+    "description": "Add [gold]Replay[/gold] to a card in your [gold]Hand[/gold].\nIt costs an extra {Energy:energyIcons()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "trash_to_treasure",
+    "class": "TrashToTreasure",
+    "character": "defect",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Trash to Treasure",
+    "description": "Whenever you create a Status, [gold]Channel[/gold] 1 random Orb."
+  },
+  {
+    "id": "tremble",
+    "class": "Tremble",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Tremble",
+    "description": "Apply {VulnerablePower:diff()} [gold]Vulnerable[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "true_grit",
+    "class": "TrueGrit",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "common",
+    "title": "True Grit",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\n[gold]Exhaust[/gold] 1 card{IfUpgraded:show:| at random}."
+  },
+  {
+    "id": "turbo",
+    "class": "Turbo",
+    "character": "defect",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "TURBO",
+    "description": "Gain {Energy:energyIcons()}.\nAdd a [gold]Void[/gold] into your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "twin_strike",
+    "class": "TwinStrike",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Twin Strike",
+    "description": "Deal {Damage:diff()} damage twice."
+  },
+  {
+    "id": "tyranny",
+    "class": "Tyranny",
+    "character": "regent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Tyranny",
+    "description": "At the start of your turn, draw 1 card and [gold]Exhaust[/gold] 1 card from your [gold]Hand[/gold]."
+  },
+  {
+    "id": "ultimate_defend",
+    "class": "UltimateDefend",
+    "character": "colorless",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Ultimate Defend",
+    "description": "Gain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "ultimate_strike",
+    "class": "UltimateStrike",
+    "character": "colorless",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Ultimate Strike",
+    "description": "Deal {Damage:diff()} damage."
+  },
+  {
+    "id": "undeath",
+    "class": "Undeath",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Undeath",
+    "description": "Gain {Block:diff()} [gold]Block[/gold].\nAdd a copy of this card into your [gold]Discard Pile[/gold]."
+  },
+  {
+    "id": "unleash",
+    "class": "Unleash",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "basic",
+    "title": "Unleash",
+    "description": "[gold]Osty[/gold] deals {CalculatedDamage:diff()} damage.\nDeals additional damage equal to [gold]Osty's[/gold] current HP."
+  },
+  {
+    "id": "unmovable",
+    "class": "Unmovable",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Unmovable",
+    "description": "The first time you gain [gold]Block[/gold] from a card each turn, double the amount gained."
+  },
+  {
+    "id": "unrelenting",
+    "class": "Unrelenting",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Unrelenting",
+    "description": "Deal {Damage:diff()} damage.\nThe next Attack you play costs 0 {energyPrefix:energyIcons(1)}."
+  },
+  {
+    "id": "untouchable",
+    "class": "Untouchable",
+    "character": "silent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Untouchable",
+    "description": "[gold]Sly[/gold].\nGain {Block:diff()} [gold]Block[/gold]."
+  },
+  {
+    "id": "up_my_sleeve",
+    "class": "UpMySleeve",
+    "character": "silent",
+    "cost": "2",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "Up My Sleeve",
+    "description": "Add {Cards:diff()} [gold]{Cards:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold].\nReduce this card's cost by 1."
+  },
+  {
+    "id": "uppercut",
+    "class": "Uppercut",
+    "character": "ironclad",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Uppercut",
+    "description": "Deal {Damage:diff()} damage.\nApply {Power:diff()} [gold]Weak[/gold].\nApply {Power:diff()} [gold]Vulnerable[/gold]."
+  },
+  {
+    "id": "uproar",
+    "class": "Uproar",
+    "character": "defect",
+    "cost": "2",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Uproar",
+    "description": "Deal {Damage:diff()} damage twice.\nPlay a random Attack from your [gold]Draw Pile[/gold]."
+  },
+  {
+    "id": "veilpiercer",
+    "class": "Veilpiercer",
+    "character": "necrobinder",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Veilpiercer",
+    "description": "Deal {Damage:diff()} damage.\nThe next [gold]Ethereal[/gold] card you play costs 0 {energyPrefix:energyIcons(1)}."
+  },
+  {
+    "id": "venerate",
+    "class": "Venerate",
+    "character": "regent",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Venerate",
+    "description": "Gain {Stars:starIcons()}."
+  },
+  {
+    "id": "vicious",
+    "class": "Vicious",
+    "character": "ironclad",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Vicious",
+    "description": "Whenever you apply [gold]Vulnerable[/gold], draw {Cards:diff()} {Cards:plural:card|cards}."
+  },
+  {
+    "id": "void",
+    "class": "Void",
+    "character": "status",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Void",
+    "description": "[gold]Unplayable[/gold].\n[gold]Ethereal[/gold].\nWhenever you draw this card, lose {Energy:energyIcons()}."
+  },
+  {
+    "id": "void_form",
+    "class": "VoidForm",
+    "character": "regent",
+    "cost": "3",
+    "type": "power",
+    "rarity": "rare",
+    "title": "Void Form",
+    "description": "[gold]Ethereal[/gold].\nEnd your turn.\nThe first {VoidFormPower:plural:card|{VoidFormPower:diff()} cards} you play each turn {VoidFormPower:plural:is|are} free to play."
+  },
+  {
+    "id": "volley",
+    "class": "Volley",
+    "character": "colorless",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Volley",
+    "description": "Deal {Damage:diff()} damage to a random enemy X times."
+  },
+  {
+    "id": "voltaic",
+    "class": "Voltaic",
+    "cost": "3",
+    "type": "skill",
+    "rarity": "rare",
+    "title": "Voltaic",
+    "description": "[gold]Channel Lightning[/gold] equal to the [gold]Lightning[/gold] already [gold]Channeled[/gold] this combat.{InCombat:\n([gold]Channel[/gold] {CalculatedChannels:diff()} [gold]Lightning[/gold])|}\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "waste_away",
+    "class": "WasteAway",
+    "character": "token",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Waste Away",
+    "description": "Gain {WasteAwayPower:diff()} less {energyPrefix:energyIcons(1)} per turn."
+  },
+  {
+    "id": "well_laid_plans",
+    "class": "WellLaidPlans",
+    "character": "silent",
+    "cost": "1",
+    "type": "power",
+    "rarity": "uncommon",
+    "title": "Well-Laid Plans",
+    "description": "At the end of your turn, [gold]Retain[/gold] up to {RetainAmount:diff()} {RetainAmount:plural:card|cards}."
+  },
+  {
+    "id": "whirlwind",
+    "class": "Whirlwind",
+    "character": "ironclad",
+    "cost": "0",
+    "type": "attack",
+    "rarity": "uncommon",
+    "title": "Whirlwind",
+    "description": "Deal {Damage:diff()} damage to ALL enemies X times."
+  },
+  {
+    "id": "whistle",
+    "class": "Whistle",
+    "character": "event",
+    "cost": "3",
+    "type": "attack",
+    "rarity": "ancient",
+    "title": "Whistle",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Stun[/gold] the enemy.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "white_noise",
+    "class": "WhiteNoise",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "uncommon",
+    "title": "White Noise",
+    "description": "Add a random Power into your [gold]Hand[/gold]. It's free to play this turn.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "wish",
+    "class": "Wish",
+    "character": "event",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "ancient",
+    "title": "Wish",
+    "description": "Put a card from your [gold]Draw Pile[/gold] into your [gold]Hand[/gold].\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "wisp",
+    "class": "Wisp",
+    "character": "necrobinder",
+    "cost": "0",
+    "type": "skill",
+    "rarity": "common",
+    "title": "Wisp",
+    "description": "Gain {Energy:energyIcons()}.\n[gold]Exhaust[/gold]."
+  },
+  {
+    "id": "wound",
+    "class": "Wound",
+    "character": "status",
+    "cost": "-1",
+    "type": "status",
+    "rarity": "status",
+    "title": "Wound",
+    "description": "[gold]Unplayable[/gold]."
+  },
+  {
+    "id": "wraith_form",
+    "class": "WraithForm",
+    "character": "silent",
+    "cost": "3",
+    "type": "power",
+    "rarity": "ancient",
+    "title": "Wraith Form",
+    "description": "Gain {IntangiblePower:diff()} [gold]Intangible[/gold].\nAt the start of your turn, lose {WraithFormPower:diff()} [gold]Dexterity[/gold]."
+  },
+  {
+    "id": "writhe",
+    "class": "Writhe",
+    "character": "curse",
+    "cost": "-1",
+    "type": "curse",
+    "rarity": "curse",
+    "title": "Writhe",
+    "description": "[gold]Unplayable[/gold].\n[gold]Innate[/gold]."
+  },
+  {
+    "id": "wrought_in_war",
+    "class": "WroughtInWar",
+    "character": "regent",
+    "cost": "1",
+    "type": "attack",
+    "rarity": "common",
+    "title": "Wrought in War",
+    "description": "Deal {Damage:diff()} damage.\n[gold]Forge[/gold] {Forge:diff()}."
+  },
+  {
+    "id": "zap",
+    "class": "Zap",
+    "character": "defect",
+    "cost": "1",
+    "type": "skill",
+    "rarity": "basic",
+    "title": "Zap",
+    "description": "[gold]Channel[/gold] 1 [gold]Lightning[/gold]."
+  }
+]
