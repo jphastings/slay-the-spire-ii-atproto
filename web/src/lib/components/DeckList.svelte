@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Card from './Card.svelte';
+	import { humanizeId } from '$lib/utils/format';
 	import { cardMeta, ensureCardsLoaded, parseDeckId } from '$lib/utils/cardMeta';
 
 	let {
@@ -127,10 +128,38 @@
 
 <div class="deck">
 	{#each visible as card (card.id)}
-		<div class="slot">
+		{@const base = parseDeckId(card.id).base}
+		{@const baseName = humanizeId(base)}
+		{@const m = cardMeta(base)}
+		{@const playable = !m?.cost?.startsWith('-')}
+		{@const showTip = hasPlayCounts && playable}
+		<div
+			class="slot"
+			class:tip={showTip}
+			role={showTip ? 'img' : undefined}
+			tabindex={showTip ? 0 : undefined}
+			aria-label={showTip
+				? `${baseName} was played ${card.plays} time${card.plays === 1 ? '' : 's'} this run`
+				: undefined}
+		>
 			<Card id={card.id} width={160} />
 			{#if card.count > 1}
 				<span class="count-badge">&times;{card.count}</span>
+			{/if}
+			{#if showTip}
+				<span class="tooltip-bubble">
+					{#if card.plays === 0}
+						<span class="tt-line muted">Not played</span>
+						<span class="tt-line">this run</span>
+					{:else}
+						<span class="tt-line">Played</span>
+						<span class="tt-line highlight">
+							{card.plays}
+							{card.plays === 1 ? 'time' : 'times'}
+						</span>
+						<span class="tt-line">this run</span>
+					{/if}
+				</span>
 			{/if}
 		</div>
 	{/each}
@@ -191,12 +220,78 @@
 
 	.slot {
 		position: relative;
+		/* Shrink the slot to the card's intrinsic width so the tooltip
+		   and count badge (both positioned relative to the slot) align
+		   with the card, not the wider grid cell. */
+		width: fit-content;
+	}
+
+	.slot.tip {
+		cursor: default;
+	}
+
+	.slot.tip:focus {
+		outline: none;
+	}
+
+	.slot.tip:focus-visible {
+		outline: 2px solid var(--accent-gold);
+		outline-offset: 2px;
+		border-radius: var(--radius-sm);
+	}
+
+	/* Card's DescriptionLabel sits at roughly 58.77%–91% of the 300×422
+	   frame (see Card.svelte). Overlay the tooltip in that band so it
+	   replaces the card's description text while hovering. Width tracks
+	   the description box — fixed relative to the card so all cards
+	   have identically sized tooltips. */
+	.tooltip-bubble {
+		position: absolute;
+		left: 8.666%;
+		right: 9.333%;
+		top: 58.77%;
+		bottom: 8%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 0.3rem 0.5rem;
+		background: rgba(10, 10, 10, 0.95);
+		color: var(--text-primary);
+		font-family: var(--font-body);
+		font-size: 0.7rem;
+		line-height: 1.25;
+		text-align: center;
+		border: 1px solid var(--border-card);
+		border-radius: var(--radius-sm);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 80ms;
+		z-index: 10;
+	}
+
+	.tt-line {
+		display: block;
+	}
+
+	.slot.tip:hover .tooltip-bubble,
+	.slot.tip:focus .tooltip-bubble {
+		opacity: 1;
+	}
+
+	.tooltip-bubble .highlight {
+		color: var(--accent-gold);
+		font-weight: 600;
+	}
+
+	.tooltip-bubble .muted {
+		color: inherit;
 	}
 
 	.count-badge {
 		position: absolute;
 		top: 0.25rem;
-		right: 0.25rem;
+		right: -1.5rem;
 		padding: 0.1rem 0.4rem;
 		background: rgba(0, 0, 0, 0.7);
 		border: 1px solid var(--border-card);

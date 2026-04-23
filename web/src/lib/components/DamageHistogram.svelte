@@ -81,15 +81,23 @@
 			</div>
 			<div class="bars" role="list">
 				{#each bars as b, i}
-					<Tooltip label={tooltipFor(b)}>
-						<span class="bar-col" role="listitem">
+					{#if b.count === 0}
+						<span class="bar-col empty-col" role="listitem">
 							<span
-								class="bar"
-								class:empty={b.count === 0}
-								style="--h: {maxCount > 0 ? (b.count / maxCount) * 100 : 0}%; --delay: {i * 18}ms"
+								class="bar empty"
+								style="--h: 0%; --delay: {i * 18}ms"
 							></span>
 						</span>
-					</Tooltip>
+					{:else}
+						<Tooltip label={tooltipFor(b)}>
+							<span class="bar-col" role="listitem">
+								<span
+									class="bar"
+									style="--h: {maxCount > 0 ? (b.count / maxCount) * 100 : 0}%; --delay: {i * 18}ms"
+								></span>
+							</span>
+						</Tooltip>
+					{/if}
 				{/each}
 			</div>
 		</div>
@@ -124,10 +132,12 @@
 		border: 1px solid var(--border-subtle);
 		border-radius: var(--radius);
 		min-height: 10rem;
-		/* Hard-clamp width so dense distributions can't push the page wider. */
+		/* Hard-clamp width so dense distributions can't push the page wider,
+		   but allow tooltips on edge/top bars to escape the box. */
 		min-width: 0;
 		max-width: 100%;
-		overflow: hidden;
+		overflow: clip;
+		overflow-clip-margin: 5rem;
 	}
 
 	.histogram.red {
@@ -171,7 +181,7 @@
 		inset: 0 1.5rem 0 0;
 		display: flex;
 		align-items: flex-end;
-		gap: 2px;
+		gap: 0px;
 	}
 
 	.bar-col {
@@ -183,6 +193,10 @@
 		align-items: flex-end;
 		justify-content: stretch;
 		cursor: pointer;
+	}
+
+	.bar-col.empty-col {
+		cursor: default;
 	}
 
 	/* Override the inline-flex the Tooltip wrapper applies so bars stretch. */
@@ -199,7 +213,7 @@
 		height: var(--h);
 		min-height: 1px;
 		background: linear-gradient(to top, var(--bar-to), var(--bar-from));
-		border-radius: 2px 2px 0 0;
+		border-radius: 1px 1px 0 0;
 		transform-origin: bottom center;
 		animation: grow 450ms cubic-bezier(0.22, 1, 0.36, 1) both;
 		animation-delay: var(--delay);
