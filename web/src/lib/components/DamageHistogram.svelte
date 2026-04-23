@@ -1,5 +1,7 @@
 <script lang="ts">
-	import Tooltip from './Tooltip.svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { Chart } from 'chart.js/auto';
+	import type { ChartConfiguration } from 'chart.js';
 
 	let {
 		distribution,
@@ -37,80 +39,158 @@
 		})()
 	);
 
-	const maxCount = $derived(bars.reduce((m, b) => (b.count > m ? b.count : m), 0));
 	const total = $derived(bars.reduce((sum, b) => sum + b.count, 0));
 
-	function tooltipFor(b: Bar): string {
-		const times = b.count === 1 ? 'once' : `${b.count} times`;
-		return `${b.damage}-damage hit ${direction} ${times}`;
+	let canvas: HTMLCanvasElement;
+	let chart: Chart<'bar'> | null = null;
+
+	function readVar(name: string, fallback: string): string {
+		if (typeof document === 'undefined') return fallback;
+		const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+		return v || fallback;
 	}
 
-	function tickValues(n: number): number[] {
-		if (n <= 0) return [];
-		if (n <= 4) return Array.from({ length: n }, (_, i) => i + 1);
-		const step = Math.ceil(n / 4);
-		const out: number[] = [];
-		for (let v = step; v <= n; v += step) out.push(v);
-		if (out[out.length - 1] !== n) out.push(n);
-		return out;
+	// Blend two hex colors: amount=0 → a, amount=1 → b.
+	function blend(a: string, b: string, amount: number): string {
+		const parse = (h: string) => {
+			h = h.replace('#', '').trim();
+			if (h.length === 3)
+				h = h
+					.split('')
+					.map((c) => c + c)
+					.join('');
+			return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+		};
+		const [r1, g1, b1] = parse(a);
+		const [r2, g2, b2] = parse(b);
+		return `rgb(${Math.round(r1 * (1 - amount) + r2 * amount)}, ${Math.round(g1 * (1 - amount) + g2 * amount)}, ${Math.round(b1 * (1 - amount) + b2 * amount)})`;
 	}
 
-	// Pick a "nice" step so roughly <=12 axis labels are visible.
-	function labelStep(n: number): number {
-		if (n <= 12) return 1;
-		const nice = [2, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
-		for (const s of nice) {
-			if (Math.ceil(n / s) <= 12) return s;
-		}
-		return nice[nice.length - 1];
+	function buildConfig(): ChartConfiguration<'bar'> {
+		const accentHex = readVar(
+			accent === 'gold' ? '--accent-gold' : '--accent-red',
+			accent === 'gold' ? '#d4a843' : '#c0392b'
+		);
+		const dim = blend(accentHex, '#000000', 0.7);
+		const bgCard = readVar('--bg-card', '#1a1a1a');
+		const borderCard = readVar('--border-card', '#333');
+		const borderSubtle = readVar('--border-subtle', '#2a2a2a');
+		const textPrimary = readVar('--text-primary', '#e8e0d4');
+		const textSecondary = readVar('--text-secondary', '#9a8e7e');
+		const textMuted = readVar('--text-muted', '#665e52');
+
+		return {
+			type: 'bar',
+			data: {
+				labels: bars.map((b) => String(b.damage)),
+				datasets: [
+					{
+						data: bars.map((b) => b.count),
+						backgroundColor: (ctx) => {
+							const bar = bars[ctx.dataIndex];
+							if (!bar || bar.count === 0) return blend(borderSubtle, '#000', 0);
+							const area = ctx.chart.chartArea;
+							if (!area) return accentHex;
+							const g = ctx.chart.ctx.createLinearGradient(0, area.bottom, 0, area.top);
+							g.addColorStop(0, dim);
+							g.addColorStop(1, accentHex);
+							return g;
+						},
+						borderRadius: 2,
+						borderSkipped: false,
+						categoryPercentage: 1,
+						barPercentage: 0.9,
+						minBarLength: 2
+					}
+				]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				animation: {
+					duration: 450,
+					easing: 'easeOutQuart',
+					delay: (ctx) => (ctx.type === 'data' && ctx.mode === 'default' ? ctx.dataIndex * 18 : 0)
+				},
+				plugins: {
+					legend: { display: false },
+					tooltip: {
+						displayColors: false,
+						padding: 6,
+						backgroundColor: bgCard,
+						borderColor: borderCard,
+						borderWidth: 1,
+						titleColor: textPrimary,
+						bodyColor: textPrimary,
+						titleFont: { size: 12 },
+						bodyFont: { size: 12 },
+						filter: (item) => (item.parsed.y ?? 0) > 0,
+						callbacks: {
+							title: () => '',
+							label: (ctx) => {
+								const count = ctx.parsed.y ?? 0;
+								if (count <= 0) return '';
+								const damage = ctx.label;
+								const times = count === 1 ? 'once' : `${count} times`;
+								return `${damage}-damage hit ${direction} ${times}`;
+							}
+						}
+					}
+				},
+				scales: {
+					x: {
+						ticks: {
+							autoSkip: true,
+							maxTicksLimit: 12,
+							color: textSecondary,
+							font: { size: 10 }
+						},
+						grid: { display: false },
+						border: { display: false }
+					},
+					y: {
+						beginAtZero: true,
+						ticks: {
+							color: textMuted,
+							font: { size: 10 },
+							maxTicksLimit: 5,
+							precision: 0
+						},
+						grid: { color: borderSubtle, drawTicks: false },
+						border: { display: false }
+					}
+				}
+			}
+		};
 	}
 
-	const ticks = $derived(tickValues(maxCount));
-	const step = $derived(labelStep(bars.length));
+	onMount(() => {
+		if (bars.length === 0) return;
+		chart = new Chart(canvas, buildConfig());
+	});
+
+	onDestroy(() => {
+		chart?.destroy();
+		chart = null;
+	});
+
+	$effect(() => {
+		// Retrigger on accent/direction/bars change.
+		void bars;
+		void accent;
+		void direction;
+		if (!chart || bars.length === 0) return;
+		const fresh = buildConfig();
+		chart.data = fresh.data;
+		chart.options = fresh.options!;
+		chart.update();
+	});
 </script>
 
 {#if bars.length > 0}
 	<figure class="histogram {accent}">
-		<div class="plot">
-			<div class="grid" aria-hidden="true">
-				{#each ticks as t}
-					<div class="grid-line" style="bottom: {(t / maxCount) * 100}%">
-						<span class="tick">{t}</span>
-					</div>
-				{/each}
-			</div>
-			<div class="bars" role="list">
-				{#each bars as b, i}
-					{#if b.count === 0}
-						<span class="bar-col empty-col" role="listitem">
-							<span
-								class="bar empty"
-								style="--h: 0%; --delay: {i * 18}ms"
-							></span>
-						</span>
-					{:else}
-						<Tooltip label={tooltipFor(b)}>
-							<span class="bar-col" role="listitem">
-								<span
-									class="bar"
-									style="--h: {maxCount > 0 ? (b.count / maxCount) * 100 : 0}%; --delay: {i * 18}ms"
-								></span>
-							</span>
-						</Tooltip>
-					{/if}
-				{/each}
-			</div>
-		</div>
-		<div class="axis" aria-hidden="true">
-			{#each bars as b, i}
-				{@const lastIdx = bars.length - 1}
-				{@const shown =
-					step <= 1 ||
-					i === 0 ||
-					i === lastIdx ||
-					(b.damage % step === 0 && b.damage + step / 2 < bars[lastIdx].damage)}
-				<span class="axis-label" class:shown>{b.damage}</span>
-			{/each}
+		<div class="plot-wrap">
+			<canvas bind:this={canvas}></canvas>
 		</div>
 		<figcaption>
 			<span class="caption-title">Hits {direction}</span>
@@ -121,9 +201,6 @@
 
 <style>
 	.histogram {
-		--bar-from: var(--accent-gold);
-		--bar-to: color-mix(in srgb, var(--accent-gold) 30%, #000);
-		--glow: color-mix(in srgb, var(--accent-gold) 60%, transparent);
 		display: flex;
 		flex-direction: column;
 		gap: 0.4rem;
@@ -132,128 +209,21 @@
 		border: 1px solid var(--border-subtle);
 		border-radius: var(--radius);
 		min-height: 10rem;
-		/* Hard-clamp width so dense distributions can't push the page wider,
-		   but allow tooltips on edge/top bars to escape the box. */
 		min-width: 0;
 		max-width: 100%;
-		overflow: clip;
-		overflow-clip-margin: 5rem;
 	}
 
-	.histogram.red {
-		--bar-from: var(--accent-red);
-		--bar-to: color-mix(in srgb, var(--accent-red) 30%, #000);
-		--glow: color-mix(in srgb, var(--accent-red) 55%, transparent);
-	}
-
-	.plot {
+	.plot-wrap {
 		position: relative;
 		flex: 1;
-		min-height: 7rem;
+		min-height: 8rem;
+		height: 8rem;
 	}
 
-	.grid {
-		position: absolute;
-		inset: 0 1.5rem 0 0;
-		pointer-events: none;
-	}
-
-	.grid-line {
-		position: absolute;
-		left: 0;
-		right: 0;
-		height: 1px;
-		background: color-mix(in srgb, var(--border-subtle) 70%, transparent);
-	}
-
-	.tick {
-		position: absolute;
-		right: -1.4rem;
-		top: -0.6rem;
-		font-size: 0.6rem;
-		font-variant-numeric: tabular-nums;
-		color: var(--text-muted);
-		font-weight: 500;
-	}
-
-	.bars {
-		position: absolute;
-		inset: 0 1.5rem 0 0;
-		display: flex;
-		align-items: flex-end;
-		gap: 0px;
-	}
-
-	.bar-col {
-		position: relative;
-		flex: 1 1 0;
-		min-width: 0;
-		height: 100%;
-		display: flex;
-		align-items: flex-end;
-		justify-content: stretch;
-		cursor: pointer;
-	}
-
-	.bar-col.empty-col {
-		cursor: default;
-	}
-
-	/* Override the inline-flex the Tooltip wrapper applies so bars stretch. */
-	.bars :global(.tooltip-host) {
-		flex: 1 1 0;
-		min-width: 0;
-		height: 100%;
-		display: flex;
-		align-items: flex-end;
-	}
-
-	.bar {
-		width: 100%;
-		height: var(--h);
-		min-height: 1px;
-		background: linear-gradient(to top, var(--bar-to), var(--bar-from));
-		border-radius: 1px 1px 0 0;
-		transform-origin: bottom center;
-		animation: grow 450ms cubic-bezier(0.22, 1, 0.36, 1) both;
-		animation-delay: var(--delay);
-		box-shadow: 0 0 0 transparent;
-		transition:
-			filter 0.15s,
-			box-shadow 0.15s,
-			transform 0.15s;
-	}
-
-	.bar.empty {
-		background: color-mix(in srgb, var(--border-subtle) 80%, transparent);
-		min-height: 2px;
-		border-radius: 1px;
-	}
-
-	.bar-col:hover .bar:not(.empty) {
-		filter: brightness(1.2);
-		box-shadow: 0 0 10px var(--glow);
-	}
-
-	.axis {
-		display: flex;
-		gap: 2px;
-		padding-right: 1.5rem;
-	}
-
-	.axis-label {
-		flex: 1 1 0;
-		min-width: 0;
-		text-align: center;
-		font-size: 0.6rem;
-		font-variant-numeric: tabular-nums;
-		color: var(--text-secondary);
-		/* Decimated out: keep the slot to stay aligned with the bar, hide the label. */
-		visibility: hidden;
-	}
-
-	.axis-label.shown {
-		visibility: visible;
+	canvas {
+		display: block;
+		width: 100% !important;
+		height: 100% !important;
 	}
 
 	figcaption {
@@ -278,22 +248,5 @@
 		font-size: 0.68rem;
 		color: var(--text-muted);
 		font-variant-numeric: tabular-nums;
-	}
-
-	@keyframes grow {
-		from {
-			transform: scaleY(0);
-			opacity: 0;
-		}
-		to {
-			transform: scaleY(1);
-			opacity: 1;
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.bar {
-			animation: none;
-		}
 	}
 </style>
