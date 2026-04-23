@@ -147,36 +147,42 @@ internal static class CombatStats
         lock (_lock)
         {
             if (!_attached) return;
+            // TotalDamage excludes OverkillDamage, so a killing blow that
+            // exceeds the remaining HP is undercounted without this adjustment.
             int hpDamage = result.UnblockedDamage;
-            int attackDamage = result.TotalDamage;
+            int swingDamage = result.TotalDamage + result.OverkillDamage;
 
             bool dealerIsMe = dealer is not null && LocalContext.IsMe(dealer);
             bool receiverIsMe = LocalContext.IsMe(receiver);
 
             if (dealerIsMe && receiver.IsEnemy)
             {
-                if (attackDamage > 0)
-                    _hitsDealtDistribution[attackDamage] =
-                        _hitsDealtDistribution.TryGetValue(attackDamage, out var c) ? c + 1 : 1;
+                if (swingDamage > 0)
+                {
+                    _hitsDealtDistribution[swingDamage] =
+                        _hitsDealtDistribution.TryGetValue(swingDamage, out var c) ? c + 1 : 1;
+                    if (swingDamage > _biggestDamageDealt) _biggestDamageDealt = swingDamage;
+                }
 
                 if (hpDamage > 0)
                 {
                     _damageDealt += hpDamage;
-                    if (hpDamage > _biggestDamageDealt) _biggestDamageDealt = hpDamage;
                     if (_currentSide == CombatSide.Player) _damageDealtThisTurn += hpDamage;
                 }
             }
 
             if (receiverIsMe)
             {
-                if (attackDamage > 0)
-                    _hitsTakenDistribution[attackDamage] =
-                        _hitsTakenDistribution.TryGetValue(attackDamage, out var c) ? c + 1 : 1;
+                if (swingDamage > 0)
+                {
+                    _hitsTakenDistribution[swingDamage] =
+                        _hitsTakenDistribution.TryGetValue(swingDamage, out var c) ? c + 1 : 1;
+                    if (swingDamage > _biggestDamageTaken) _biggestDamageTaken = swingDamage;
+                }
 
                 if (hpDamage > 0)
                 {
                     _damageTaken += hpDamage;
-                    if (hpDamage > _biggestDamageTaken) _biggestDamageTaken = hpDamage;
                     if (_currentSide == CombatSide.Enemy) _damageTakenThisTurn += hpDamage;
                 }
             }
