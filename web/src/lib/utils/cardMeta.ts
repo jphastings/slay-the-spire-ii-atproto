@@ -53,3 +53,26 @@ export function normaliseId(id: string): string {
 	const name = id.includes('.') ? id.slice(id.indexOf('.') + 1) : id;
 	return name.toLowerCase();
 }
+
+export interface ParsedDeckId {
+	base: string;
+	upgraded: boolean;
+	enchantment?: string;
+}
+
+// parseDeckId splits a deck entry into its components. The mod emits:
+//   "bash"              → plain
+//   "bash+"             → upgraded
+//   "bash/sharp"        → base + Sharp enchantment
+//   "bash+/perfect_fit" → upgraded + Perfect Fit
+export function parseDeckId(id: string): ParsedDeckId {
+	const slash = id.indexOf('/');
+	const before = slash < 0 ? id : id.slice(0, slash);
+	const enchantment = slash < 0 ? undefined : id.slice(slash + 1);
+	const isUp = before.endsWith('+');
+	return {
+		base: isUp ? before.slice(0, -1) : before,
+		upgraded: isUp,
+		enchantment
+	};
+}

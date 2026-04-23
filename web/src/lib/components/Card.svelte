@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { humanizeId } from '$lib/utils/format';
 	import { cardPortrait, characterFrameColor, orbCharacter } from '$lib/utils/assets';
-	import { cardMeta, ensureCardsLoaded, normaliseId } from '$lib/utils/cardMeta';
+	import { cardMeta, ensureCardsLoaded, normaliseId, parseDeckId } from '$lib/utils/cardMeta';
 	import { parseCardText } from '$lib/utils/cardtext';
 
 	let {
@@ -17,24 +17,9 @@
 		description?: string;
 	} = $props();
 
-	// The mod tags deck entries with upgrade + enchantment state so this
-	// component can render the exact variant without a lexicon change
-	// (see CollectDeckIds in mod/RunStateExtractor.cs):
-	//   "bash"              → plain
-	//   "bash+"             → upgraded
-	//   "bash/sharp"        → base + Sharp enchantment
-	//   "bash+/perfect_fit" → upgraded + Perfect Fit
-	const parsed = $derived.by(() => {
-		const slash = id.indexOf('/');
-		const before = slash < 0 ? id : id.slice(0, slash);
-		const enchantment = slash < 0 ? undefined : id.slice(slash + 1);
-		const isUp = before.endsWith('+');
-		return {
-			base: isUp ? before.slice(0, -1) : before,
-			upgraded: isUp,
-			enchantment
-		};
-	});
+	// Deck entries are annotated by the mod's CollectDeckIds with
+	// upgrade + enchantment state; parseDeckId splits them back apart.
+	const parsed = $derived(parseDeckId(id));
 	const rawId = $derived(parsed.base);
 	const upgraded = $derived(upgradedProp || parsed.upgraded);
 	const enchantment = $derived(parsed.enchantment);
@@ -278,6 +263,7 @@
 		-webkit-text-stroke: calc(var(--w) * 6 / 300) #4d4b40;
 		paint-order: stroke fill;
 		text-shadow: calc(var(--w) * 2 / 300) calc(var(--w) * 2 / 300) 0 rgba(0, 0, 0, 0.19);
+		text-wrap: nowrap;
 	}
 
 	/* Upgraded cards render the title in green with a darker green outline. */

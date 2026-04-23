@@ -145,13 +145,6 @@
 		{@render statsBoxes()}
 	{/if}
 
-	{#if run.deck && run.deck.length > 0}
-		<section>
-			<h3>Deck ({run.deck.length})</h3>
-			<DeckList cards={run.deck} />
-		</section>
-	{/if}
-
 	{#if run.relics && run.relics.length > 0}
 		<section>
 			<h3>Relics ({run.relics.length})</h3>
@@ -163,6 +156,13 @@
 		<section>
 			<h3>Potions ({run.potions.length})</h3>
 			<PotionList potions={run.potions} />
+		</section>
+	{/if}
+
+	{#if run.deck && run.deck.length > 0}
+		<section>
+			<h3>Deck ({run.deck.length})</h3>
+			<DeckList cards={run.deck} cardUseDistribution={run.stats?.cardUseDistribution} />
 		</section>
 	{/if}
 
