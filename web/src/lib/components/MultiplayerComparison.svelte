@@ -23,7 +23,7 @@
 </script>
 
 <div class="scroll">
-	<table class="compare">
+	<table class="compare" style="--cols: {orderedDids.length}">
 		<thead>
 			<tr>
 				<th scope="col" class="corner" aria-hidden="true"></th>
@@ -174,5 +174,59 @@
 	tbody tr:last-child th,
 	tbody tr:last-child td {
 		border-bottom: none;
+	}
+
+	/* Narrow viewports: stack each row as "description above cells". */
+	@media (max-width: 40rem) {
+		.scroll {
+			overflow-x: visible;
+			margin: 0;
+			padding: 0;
+		}
+
+		.compare,
+		.compare thead,
+		.compare tbody,
+		.compare tr {
+			display: block;
+		}
+
+		.compare thead tr,
+		.compare tbody tr {
+			display: grid;
+			grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+			column-gap: 0.5rem;
+		}
+
+		.compare thead .corner {
+			display: none;
+		}
+
+		.compare thead .player-col {
+			padding: 0.5rem 0.25rem 0.75rem;
+		}
+
+		.compare tbody tr {
+			border-bottom: 1px solid var(--border-subtle);
+			padding: 0.35rem 0 0.55rem;
+		}
+
+		.compare tbody tr:last-child {
+			border-bottom: none;
+		}
+
+		.compare tbody .metric-label {
+			grid-column: 1 / -1;
+			white-space: normal;
+			text-align: left;
+			padding: 0.3rem 0 0.25rem;
+			border-bottom: none;
+		}
+
+		.compare tbody .value {
+			padding: 0.25rem;
+			min-width: 0;
+			border-bottom: none;
+		}
 	}
 </style>
