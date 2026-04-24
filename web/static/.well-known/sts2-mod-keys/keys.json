@@ -1,0 +1,12 @@
+{
+  "$comment": "Public keys used by the atproto-tracker mod to sign run records. The mod embeds the corresponding private key at build time (from a GitHub Actions secret) and inline-signs every me.byjp.pesos.sts2.run record per https://badge.blue/. Verifiers look up the attestation's `key` field in this manifest to confirm it was issued by a build of the mod.",
+  "keys": [
+    {
+      "id": "2026-04-23",
+      "publicKey": "did:key:zDnaeymAYayC5gAVhHvk8jV338adT3k1gx1meyuT6ksmbvLzN",
+      "algorithm": "ES256",
+      "status": "active",
+      "validFrom": "2026-04-23"
+    }
+  ]
+}

@@ -279,8 +279,15 @@ func loadLocJSON(p *pck.Pack, path string) (map[string]string, error) {
 // cardCharacters walks the pack for every `card_atlas.sprites/{char}/{id}.tres`
 // — the directory-per-character organisation gives us the card→character
 // mapping without parsing any C#. Returns a map id → character.
+//
+// Some cards only have sprites at nested paths (e.g.
+// `card_atlas.sprites/ironclad/beta/spite.tres`). We prefer the flat
+// mapping when both exist (so a `beta/` duplicate can't shadow the real
+// card) and fall back to the nested path otherwise, so cards that only
+// live under a subdir still get a character assignment.
 func cardCharacters(p *pck.Pack) map[string]string {
 	out := map[string]string{}
+	nested := map[string]string{}
 	const prefix = "images/atlases/card_atlas.sprites/"
 	for _, f := range p.Files {
 		if !strings.HasPrefix(f.Path, prefix) || !strings.HasSuffix(f.Path, ".tres") {
@@ -288,12 +295,22 @@ func cardCharacters(p *pck.Pack) map[string]string {
 		}
 		rest := strings.TrimSuffix(strings.TrimPrefix(f.Path, prefix), ".tres")
 		parts := strings.Split(rest, "/")
-		// Skip nested beta/ subdirs so we don't overwrite the real
-		// mapping with a beta-only duplicate.
-		if len(parts) != 2 {
+		if len(parts) < 2 {
 			continue
 		}
-		char, id := parts[0], parts[1]
+		char := parts[0]
+		id := parts[len(parts)-1]
+		if len(parts) == 2 {
+			if _, exists := out[id]; !exists {
+				out[id] = char
+			}
+			continue
+		}
+		if _, exists := nested[id]; !exists {
+			nested[id] = char
+		}
+	}
+	for id, char := range nested {
 		if _, exists := out[id]; !exists {
 			out[id] = char
 		}

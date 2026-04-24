@@ -70,7 +70,9 @@ export function parseDeckId(id: string): ParsedDeckId {
 	const stateStr = q < 0 ? '' : id.slice(q + 1);
 	const slash = withoutState.indexOf('/');
 	const before = slash < 0 ? withoutState : withoutState.slice(0, slash);
-	const enchantment = slash < 0 ? undefined : withoutState.slice(slash + 1);
+	// Enchantment slug is looked up against the lowercase keys in enchant.json,
+	// but the mod emits deck entries uppercase (e.g. CARD.STRIKE_IRONCLAD/TEZCATARAS_EMBER).
+	const enchantment = slash < 0 ? undefined : withoutState.slice(slash + 1).toLowerCase();
 	const isUp = before.endsWith('+');
 	let state: Record<string, number> | undefined;
 	if (stateStr.length > 0) {

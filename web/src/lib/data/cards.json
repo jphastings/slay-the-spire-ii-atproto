@@ -2,6 +2,7 @@
   {
     "id": "abrasive",
     "class": "Abrasive",
+    "character": "silent",
     "cost": "3",
     "type": "power",
     "rarity": "rare",
@@ -234,6 +235,7 @@
   {
     "id": "apparition",
     "class": "Apparition",
+    "character": "event",
     "cost": "1",
     "type": "skill",
     "rarity": "ancient",
@@ -1414,6 +1416,7 @@
   {
     "id": "clash",
     "class": "Clash",
+    "character": "event",
     "cost": "0",
     "type": "attack",
     "rarity": "event",
@@ -2460,6 +2463,7 @@
   {
     "id": "distraction",
     "class": "Distraction",
+    "character": "event",
     "cost": "1",
     "type": "skill",
     "rarity": "event",
@@ -2591,6 +2595,7 @@
   {
     "id": "dual_wield",
     "class": "DualWield",
+    "character": "event",
     "cost": "1",
     "type": "skill",
     "rarity": "event",
@@ -2741,6 +2746,7 @@
   {
     "id": "entrench",
     "class": "Entrench",
+    "character": "event",
     "cost": "2",
     "type": "skill",
     "rarity": "event",
@@ -3046,6 +3052,7 @@
   {
     "id": "feral",
     "class": "Feral",
+    "character": "defect",
     "cost": "2",
     "type": "power",
     "rarity": "uncommon",
@@ -3114,6 +3121,7 @@
   {
     "id": "fight_through",
     "class": "FightThrough",
+    "character": "defect",
     "cost": "1",
     "type": "skill",
     "rarity": "uncommon",
@@ -3856,6 +3864,7 @@
   {
     "id": "hailstorm",
     "class": "Hailstorm",
+    "character": "defect",
     "cost": "1",
     "type": "power",
     "rarity": "uncommon",
@@ -4449,6 +4458,7 @@
   {
     "id": "iteration",
     "class": "Iteration",
+    "character": "defect",
     "cost": "1",
     "type": "power",
     "rarity": "uncommon",
@@ -5432,6 +5442,7 @@
   {
     "id": "not_yet",
     "class": "NotYet",
+    "character": "ironclad",
     "cost": "2",
     "type": "skill",
     "rarity": "rare",
@@ -5580,6 +5591,7 @@
   {
     "id": "outmaneuver",
     "class": "Outmaneuver",
+    "character": "event",
     "cost": "1",
     "type": "skill",
     "rarity": "event",
@@ -6415,6 +6427,7 @@
   {
     "id": "rebound",
     "class": "Rebound",
+    "character": "event",
     "cost": "1",
     "type": "attack",
     "rarity": "event",
@@ -7484,6 +7497,7 @@
   {
     "id": "spite",
     "class": "Spite",
+    "character": "ironclad",
     "cost": "0",
     "type": "attack",
     "rarity": "uncommon",
@@ -7606,6 +7620,7 @@
   {
     "id": "stack",
     "class": "Stack",
+    "character": "event",
     "cost": "1",
     "type": "skill",
     "rarity": "event",
@@ -8023,6 +8038,7 @@
   {
     "id": "synchronize",
     "class": "Synchronize",
+    "character": "defect",
     "cost": "1",
     "type": "skill",
     "rarity": "uncommon",
@@ -8759,6 +8775,7 @@
   {
     "id": "voltaic",
     "class": "Voltaic",
+    "character": "defect",
     "cost": "3",
     "type": "skill",
     "rarity": "rare",

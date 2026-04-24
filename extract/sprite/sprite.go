@@ -29,43 +29,65 @@ type Manifest struct {
 	Items   []string `json:"items"` // id at grid position i
 }
 
-// Build reads every *.png in srcDir, scales each to tileW×tileH with
-// Catmull-Rom (good quality for UI icons), packs them into a grid, and
+// Build walks srcDir recursively for every *.png, scales each to tileW×tileH
+// with Catmull-Rom (good quality for UI icons), packs them into a grid, and
 // writes a composite PNG + JSON index. The grid has ceil(√n) columns by
 // default so the sheet stays roughly tile-square.
+//
+// Recursion catches portraits that only live at nested paths in the pack
+// (e.g. card_portraits/ironclad/beta/spite.png). When two files share a
+// basename, the shallowest wins — the convention elsewhere is that flat
+// mappings are canonical and nested dirs are beta/duplicates.
 func Build(srcDir, outPNG, outJSON string, tileW, tileH int) (int, error) {
-	entries, err := os.ReadDir(srcDir)
+	type found struct {
+		id, path string
+		depth    int
+	}
+	byID := map[string]found{}
+	err := filepath.WalkDir(srcDir, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() || !strings.HasSuffix(d.Name(), ".png") {
+			return nil
+		}
+		id := strings.TrimSuffix(d.Name(), ".png")
+		rel, _ := filepath.Rel(srcDir, path)
+		depth := strings.Count(rel, string(filepath.Separator))
+		if prev, ok := byID[id]; ok && prev.depth <= depth {
+			return nil
+		}
+		byID[id] = found{id: id, path: path, depth: depth}
+		return nil
+	})
 	if err != nil {
 		return 0, err
 	}
-	var names []string
-	for _, e := range entries {
-		if e.IsDir() || !strings.HasSuffix(e.Name(), ".png") {
-			continue
-		}
-		names = append(names, e.Name())
+	if len(byID) == 0 {
+		return 0, fmt.Errorf("sprite: no png files in %s", srcDir)
+	}
+	names := make([]string, 0, len(byID))
+	for id := range byID {
+		names = append(names, id)
 	}
 	sort.Strings(names)
 	n := len(names)
-	if n == 0 {
-		return 0, fmt.Errorf("sprite: no png files in %s", srcDir)
-	}
 
 	cols := int(math.Ceil(math.Sqrt(float64(n))))
 	rows := (n + cols - 1) / cols
 	sheet := image.NewRGBA(image.Rect(0, 0, cols*tileW, rows*tileH))
 
 	ids := make([]string, n)
-	for i, name := range names {
-		src, err := readPNG(filepath.Join(srcDir, name))
+	for i, id := range names {
+		src, err := readPNG(byID[id].path)
 		if err != nil {
-			return 0, fmt.Errorf("sprite %s: %w", name, err)
+			return 0, fmt.Errorf("sprite %s: %w", id, err)
 		}
 		x := (i % cols) * tileW
 		y := (i / cols) * tileH
 		dst := image.Rect(x, y, x+tileW, y+tileH)
 		xdraw.CatmullRom.Scale(sheet, dst, src, src.Bounds(), xdraw.Over, nil)
-		ids[i] = strings.TrimSuffix(name, ".png")
+		ids[i] = id
 	}
 
 	if err := writePNG(outPNG, sheet); err != nil {

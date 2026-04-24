@@ -88,7 +88,7 @@ export function parseCardText(desc: string, opts: ParseOptions = {}): Line[] {
 				if (ev === null) {
 					const field = inner.slice(0, inner.indexOf(':') === -1 ? inner.length : inner.indexOf(':'));
 					flush();
-					const v = opts.values?.[field];
+					const v = resolvePlaceholderValue(field, opts.values);
 					if (typeof v === 'number' && Number.isFinite(v)) {
 						cur.push({ text: v.toString(), style: 'highlight', field });
 					} else {
@@ -111,6 +111,29 @@ export function parseCardText(desc: string, opts: ParseOptions = {}): Line[] {
 	flush();
 	if (cur.length > 0 || lines.length === 0) lines.push(cur);
 	return lines;
+}
+
+// Deck-view fallbacks for computed DynamicVars that the game resolves at
+// play time. Without combat state we can't reproduce the real formula, so
+// we show the static base the card was built with — e.g. Perfected Strike's
+// {CalculatedDamage} falls back to CalculationBase (6), which reads as the
+// "no Strike bonus" damage.
+const placeholderFallback: Record<string, string> = {
+	CalculatedDamage: 'CalculationBase',
+	CalculatedBlock: 'CalculationBase'
+};
+
+function resolvePlaceholderValue(
+	field: string,
+	values: Record<string, number> | undefined
+): number | undefined {
+	if (!values) return undefined;
+	const direct = values[field];
+	if (typeof direct === 'number' && Number.isFinite(direct)) return direct;
+	const fallback = placeholderFallback[field];
+	if (!fallback) return undefined;
+	const v = values[fallback];
+	return typeof v === 'number' && Number.isFinite(v) ? v : undefined;
 }
 
 // evaluatePlaceholder returns the expanded branch text for conditional /
