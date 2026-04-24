@@ -1,4 +1,14 @@
-# SPA fallback — every path delegates to the client-side router.
-# Wisp's _redirects matcher includes query strings in the rule LHS, so
-# explicit per-route rules stop matching as soon as a ?param is added.
-/*    /index.html   200
+# SPA routes — rewrite to the app shell with a 200 status.
+# Wisp's _redirects matcher includes the query string in the rule LHS, so
+# for any route that can take query params we also register a `?*` variant.
+# See CLAUDE.md ("Hosting: wisp.place") for context.
+/                      /index.html   200
+/multiplayer/:tid      /index.html   200
+/multiplayer/:tid?*    /index.html   200
+/:actor                /index.html   200
+/:actor/:tid           /index.html   200
+
+# Anything else is not a real page — serve the app shell with a 404 status.
+# `?*` variant catches unknown paths that include a query string.
+/*                     /index.html   404
+/*?*                   /index.html   404
