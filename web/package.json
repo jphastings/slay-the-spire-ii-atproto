@@ -11,7 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ipld/dag-cbor": "^9.2.6",
+    "@noble/curves": "^2.2.0",
     "chart.js": "^4.5.1",
+    "multiformats": "^13.4.2",
     "prototypey": "^0.7.0"
   },
   "devDependencies": {

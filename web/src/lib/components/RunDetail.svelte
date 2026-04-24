@@ -3,17 +3,46 @@
 	import { COLLECTION } from '$lib/api/pds';
 	import { humanizeId, formatAscension, formatDuration } from '$lib/utils/format';
 	import OutcomeBadge from './OutcomeBadge.svelte';
+	import AttestationBadge from './AttestationBadge.svelte';
 	import DeckList from './DeckList.svelte';
 	import RelicList from './RelicList.svelte';
 	import PotionList from './PotionList.svelte';
 	import PlayerCard from './PlayerCard.svelte';
 	import StatsPanel from './StatsPanel.svelte';
+	import { verifyRecord, type VerifyResult } from '$lib/attestation/verify';
+	import { loadTrustedModKeys } from '$lib/attestation/keys';
 
 	let {
 		run,
 		did,
 		tid
 	}: { run: RunRecord; did: string; tid: string } = $props();
+
+	let attestation = $state<VerifyResult | 'loading'>('loading');
+
+	$effect(() => {
+		// Re-run verification whenever the run or its repo changes.
+		let cancelled = false;
+		attestation = 'loading';
+		(async () => {
+			try {
+				const trustedKeys = await loadTrustedModKeys();
+				const result = await verifyRecord({
+					record: run as unknown as Record<string, unknown>,
+					repository: did,
+					trustedKeys
+				});
+				if (!cancelled) attestation = result;
+			} catch (err) {
+				if (!cancelled) {
+					attestation = { status: 'invalid', reason: (err as Error).message };
+				}
+			}
+		})();
+		return () => {
+			cancelled = true;
+		};
+	});
 
 	const dateFmt = new Intl.DateTimeFormat('en-GB', {
 		day: 'numeric',
@@ -46,6 +75,7 @@
 	<h2>{humanizeId(run.character)}</h2>
 	<span class="ascension">{formatAscension(run.ascension)}</span>
 	<OutcomeBadge outcome={run.outcome} />
+	<AttestationBadge result={attestation} />
 {/snippet}
 
 {#snippet statsBoxes()}
