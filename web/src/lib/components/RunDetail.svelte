@@ -49,22 +49,23 @@
 		month: 'short',
 		year: 'numeric'
 	});
-	const timeFmt = new Intl.DateTimeFormat('en-GB', {
-		hour: '2-digit',
-		minute: '2-digit',
-		hour12: false
-	});
 
-	function splitDate(iso: string | undefined) {
+	function formatDate(iso: string | undefined) {
 		if (!iso) return null;
 		const d = new Date(iso);
 		if (isNaN(d.getTime())) return null;
-		return { date: dateFmt.format(d), time: timeFmt.format(d) };
+		return dateFmt.format(d);
 	}
 
-	const started = $derived(splitDate(run.startedAt));
-	const ended = $derived(splitDate(run.endedAt));
-	const updated = $derived(ended ? null : splitDate(run.updatedAt));
+	const timestamp = $derived(
+		run.endedAt
+			? { label: 'Ended', date: formatDate(run.endedAt) }
+			: run.updatedAt
+				? { label: 'Updated', date: formatDate(run.updatedAt) }
+				: run.startedAt
+					? { label: 'Started', date: formatDate(run.startedAt) }
+					: null
+	);
 	const pdslsUrl = $derived(`https://pdsls.dev/at://${did}/${COLLECTION}/${tid}`);
 
 	const hasAllies = $derived(!!run.allies && run.allies.length > 0);
@@ -98,10 +99,20 @@
 				<dd>{run.score}</dd>
 			</div>
 		{/if}
-		{#if run.durationSeconds != null}
+		{#if run.durationSeconds != null || timestamp}
 			<div class="field">
-				<dt>Duration</dt>
-				<dd>{formatDuration(run.durationSeconds)}</dd>
+				{#if run.durationSeconds != null}
+					<dt>Duration</dt>
+					<dd>
+						{formatDuration(run.durationSeconds)}
+						{#if timestamp}
+							<div class="time">{timestamp.label} {timestamp.date}</div>
+						{/if}
+					</dd>
+				{:else if timestamp}
+					<dt>{timestamp.label}</dt>
+					<dd>{timestamp.date}</dd>
+				{/if}
 			</div>
 		{/if}
 		{#if run.outcome === 'death' && run.killedBy}
@@ -111,37 +122,6 @@
 			</div>
 		{/if}
 	</dl>
-
-	{#if started || ended || updated}
-		<dl class="fields">
-			{#if started}
-				{@const s = started}
-				<div class="field">
-					<dt>Started</dt>
-					<dd>
-						{s.date}
-					</dd>
-				</div>
-			{/if}
-			{#if ended}
-				{@const e = ended}
-				<div class="field">
-					<dt>Ended</dt>
-					<dd>
-						{e.date}
-					</dd>
-				</div>
-			{:else if updated}
-				{@const u = updated}
-				<div class="field">
-					<dt>Updated</dt>
-					<dd>
-						{u.date}
-					</dd>
-				</div>
-			{/if}
-		</dl>
-	{/if}
 {/snippet}
 
 <div class="detail">
