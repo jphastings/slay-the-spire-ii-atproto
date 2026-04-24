@@ -5,14 +5,33 @@
 	import type { MiniDoc, RunRecord } from '$lib/api/types';
 	import RunDetail from '$lib/components/RunDetail.svelte';
 
+	const POLL_INTERVAL_MS = 300_000;
+
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 	let identity = $state<MiniDoc | null>(null);
 	let run = $state<RunRecord | null>(null);
 
+	const isInProgress = $derived(run?.outcome === 'in_progress');
+
 	$effect(() => {
 		const { actor, tid } = page.params;
 		load(actor, tid);
+	});
+
+	$effect(() => {
+		const { tid } = page.params;
+		if (!identity || !isInProgress || !tid) return;
+		const { pds, did } = identity;
+		const interval = setInterval(async () => {
+			try {
+				const result = await getRun(pds, did, tid);
+				run = result.value;
+			} catch {
+				// Transient fetch failures: keep the last good state and try again next tick.
+			}
+		}, POLL_INTERVAL_MS);
+		return () => clearInterval(interval);
 	});
 
 	async function load(actor: string, tid: string) {
