@@ -218,7 +218,7 @@
 		.compare tbody .metric-label {
 			grid-column: 1 / -1;
 			white-space: normal;
-			text-align: left;
+			text-align: center;
 			padding: 0.3rem 0 0.25rem;
 			border-bottom: none;
 		}
