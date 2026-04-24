@@ -5,10 +5,10 @@
 
 	const tooltips = {
 		loading: 'Checking signature…',
-		verified: 'Signature verified. This run was almost certainly created by an actual player with the official mod.',
+		verified: 'Signature verified. This page (almost certainly) shows an authentic Slay the Spire 2 run.',
 		unsigned:
 			"No signature on this record. We don't know if this run is authentic.",
-		invalid: "Signature invalid. This run appears to have been tampered with."
+		invalid: "Signature invalid. The details of this Slay the Spire 2 run appear to have been tampered with."
 	};
 
 	const status = $derived(result === 'loading' ? 'loading' : result.status);
