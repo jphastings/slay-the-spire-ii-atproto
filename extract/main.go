@@ -70,6 +70,9 @@ func main() {
 	if err := extractImages(p, "images/packed/card_portraits/", filepath.Join(*outDir, "card_portraits"), true); err != nil {
 		log.Fatalf("card portraits: %v", err)
 	}
+	if err := extractCharacterIcons(p, filepath.Join(*outDir, "characters")); err != nil {
+		log.Fatalf("character icons: %v", err)
+	}
 	if err := extractImages(p, "images/atlases/", filepath.Join(*outDir, "atlases"), false); err != nil {
 		log.Fatalf("atlases: %v", err)
 	}
@@ -97,6 +100,19 @@ func main() {
 			log.Fatalf("sprite %s: %v", kind, err)
 		}
 		fmt.Fprintf(os.Stderr, "sprite %s → %d icons in %s\n", kind, n, outPNG)
+	}
+
+	// Character icons: tiny (~64×64) class badges for profile stats boxes.
+	// Packed into one sheet keyed by character id (e.g. "ironclad").
+	{
+		charIconsDir := filepath.Join(*outDir, "characters")
+		outPNG := filepath.Join(*outDir, "characters_sprite.png")
+		outJSON := filepath.Join(*outDir, "characters_sprite.json")
+		n, err := sprite.BuildUniform(charIconsDir, outPNG, outJSON, 96)
+		if err != nil {
+			log.Fatalf("sprite characters: %v", err)
+		}
+		fmt.Fprintf(os.Stderr, "sprite characters → %d icons in %s\n", n, outPNG)
 	}
 
 	// Card orbs + enchantment icons/tab: packed (heterogeneous) sheets so
@@ -140,6 +156,44 @@ func main() {
 		}
 		fmt.Fprintf(os.Stderr, "sprite portraits %s → %d cards in %s\n", c.Name(), n, outPNG)
 	}
+}
+
+// extractCharacterIcons pulls the filled top-panel character icons
+// (character_icon_<name>.png — skipping the *_outline variants) and writes
+// them out keyed by the raw character id. These match the lowercase ids
+// stored in me.byjp.pesos.sts2.run.character.
+func extractCharacterIcons(p *pck.Pack, outDir string) error {
+	if err := os.MkdirAll(outDir, 0o755); err != nil {
+		return err
+	}
+	const prefix = "images/ui/top_panel/character_icon_"
+	var ok, failed int
+	for _, f := range p.Files {
+		if !strings.HasPrefix(f.Path, prefix) || !strings.HasSuffix(f.Path, ".png.import") {
+			continue
+		}
+		rest := strings.TrimPrefix(f.Path, prefix)
+		if strings.Contains(rest, "/") {
+			continue
+		}
+		id := strings.TrimSuffix(rest, ".png.import")
+		if strings.HasSuffix(id, "_outline") {
+			continue
+		}
+		// We don't need the avatar for a random character, it always resolves before we display it
+		if id == "random_character" {
+			continue
+		}
+		out := filepath.Join(outDir, id+".png")
+		if err := convertImported(p, f.Path, out); err != nil {
+			failed++
+			fmt.Fprintf(os.Stderr, "  %s: %v\n", id, err)
+			continue
+		}
+		ok++
+	}
+	fmt.Fprintf(os.Stderr, "%s → %d ok (%d errors) in %s\n", prefix, ok, failed, outDir)
+	return nil
 }
 
 // extractImages scans the pack for *.png.import files under prefix, resolves
@@ -237,4 +291,3 @@ func extractLocalization(p *pck.Pack, srcPath, outPath string) error {
 	fmt.Fprintf(os.Stderr, "%s → %d keys in %s\n", srcPath, len(m), outPath)
 	return nil
 }
-

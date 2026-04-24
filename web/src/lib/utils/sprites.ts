@@ -12,6 +12,7 @@ import relicsManifest from '$lib/data/relics.json';
 import potionsManifest from '$lib/data/potions.json';
 import orbManifest from '$lib/data/orb.json';
 import enchantManifest from '$lib/data/enchant.json';
+import charactersManifest from '$lib/data/characters.json';
 import colorlessPortraits from '$lib/data/portraits/colorless.json';
 import cursePortraits from '$lib/data/portraits/curse.json';
 import defectPortraits from '$lib/data/portraits/defect.json';
@@ -82,6 +83,10 @@ export const relicsSheet: SpriteSheet = build(relicsManifest, '/assets/relics_sp
 export const potionsSheet: SpriteSheet = build(potionsManifest, '/assets/potions_sprite.webp');
 export const orbSheet: PackedSheet = buildPacked(orbManifest, '/assets/orb_sprite.webp');
 export const enchantSheet: PackedSheet = buildPacked(enchantManifest, '/assets/enchant_sprite.webp');
+export const charactersSheet: SpriteSheet = build(
+	charactersManifest,
+	'/assets/characters_sprite.webp'
+);
 
 const portraitSheets: Record<string, SpriteSheet> = {
 	colorless: build(colorlessPortraits, '/assets/card_portraits/colorless.webp'),

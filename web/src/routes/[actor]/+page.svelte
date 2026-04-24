@@ -6,6 +6,8 @@
 	import RunCard from '$lib/components/RunCard.svelte';
 	import PlayerCard from '$lib/components/PlayerCard.svelte';
 	import ClaimPromptCard from '$lib/components/ClaimPromptCard.svelte';
+	import ProfileStats from '$lib/components/ProfileStats.svelte';
+	import { computeProfileStats } from '$lib/utils/profile-stats';
 	import { fetchKeytraceClaim, type KeytraceClaim } from '$lib/utils/player';
 
 	let loading = $state(true);
@@ -14,51 +16,38 @@
 	// undefined = still checking, null = no claim, object = claim present.
 	let claim = $state<KeytraceClaim | null | undefined>(undefined);
 	let runs = $state<RecordEntry[]>([]);
-	let cursor = $state<string | undefined>(undefined);
-	let loadingMore = $state(false);
+
+	const stats = $derived(computeProfileStats(runs.map((r) => r.value)));
 
 	$effect(() => {
 		const actor = page.params.actor;
-		load(actor);
+		if (actor) load(actor);
 	});
 
 	async function load(actor: string) {
 		loading = true;
 		error = null;
 		runs = [];
-		cursor = undefined;
 		claim = undefined;
 		try {
 			identity = await resolveIdentity(actor);
-			// Runs + claim in parallel — the claim gates (and feeds) the right-hand card.
-			const [runsResult, claimResult] = await Promise.all([
-				listRuns(identity.pds, identity.did),
-				fetchKeytraceClaim(identity.pds, identity.did)
-			]);
-			claim = claimResult;
-			runs = runsResult.records.sort(
+			// Claim fetch runs in parallel with the paginated run pull.
+			const claimPromise = fetchKeytraceClaim(identity.pds, identity.did);
+			const collected: RecordEntry[] = [];
+			let cursor: string | undefined;
+			do {
+				const batch = await listRuns(identity.pds, identity.did, cursor);
+				collected.push(...batch.records);
+				cursor = batch.cursor;
+			} while (cursor);
+			claim = await claimPromise;
+			runs = collected.sort(
 				(a, b) => new Date(b.value.updatedAt).getTime() - new Date(a.value.updatedAt).getTime()
 			);
-			cursor = runsResult.cursor;
 		} catch (e) {
 			error = e instanceof Error ? e.message : 'Unknown error';
 		} finally {
 			loading = false;
-		}
-	}
-
-	async function loadMore() {
-		if (!identity || !cursor || loadingMore) return;
-		loadingMore = true;
-		try {
-			const result = await listRuns(identity.pds, identity.did, cursor);
-			const all = [...runs, ...result.records];
-			runs = all.sort(
-				(a, b) => new Date(b.value.updatedAt).getTime() - new Date(a.value.updatedAt).getTime()
-			);
-			cursor = result.cursor;
-		} finally {
-			loadingMore = false;
 		}
 	}
 
@@ -96,16 +85,16 @@
 	{#if runs.length === 0}
 		<p class="status">No runs found.</p>
 	{:else}
-		<div class="runs">
-			{#each runs as entry}
-				<RunCard run={entry.value} href={`/${page.params.actor}/${rkeyFromUri(entry.uri)}`} />
-			{/each}
+		<div class="layout">
+			<aside class="stats-col">
+				<ProfileStats {stats} />
+			</aside>
+			<div class="runs">
+				{#each runs as entry}
+					<RunCard run={entry.value} href={`/${page.params.actor}/${rkeyFromUri(entry.uri)}`} />
+				{/each}
+			</div>
 		</div>
-		{#if cursor}
-			<button class="load-more" onclick={loadMore} disabled={loadingMore}>
-				{loadingMore ? 'Loading...' : 'Load more'}
-			</button>
-		{/if}
 	{/if}
 {/if}
 
@@ -136,10 +125,42 @@
 		margin-top: 0.15rem;
 	}
 
+	.layout {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.stats-col {
+		min-width: 0;
+	}
+
 	.runs {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
+		min-width: 0;
+	}
+
+	@media (min-width: 60rem) {
+		.layout {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+			gap: 2rem;
+			align-items: start;
+		}
+
+		.runs {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.stats-col {
+			grid-column: 2;
+			grid-row: 1;
+			position: sticky;
+			top: 1rem;
+		}
 	}
 
 	.status {
@@ -152,25 +173,4 @@
 		color: var(--accent-red);
 	}
 
-	.load-more {
-		display: block;
-		margin: 1.5rem auto 0;
-		padding: 0.5rem 1.5rem;
-		background: var(--bg-card);
-		border: 1px solid var(--border-card);
-		border-radius: var(--radius);
-		color: var(--text-primary);
-		font-family: var(--font-body);
-		cursor: pointer;
-		transition: background 0.15s;
-	}
-
-	.load-more:hover:not(:disabled) {
-		background: var(--bg-card-hover);
-	}
-
-	.load-more:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
 </style>

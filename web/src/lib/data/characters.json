@@ -1,0 +1,14 @@
+{
+  "image": "characters_sprite.png",
+  "tileW": 96,
+  "tileH": 96,
+  "columns": 3,
+  "items": [
+    "defect",
+    "ironclad",
+    "necrobinder",
+    "random_character",
+    "regent",
+    "silent"
+  ]
+}

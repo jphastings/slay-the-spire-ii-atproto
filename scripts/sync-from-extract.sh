@@ -85,6 +85,7 @@ copy_sprite potions
 copy_sprite relics
 copy_sprite orb
 copy_sprite enchant
+copy_sprite characters
 
 copy_portraits() {
   local src_root="$extract_dir/card_portraits"
