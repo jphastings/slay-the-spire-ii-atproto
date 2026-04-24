@@ -8,8 +8,19 @@ using AtprotoTracker.Signing;
 // Round-trips our inline signer through the Rust `atproto-attestation-verify`
 // CLI. Exits 0 if all assertions pass.
 //
-// Usage: dotnet run --project mod/tools/SigningSmokeTest [-- <path-to-rust-verify-cli>]
+// Usage: dotnet run --project tools/SigningSmokeTest [-- <path-to-rust-verify-cli>]
 // Defaults to /Users/jp/src/ext/atproto-crates/target/debug/atproto-attestation-verify.
+//
+// Also supports deriving the public did:key from a P-256 private did:key, for
+// verifying that a candidate MOD_SIGNING_PRIVATE_KEY matches the public key
+// published at web/static/.well-known/sts2-mod-keys/keys.json:
+//   dotnet run --project tools/SigningSmokeTest -- --derive-public did:key:z42t...
+
+if (args.Length >= 2 && args[0] == "--derive-public")
+{
+    Console.WriteLine(DidKey.Parse(args[1]).DerivePublicDidKey());
+    return 0;
+}
 
 var verifyCli = args.Length > 0
     ? args[0]

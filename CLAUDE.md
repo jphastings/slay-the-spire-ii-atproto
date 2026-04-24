@@ -41,6 +41,19 @@ Shape changes are **soft-breaking**: old records stay in PDSes with the old shap
 
 Two files move together: `mod/atproto-tracker.csproj` (`<Version>`) and `mod/manifest.json` (`"version"`). The csproj has an MSBuild target that stamps the manifest on build, but it only triggers when the csproj `<Version>` changes — so bump both.
 
+## Mod signing
+
+Released mods embed a P-256 private key at build time (from GitHub Actions secret `MOD_SIGNING_PRIVATE_KEY`) and inline-sign every run record per the badge.blue CID-first attestation spec. Verifiers look up the attestation's `key` field in `web/static/.well-known/sts2-mod-keys/keys.json` to confirm a genuine mod build.
+
+The csproj target that embeds the key runs with `Condition="'$(SigningPrivateKey)' != ''"` — a missing secret silently produces an unsigned mod. To confirm a candidate private key matches the published public:
+
+```sh
+DOTNET_ROLL_FORWARD=LatestMajor dotnet run --project tools/SigningSmokeTest -- \
+  --derive-public 'did:key:z42t…'
+```
+
+Output should equal the `publicKey` in `keys.json`. Mismatch = wrong key or keys.json needs rotating.
+
 ## Identity + avatar resolution (web)
 
 For a player `{ steam?, atproto? }`, `resolvePlayer` in `web/src/lib/utils/player.ts`:
