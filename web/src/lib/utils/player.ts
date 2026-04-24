@@ -15,9 +15,12 @@ export interface ResolvedPlayer {
 	avatar?: string;
 }
 
-const COMPANION_TTL = 5 * 60 * 1000;
-const KEYTRACE_CLAIM_TTL = 24 * 60 * 60 * 1000;
-const BSKY_AVATAR_TTL = 24 * 60 * 60 * 1000;
+// Successes (claim found, avatar published, companion exists) rarely change —
+// cache them for a week. Failures (null/false) are often "not yet published"
+// states that should refresh quickly once the upstream data appears, so cap
+// them at 5 minutes to avoid pinning a stale no-op result for a day.
+const SUCCESS_TTL = 7 * 24 * 60 * 60 * 1000;
+const FAILURE_TTL = 5 * 60 * 1000;
 
 export function steamProfileUrl(steamId: string): string {
 	return `https://steamcommunity.com/profiles/${steamId}`;
@@ -36,7 +39,10 @@ export async function fetchKeytraceClaim(
 	pds: string,
 	did: string
 ): Promise<KeytraceClaim | null> {
-	return cached(`keytrace-claim:${did}`, KEYTRACE_CLAIM_TTL, async () => {
+	return cached(
+		`keytrace-claim:${did}`,
+		(v) => (v ? SUCCESS_TTL : FAILURE_TTL),
+		async () => {
 		try {
 			const url =
 				`${pds}/xrpc/com.atproto.repo.listRecords` +
@@ -85,7 +91,7 @@ export async function fetchKeytraceClaim(
 // --- Bluesky profile avatar (from app.bsky.actor.profile/self on their PDS) ---
 
 async function fetchBlueskyAvatar(pds: string, did: string): Promise<string | null> {
-	return cached(`bsky-avatar:${did}`, BSKY_AVATAR_TTL, async () => {
+	return cached(`bsky-avatar:${did}`, (v) => (v ? SUCCESS_TTL : FAILURE_TTL), async () => {
 		try {
 			const url =
 				`${pds}/xrpc/com.atproto.repo.getRecord` +
@@ -106,7 +112,7 @@ async function fetchBlueskyAvatar(pds: string, did: string): Promise<string | nu
 }
 
 async function hasCompanionRun(pds: string, did: string, tid: string): Promise<boolean> {
-	return cached(`companion:${did}:${tid}`, COMPANION_TTL, async () => {
+	return cached(`companion:${did}:${tid}`, (v) => (v ? SUCCESS_TTL : FAILURE_TTL), async () => {
 		try {
 			await getRun(pds, did, tid);
 			return true;

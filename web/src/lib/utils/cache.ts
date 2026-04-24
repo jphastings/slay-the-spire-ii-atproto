@@ -1,9 +1,15 @@
 const PREFIX = 'sts2-cache:';
 const mem = new Map<string, { value: unknown; expiresAt: number }>();
 
+/**
+ * TTL can be a fixed number of ms, or a function that derives the TTL from the
+ * resolved value — useful for caching "success" results longer than "failure"
+ * results so e.g. a `null` keytrace claim gets revalidated quickly once the
+ * user actually publishes one.
+ */
 export async function cached<T>(
 	key: string,
-	ttlMs: number,
+	ttl: number | ((value: T) => number),
 	fetcher: () => Promise<T>
 ): Promise<T> {
 	const fullKey = PREFIX + key;
@@ -28,6 +34,7 @@ export async function cached<T>(
 	}
 
 	const value = await fetcher();
+	const ttlMs = typeof ttl === 'function' ? ttl(value) : ttl;
 	const entry = { value, expiresAt: now + ttlMs };
 	mem.set(fullKey, entry);
 	if (typeof localStorage !== 'undefined') {
