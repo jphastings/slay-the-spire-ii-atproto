@@ -2,7 +2,7 @@
 	let { outcome }: { outcome: string } = $props();
 
 	const labels: Record<string, string> = {
-		victory: 'Victory',
+		victory: 'Victory…?',
 		death: 'Death',
 		abandoned: 'Abandoned',
 		in_progress: 'In Progress'
