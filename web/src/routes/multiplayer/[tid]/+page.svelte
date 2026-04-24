@@ -12,10 +12,20 @@
 
 	let loading = $state(true);
 	let players = $state<LoadedPlayer[]>([]);
+	// Tracks hash changes so edits like `#did=…` after load re-fire the effect.
+	let hash = $state('');
+
+	$effect(() => {
+		hash = window.location.hash;
+		const onHashChange = () => (hash = window.location.hash);
+		window.addEventListener('hashchange', onHashChange);
+		return () => window.removeEventListener('hashchange', onHashChange);
+	});
 
 	$effect(() => {
 		const tid = page.params.tid;
-		const dids = page.url.searchParams.getAll('did');
+		const raw = hash.startsWith('#') ? hash.slice(1) : hash;
+		const dids = raw ? new URLSearchParams(raw).getAll('did') : [];
 		load(tid, dids);
 	});
 

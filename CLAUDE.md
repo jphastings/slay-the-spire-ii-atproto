@@ -74,7 +74,7 @@ The site is fully static, so every third-party API we call must send CORS header
 
 ## Hosting: wisp.place `_redirects`
 
-Deploys go to [wisp.place](https://docs.wisp.place/redirects/) via `.github/workflows/deploy.yml`. Wisp's `_redirects` matcher includes the query string in the rule LHS — a rule like `/foo/:tid /index.html 200` only matches URLs **without** a `?param`, so any SPA route that takes query params falls through to whatever catch-all is below it. The file is therefore deliberately just `/*  /index.html  200` (no per-route rules, no 404 catch-all); adding explicit routes or a 404 fallback will break any page that uses query strings (e.g. `/multiplayer/[tid]?did=…`). Debug with `curl -sI <url>` with and without a query — if only the no-query version returns 200, the matcher's eating the query.
+Deploys go to [wisp.place](https://docs.wisp.place/redirects/) via `.github/workflows/deploy.yml`. Wisp's `_redirects` matcher includes the query string in the rule LHS — a rule like `/foo/:tid /index.html 200` only matches URLs **without** a `?param`, so any SPA route that takes query params falls through to whatever catch-all is below it. We sidestep this by **keeping every rule free of `?param` clauses** and putting route state that would normally be query params into the URL hash fragment instead (hashes never reach the server). Example: `/multiplayer/[tid]#did=<a>&did=<b>` rather than `?did=<a>&did=<b>`. Debug with `curl -sI <url>` with and without a query — if only the no-query version returns 200, wisp's matcher is eating the query; move the state to the hash.
 
 ## Temporary code
 
