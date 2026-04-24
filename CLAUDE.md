@@ -72,6 +72,10 @@ Caches (see `web/src/lib/utils/cache.ts`): Slingshot identity 30 min, companion 
 
 The site is fully static, so every third-party API we call must send CORS headers. Each PDS does, so direct `fetch` works for atproto calls. Steam's `steamcommunity.com` XML endpoint does **not** — we deliberately do not fetch it from the browser (no CORS proxy) and fall back to showing "Steam player" / the atproto handle instead of a Steam display name.
 
+## Hosting: wisp.place `_redirects`
+
+Deploys go to [wisp.place](https://docs.wisp.place/redirects/) via `.github/workflows/deploy.yml`. Wisp's `_redirects` matcher includes the query string in the rule LHS — a rule like `/foo/:tid /index.html 200` only matches URLs **without** a `?param`, so any SPA route that takes query params falls through to whatever catch-all is below it. The file is therefore deliberately just `/*  /index.html  200` (no per-route rules, no 404 catch-all); adding explicit routes or a 404 fallback will break any page that uses query strings (e.g. `/multiplayer/[tid]?did=…`). Debug with `curl -sI <url>` with and without a query — if only the no-query version returns 200, the matcher's eating the query.
+
 ## Temporary code
 
 - `web/src/lib/utils/player.ts` / `mod/SteamDidResolver.cs` both have a 404-guard around the keytrace reverseLookup endpoint because `keytrace.dev/xrpc/dev.keytrace.reverseLookup` isn't publicly deployed yet. Marked with `TODO` in the source — remove once it ships.
