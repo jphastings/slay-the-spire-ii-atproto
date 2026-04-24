@@ -10,6 +10,8 @@
 
 import relicsManifest from '$lib/data/relics.json';
 import potionsManifest from '$lib/data/potions.json';
+import orbManifest from '$lib/data/orb.json';
+import enchantManifest from '$lib/data/enchant.json';
 import colorlessPortraits from '$lib/data/portraits/colorless.json';
 import cursePortraits from '$lib/data/portraits/curse.json';
 import defectPortraits from '$lib/data/portraits/defect.json';
@@ -31,6 +33,13 @@ interface RawManifest {
 	items: string[];
 }
 
+interface RawPackedManifest {
+	image: string;
+	width: number;
+	height: number;
+	items: Record<string, { x: number; y: number; w: number; h: number }>;
+}
+
 export interface SpriteSheet {
 	/** Grid columns. */
 	cols: number;
@@ -40,6 +49,13 @@ export interface SpriteSheet {
 	url: string;
 	/** id → grid index (column-major position = index % cols, row = index / cols). */
 	indexOf(id: string): number | undefined;
+}
+
+export interface PackedSheet {
+	url: string;
+	width: number;
+	height: number;
+	rectOf(id: string): { x: number; y: number; w: number; h: number } | undefined;
 }
 
 function build(m: RawManifest, webpUrl: string): SpriteSheet {
@@ -53,8 +69,19 @@ function build(m: RawManifest, webpUrl: string): SpriteSheet {
 	};
 }
 
+function buildPacked(m: RawPackedManifest, webpUrl: string): PackedSheet {
+	return {
+		url: webpUrl,
+		width: m.width,
+		height: m.height,
+		rectOf: (id) => m.items[id]
+	};
+}
+
 export const relicsSheet: SpriteSheet = build(relicsManifest, '/assets/relics_sprite.webp');
 export const potionsSheet: SpriteSheet = build(potionsManifest, '/assets/potions_sprite.webp');
+export const orbSheet: PackedSheet = buildPacked(orbManifest, '/assets/orb_sprite.webp');
+export const enchantSheet: PackedSheet = buildPacked(enchantManifest, '/assets/enchant_sprite.webp');
 
 const portraitSheets: Record<string, SpriteSheet> = {
 	colorless: build(colorlessPortraits, '/assets/card_portraits/colorless.webp'),
@@ -86,4 +113,28 @@ export function spriteStyle(sheet: SpriteSheet, id: string): string | null {
 	const col = idx % sheet.cols;
 	const row = Math.floor(idx / sheet.cols);
 	return `--col: ${col}; --row: ${row}; --cols: ${sheet.cols}; --rows: ${sheet.rows}; --sprite: url('${sheet.url}');`;
+}
+
+/**
+ * Packed-sheet equivalent of spriteStyle: emits background-image +
+ * background-size + background-position sized so the container's box
+ * is filled by exactly the named tile. Works for containers whose
+ * aspect matches the source tile; for other aspects the sprite is
+ * stretched exactly like a raw <img> would be.
+ */
+export function packedSpriteStyle(sheet: PackedSheet, id: string): string | null {
+	const r = sheet.rectOf(id);
+	if (!r) return null;
+	// background-size (as %): scale the sheet so the tile's width/height
+	// map to 100% of the container.
+	const bgW = (sheet.width / r.w) * 100;
+	const bgH = (sheet.height / r.h) * 100;
+	// background-position (as %): align the tile's top-left with the
+	// container origin. When the scaled image is `bgW%` wide, 100%
+	// background-position corresponds to (bgW - 100)% of the container
+	// — i.e. the image overhangs by that amount. The fraction of that
+	// overhang we want is r.x / (sheet.width - r.w).
+	const posX = sheet.width === r.w ? 0 : (r.x / (sheet.width - r.w)) * 100;
+	const posY = sheet.height === r.h ? 0 : (r.y / (sheet.height - r.h)) * 100;
+	return `background-image: url('${sheet.url}'); background-size: ${bgW}% ${bgH}%; background-position: ${posX}% ${posY}%; background-repeat: no-repeat;`;
 }

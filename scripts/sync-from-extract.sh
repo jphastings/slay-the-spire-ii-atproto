@@ -83,6 +83,8 @@ copy_sprite() {
 echo "== building sprite sheets =="
 copy_sprite potions
 copy_sprite relics
+copy_sprite orb
+copy_sprite enchant
 
 copy_portraits() {
   local src_root="$extract_dir/card_portraits"
@@ -129,8 +131,9 @@ copy_cards() {
   [[ -f "$src/tints.json" ]] && cp "$src/tints.json" "$data_dir/tints.json"
 
   # Card parts: frame/portrait_border bases (3 each, hue-tinted in CSS),
-  # banner.png + plaque.png (single shapes, also hue-tinted in CSS),
-  # orbs (per character, no tint), enchant tab.
+  # banner.png + plaque.png (single shapes, also hue-tinted in CSS).
+  # Orbs and the enchant tab + icons ship as sprite sheets (copy_sprite
+  # orb / enchant) — skip their raw PNGs here.
   local parts_count=0
   if [[ -d "$src/parts" ]]; then
     while IFS= read -r png; do
@@ -139,24 +142,10 @@ copy_cards() {
       mkdir -p "$(dirname "$out")"
       cwebp -quiet -q 80 -m 6 "$png" -o "$out"
       parts_count=$((parts_count + 1))
-    done < <(find "$src/parts" -name "*.png" -type f)
+    done < <(find "$src/parts" -name "*.png" -type f -not -path "*/orb/*")
   fi
 
-  # Enchantment icons — small (35×35) PNGs with alpha.
-  local ench_count=0
-  if [[ -d "$src/enchantments" ]]; then
-    mkdir -p "$dst/enchantments"
-    shopt -s nullglob
-    for png in "$src/enchantments"/*.png; do
-      local name
-      name=$(basename "${png%.png}")
-      cwebp -quiet -q 80 -m 6 "$png" -o "$dst/enchantments/$name.webp"
-      ench_count=$((ench_count + 1))
-    done
-    shopt -u nullglob
-  fi
-
-  echo "  cards: $parts_count parts + $ench_count enchantments → webp in $dst"
+  echo "  cards: $parts_count parts → webp in $dst"
 }
 copy_cards
 

@@ -3,7 +3,13 @@
 	import { characterFrameColor, orbCharacter } from '$lib/utils/assets';
 	import { cardMeta, normaliseId, parseDeckId } from '$lib/utils/cardMeta';
 	import { parseCardText } from '$lib/utils/cardtext';
-	import { portraitSheet, spriteStyle } from '$lib/utils/sprites';
+	import {
+		enchantSheet,
+		orbSheet,
+		packedSpriteStyle,
+		portraitSheet,
+		spriteStyle
+	} from '$lib/utils/sprites';
 	import { frameFilter, rarityFilter } from '$lib/utils/tints';
 
 	let {
@@ -128,22 +134,21 @@
 	/>
 	<span class="type-label">{typeLabel}</span>
 	{#if hasCost}
-		<img
-			class="layer orb"
-			src="/cards/parts/orb/{orbChar}.webp"
-			alt=""
-			loading="lazy"
-		/>
+		{@const orbStyle = packedSpriteStyle(orbSheet, orbChar)}
+		{#if orbStyle}
+			<div class="layer orb" style={orbStyle} aria-hidden="true"></div>
+		{/if}
 		<span class="cost">{meta?.cost}</span>
 	{/if}
 	{#if enchantment}
-		<img class="layer enchant-tab" src="/cards/enchantments/tab.webp" alt="" />
-		<img
-			class="layer enchant-icon"
-			src="/cards/enchantments/{enchantment}.webp"
-			alt=""
-			onerror={(e) => ((e.currentTarget as HTMLImageElement).style.visibility = 'hidden')}
-		/>
+		{@const tabStyle = packedSpriteStyle(enchantSheet, 'tab')}
+		{@const iconStyle = packedSpriteStyle(enchantSheet, enchantment)}
+		{#if tabStyle}
+			<div class="layer enchant-tab" style={tabStyle} aria-hidden="true"></div>
+		{/if}
+		{#if iconStyle}
+			<div class="layer enchant-icon" style={iconStyle} aria-hidden="true"></div>
+		{/if}
 	{/if}
 	<span class="name" class:upgraded>{name}{upgraded ? '+' : ''}</span>
 	{#if descLines.length > 0}
