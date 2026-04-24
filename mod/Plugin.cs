@@ -24,6 +24,8 @@ public static class Plugin
         PreloadLinuxUnwinder();
         new Harmony(ModId).PatchAll();
         Log.Info($"{ModId} {ModVersion} loaded");
+        if (!Signing.ModSigningKey.Available)
+            Log.Warn("no signing key embedded — run records will be published unsigned. CI builds contain the production key.");
 
         _ = Task.Run(AuthenticateAsync);
     }

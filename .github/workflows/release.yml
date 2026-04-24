@@ -52,7 +52,9 @@ jobs:
       - name: Build mod
         env:
           Sts2DataDir: ${{ github.workspace }}/mod/refs
-        run: dotnet build mod/atproto-tracker.csproj -c Release
+        run: |
+          dotnet build mod/atproto-tracker.csproj -c Release \
+            /p:SigningPrivateKey="${{ secrets.MOD_SIGNING_PRIVATE_KEY }}"
 
       # --- Stage mod zip ---
       - name: Stage mod zip
@@ -109,7 +111,9 @@ jobs:
       - name: Build mod
         env:
           Sts2DataDir: ${{ github.workspace }}/mod/refs
-        run: dotnet build mod/atproto-tracker.csproj -c Release
+        run: |
+          dotnet build mod/atproto-tracker.csproj -c Release \
+            /p:SigningPrivateKey="${{ secrets.MOD_SIGNING_PRIVATE_KEY }}"
 
       - name: Copy mod into installer resources
         run: |

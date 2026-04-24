@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>AtprotoTracker.Signing.SmokeTest</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+  </PropertyGroup>
+
+  <!-- Pull in the Signing code directly — avoids a reference to the Godot-SDK mod project. -->
+  <ItemGroup>
+    <Compile Include="..\..\mod\Signing\Base58Btc.cs" Link="Signing\Base58Btc.cs" />
+    <Compile Include="..\..\mod\Signing\DidKey.cs" Link="Signing\DidKey.cs" />
+    <Compile Include="..\..\mod\Signing\DagCbor.cs" Link="Signing\DagCbor.cs" />
+    <Compile Include="..\..\mod\Signing\ContentCid.cs" Link="Signing\ContentCid.cs" />
+    <Compile Include="..\..\mod\Signing\InlineAttestation.cs" Link="Signing\InlineAttestation.cs" />
+  </ItemGroup>
+
+</Project>

@@ -1,7 +1,7 @@
 ﻿{
   "id": "atproto-tracker",
   "name": "atproto-tracker",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "author": "jphastings",
   "description": "Posts run summaries to your atproto PDS.",
   "entry": "atproto-tracker.dll",

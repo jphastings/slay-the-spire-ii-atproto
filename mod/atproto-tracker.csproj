@@ -45,6 +45,34 @@
     <None Include="config.example.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <!-- Embed the build-time signing private key as a resource when provided
+       (e.g. `dotnet build /p:SigningPrivateKey=did:key:z42t…` from CI). Builds
+       without the property produce an unsigned mod that skips attestation.
+       BeforeTargets="AssignTargetPaths" fires early enough that adding to
+       @(EmbeddedResource) inside the target propagates through to CoreCompile. -->
+  <PropertyGroup>
+    <_SigningKeyFile>$(IntermediateOutputPath)signing-private-key.txt</_SigningKeyFile>
+  </PropertyGroup>
+
+  <Target Name="WriteSigningPrivateKey" BeforeTargets="AssignTargetPaths"
+          Condition="'$(SigningPrivateKey)' != ''">
+    <MakeDir Directories="$(IntermediateOutputPath)" />
+    <WriteLinesToFile File="$(_SigningKeyFile)" Lines="$(SigningPrivateKey)"
+                      Overwrite="true" Encoding="UTF-8" />
+    <ItemGroup>
+      <EmbeddedResource Include="$(_SigningKeyFile)"
+                        LogicalName="AtprotoTracker.signing-private-key.txt" />
+    </ItemGroup>
+    <Message Text="Embedded signing private key into assembly resources." Importance="high" />
+  </Target>
+
+  <!-- If the CI key is not supplied, delete any stale copy so rebuilds don't
+       accidentally inherit it from a prior signed build. -->
+  <Target Name="RemoveStaleSigningPrivateKey" BeforeTargets="AssignTargetPaths"
+          Condition="'$(SigningPrivateKey)' == '' and Exists('$(_SigningKeyFile)')">
+    <Delete Files="$(_SigningKeyFile)" />
+  </Target>
+
   <!-- Stamp manifest.json version from the csproj Version tag before build. -->
   <Target Name="UpdateManifestVersion" BeforeTargets="BeforeBuild">
     <PropertyGroup>

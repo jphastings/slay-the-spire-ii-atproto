@@ -1,6 +1,8 @@
 using System;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using AtprotoTracker.Signing;
 
 namespace AtprotoTracker;
 
@@ -15,7 +17,7 @@ internal static class RunPublisher
     {
         if (AuthState.Status != AuthStatus.Ok) return;
         run.Game = GameRef;
-        await Plugin.AtProto.PutRecordAsync(RunCollection, rkey, run);
+        await Plugin.AtProto.PutRecordAsync(RunCollection, rkey, SignIfPossible(run));
     }
 
     /// <summary>Final update with outcome, then update stats.</summary>
@@ -34,7 +36,7 @@ internal static class RunPublisher
         run.Game     = GameRef;
 
         // 2. Final put of the run record.
-        var runUri = await proto.PutRecordAsync(RunCollection, rkey, run);
+        var runUri = await proto.PutRecordAsync(RunCollection, rkey, SignIfPossible(run));
         Log.Info($"posted run: {runUri}");
 
         // 3. Update rolling stats.
@@ -92,4 +94,28 @@ internal static class RunPublisher
     }
 
     private static JsonNode BuildGameRef() => new JsonObject { ["uri"] = GameRef };
+
+    /// <summary>
+    /// If a build-time signing key is embedded, returns the run record as a
+    /// <see cref="JsonObject"/> with a CID-first inline attestation appended
+    /// to <c>signatures</c>. Otherwise returns the record as-is and the PDS
+    /// stores it unsigned.
+    /// </summary>
+    private static object SignIfPossible(RunRecord run)
+    {
+        var priv = ModSigningKey.PrivateKey;
+        var pub  = ModSigningKey.PublicDidKey;
+        if (priv is null || pub is null) return run;
+
+        // Round-trip through JSON so the signed object matches exactly what the
+        // PDS will store (JsonIgnore rules, converters, property order all
+        // respected by System.Text.Json).
+        var json = JsonSerializer.SerializeToNode(run);
+        if (json is not JsonObject record) return run;
+
+        var metadata = new JsonObject { ["$type"] = ModSigningKey.AttestationType };
+        var attestation = InlineAttestation.CreateInline(record, metadata, Plugin.AtProto.Did, priv, pub);
+        InlineAttestation.Append(record, attestation);
+        return record;
+    }
 }
