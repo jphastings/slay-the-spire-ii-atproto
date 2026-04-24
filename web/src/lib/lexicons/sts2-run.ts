@@ -21,6 +21,11 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 			}),
 			floor: lx.integer({ minimum: 0 }),
 			act: lx.integer({ minimum: 1, maximum: 4 }),
+			maxHp: lx.integer({
+				minimum: 0,
+				description:
+					"Local player's maximum HP at the time of emission (reflects run-long HP gains/losses)."
+			}),
 			score: lx.integer({ minimum: 0 }),
 			steamID64: lx.string({
 				description: "SteamID64 of the run's owner, when playing on Steam."

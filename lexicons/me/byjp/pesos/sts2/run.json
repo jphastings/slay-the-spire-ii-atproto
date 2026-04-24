@@ -41,6 +41,11 @@
 						"minimum": 1,
 						"maximum": 4
 					},
+					"maxHp": {
+						"type": "integer",
+						"minimum": 0,
+						"description": "Local player's maximum HP at the time of emission (reflects run-long HP gains/losses)."
+					},
 					"score": {
 						"type": "integer",
 						"minimum": 0

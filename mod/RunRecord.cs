@@ -19,6 +19,9 @@ internal sealed class RunRecord
     [JsonPropertyName("act"),   JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public int Act { get; set; }
 
+    [JsonPropertyName("maxHp"),      JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public int MaxHp { get; set; }
+
     [JsonPropertyName("score"),      JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public int Score { get; set; }
 

@@ -86,6 +86,14 @@ export const METRICS: Metric[] = [
 		format: integer
 	},
 	{
+		id: 'maxHp',
+		label: 'Max HP',
+		description: "Character's maximum HP at run end.",
+		weight: 1,
+		compute: (run) => num(run.maxHp),
+		format: integer
+	},
+	{
 		id: 'highestBlockInTurn',
 		label: 'Highest block in turn',
 		description: 'Most block gained by the player in a single player turn.',
