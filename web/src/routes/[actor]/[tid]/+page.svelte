@@ -5,7 +5,7 @@
 	import type { MiniDoc, RunRecord } from '$lib/api/types';
 	import RunDetail from '$lib/components/RunDetail.svelte';
 
-	const POLL_INTERVAL_MS = 300_000;
+	const POLL_INTERVAL_MS = 60_000;
 
 	let loading = $state(true);
 	let error = $state<string | null>(null);
