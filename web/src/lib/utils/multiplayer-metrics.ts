@@ -94,6 +94,46 @@ export const METRICS: Metric[] = [
 		format: integer
 	},
 	{
+		id: 'currentHp',
+		label: 'HP remaining',
+		description: 'Current HP at run end (0 if dead at the time of emission).',
+		weight: 1,
+		compute: (run) => num(run.currentHp),
+		format: integer
+	},
+	{
+		id: 'killCount',
+		label: 'Killing blows',
+		description: 'Monsters this player landed the killing blow on.',
+		weight: 2,
+		compute: (run) => num(run.stats?.killCount),
+		format: integer
+	},
+	{
+		id: 'deaths',
+		label: 'Deaths',
+		description: 'Times this player went to 0 HP. Co-op allies can revive, so this can exceed 1.',
+		weight: -1,
+		compute: (run) => num(run.stats?.deaths),
+		format: integer
+	},
+	{
+		id: 'healingReceived',
+		label: 'HP healed',
+		description: 'Total HP healed by this player over the run.',
+		weight: 1,
+		compute: (run) => num(run.stats?.healingReceived),
+		format: integer
+	},
+	{
+		id: 'goldEarned',
+		label: 'Gold earned',
+		description: 'Total gold gained by this player over the run.',
+		weight: 1,
+		compute: (run) => num(run.stats?.goldEarned),
+		format: integer
+	},
+	{
 		id: 'highestBlockInTurn',
 		label: 'Highest block in turn',
 		description: 'Most block gained by the player in a single player turn.',

@@ -9,6 +9,7 @@
 	import PotionList from './PotionList.svelte';
 	import PlayerCard from './PlayerCard.svelte';
 	import StatsPanel from './StatsPanel.svelte';
+	import HpBar from './HpBar.svelte';
 	import { verifyRecord, type VerifyResult } from '$lib/attestation/verify';
 	import { loadTrustedModKeys } from '$lib/attestation/keys';
 
@@ -153,6 +154,10 @@
 			</div>
 		</div>
 		{@render statsBoxes()}
+	{/if}
+
+	{#if run.maxHp != null && run.maxHp > 0}
+		<HpBar currentHp={run.currentHp ?? 0} maxHp={run.maxHp} />
 	{/if}
 
 	{#if run.relics && run.relics.length > 0}

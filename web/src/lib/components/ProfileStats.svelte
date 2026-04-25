@@ -36,6 +36,30 @@
 				<dd>{stats.hitsDealt.toLocaleString()}</dd>
 			</div>
 		{/if}
+		{#if stats.monstersKilled > 0}
+			<div class="field">
+				<dt>Monsters Slain</dt>
+				<dd>{stats.monstersKilled.toLocaleString()}</dd>
+			</div>
+		{/if}
+		{#if stats.goldEarned > 0}
+			<div class="field">
+				<dt>Gold Earned</dt>
+				<dd>{stats.goldEarned.toLocaleString()}</dd>
+			</div>
+		{/if}
+		{#if stats.hpHealed > 0}
+			<div class="field">
+				<dt>HP Healed</dt>
+				<dd>{stats.hpHealed.toLocaleString()}</dd>
+			</div>
+		{/if}
+		{#if stats.deaths > 0}
+			<div class="field">
+				<dt>Deaths</dt>
+				<dd>{stats.deaths.toLocaleString()}</dd>
+			</div>
+		{/if}
 		{#if stats.recentMonth && recentTotal > 0}
 			<div class="field">
 				<dt>{formatMonth(stats.recentMonth.month)}</dt>

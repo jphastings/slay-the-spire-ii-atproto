@@ -26,8 +26,9 @@ internal static class RunStateExtractor
             SteamID64       = mySteamId > 0 ? mySteamId.ToString() : null,
             Floor      = (int)GetLong(state, "TotalFloor"),
             Act        = (int)GetLong(state, "CurrentActIndex") + 1,
-            MaxHp      = (int)GetLong(me, "MaxHp"),
-            CurrentHp  = (int)GetLong(me, "CurrentHp"),
+            // Player wraps a Creature; HP lives there, not on Player itself.
+            MaxHp      = (int)GetLong(me, "Creature", "MaxHp"),
+            CurrentHp  = (int)GetLong(me, "Creature", "CurrentHp"),
             Deck            = CollectDeckIds(me, "Deck", "Cards"),
             Relics          = CollectIds(me, "Relics"),
             Potions         = CollectIds(me, "Potions"),
@@ -46,7 +47,7 @@ internal static class RunStateExtractor
         var run = ExtractLive(manager, state);
 
         var me = LocalContext.GetMe(state);
-        var alive = GetLong(me, "CurrentHp") > 0;
+        var alive = GetLong(me, "Creature", "CurrentHp") > 0;
         var isAbandoned = GetBool(manager, "IsAbandoned");
 
         run.Outcome = isAbandoned ? "abandoned"

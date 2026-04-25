@@ -24,6 +24,10 @@ export interface ProfileStats {
 	totalRuns: number;
 	victories: number;
 	hitsDealt: number;
+	monstersKilled: number;
+	hpHealed: number;
+	goldEarned: number;
+	deaths: number;
 	characters: CharacterTally[];
 	allies: AllyTally[];
 	recentMonth: RecentMonthRatio | null;
@@ -47,9 +51,17 @@ function monthKey(iso: string | undefined): string | null {
 	return `${y}-${m}`;
 }
 
+function asNumber(v: unknown): number {
+	return typeof v === 'number' && Number.isFinite(v) ? v : 0;
+}
+
 export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 	let victories = 0;
 	let hitsDealt = 0;
+	let monstersKilled = 0;
+	let hpHealed = 0;
+	let goldEarned = 0;
+	let deaths = 0;
 	const tallies = new Map<string, CharacterTally>();
 	const allyTallies = new Map<string, AllyTally>();
 	const monthBuckets = new Map<string, { victories: number; losses: number }>();
@@ -57,6 +69,10 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 	for (const run of runs) {
 		if (run.outcome === 'victory') victories++;
 		hitsDealt += sumDistribution(run.stats?.hitsDealtDistribution);
+		monstersKilled += asNumber(run.stats?.killCount);
+		hpHealed += asNumber(run.stats?.healingReceived);
+		goldEarned += asNumber(run.stats?.goldEarned);
+		deaths += asNumber(run.stats?.deaths);
 
 		const char = run.character;
 		if (char) {
@@ -118,6 +134,10 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 		totalRuns: runs.length,
 		victories,
 		hitsDealt,
+		monstersKilled,
+		hpHealed,
+		goldEarned,
+		deaths,
 		characters,
 		allies,
 		recentMonth

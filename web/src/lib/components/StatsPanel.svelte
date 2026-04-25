@@ -25,6 +25,7 @@
 		nonNull([
 			tile('Combats Won', stats.combatsWon),
 			tile('Elites Won', stats.elitesWon),
+			tile('Killing Blows', stats.killCount, 'gold'),
 			tile('Turns Taken', stats.turns),
 			tile('Longest Combat', stats.longestCombat)
 		])
@@ -47,6 +48,25 @@
 		])
 	);
 
+	const survivalTiles = $derived(
+		nonNull([
+			tile('HP Healed', stats.healingReceived, 'green'),
+			tile('Lowest HP', stats.lowestHp, 'red'),
+			// Deaths is mostly noise in solo runs — only surface when nonzero.
+			typeof stats.deaths === 'number' && stats.deaths > 0
+				? tile('Deaths', stats.deaths, 'red')
+				: null
+		])
+	);
+
+	const goldTiles = $derived(
+		nonNull([
+			tile('Gold Earned', stats.goldEarned, 'gold'),
+			tile('Gold Spent', stats.goldSpent),
+			tile('Gold Held', stats.goldCurrent, 'gold')
+		])
+	);
+
 	const itemsTiles = $derived(
 		nonNull([
 			tile('Cards Played', stats.cardsPlayed),
@@ -60,7 +80,12 @@
 	const hasDealt = $derived(dealtTiles.length > 0 || !!stats.hitsDealtDistribution);
 	const hasTaken = $derived(takenTiles.length > 0 || !!stats.hitsTakenDistribution);
 	const hasAny = $derived(
-		combatTiles.length > 0 || hasDealt || hasTaken || itemsTiles.length > 0
+		combatTiles.length > 0 ||
+			hasDealt ||
+			hasTaken ||
+			survivalTiles.length > 0 ||
+			goldTiles.length > 0 ||
+			itemsTiles.length > 0
 	);
 </script>
 
@@ -124,6 +149,20 @@
 						/>
 					{/if}
 				</div>
+			</div>
+		{/if}
+
+		{#if survivalTiles.length > 0}
+			<div class="group">
+				<h4>Survival</h4>
+				{@render tileGrid(survivalTiles)}
+			</div>
+		{/if}
+
+		{#if goldTiles.length > 0}
+			<div class="group">
+				<h4>Gold</h4>
+				{@render tileGrid(goldTiles)}
 			</div>
 		{/if}
 
