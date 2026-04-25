@@ -4,6 +4,9 @@
 	import { humanizeId } from '$lib/utils/format';
 	import CharacterIcon from './CharacterIcon.svelte';
 	import Tooltip from './Tooltip.svelte';
+	import AllyTallyCard from './AllyTallyCard.svelte';
+
+	const ALLY_LIMIT = 5;
 
 	let { stats }: { stats: ProfileStats } = $props();
 
@@ -60,6 +63,17 @@
 						</span>
 						<span class="char-asc">Max ascension {c.highestAscension}</span>
 					</div>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+
+	{#if stats.allies.length > 0}
+		<h3 class="section-heading">Played with</h3>
+		<ul class="allies">
+			{#each stats.allies.slice(0, ALLY_LIMIT) as ally (ally.steam)}
+				<li>
+					<AllyTallyCard tally={ally} />
 				</li>
 			{/each}
 		</ul>
@@ -161,5 +175,36 @@
 	.char-asc {
 		color: var(--text-secondary);
 		font-size: 0.85rem;
+	}
+
+	.section-heading {
+		font-family: var(--font-display);
+		font-size: 0.95rem;
+		color: var(--text-secondary);
+		margin-top: 0.25rem;
+	}
+
+	.allies {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		padding: 0;
+		margin: 0;
+	}
+
+	.allies li {
+		display: contents;
+	}
+
+	@media (min-width: 60rem) {
+		.allies {
+			flex-direction: column;
+			gap: 0.4rem;
+		}
+
+		.allies :global(.ally) {
+			width: 100%;
+		}
 	}
 </style>

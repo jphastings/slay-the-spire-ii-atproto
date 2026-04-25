@@ -13,11 +13,19 @@ export interface RecentMonthRatio {
 	losses: number; // death + abandoned
 }
 
+export interface AllyTally {
+	steam: string;
+	atproto?: string;
+	games: number;
+	highestAscension: number;
+}
+
 export interface ProfileStats {
 	totalRuns: number;
 	victories: number;
 	hitsDealt: number;
 	characters: CharacterTally[];
+	allies: AllyTally[];
 	recentMonth: RecentMonthRatio | null;
 }
 
@@ -43,6 +51,7 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 	let victories = 0;
 	let hitsDealt = 0;
 	const tallies = new Map<string, CharacterTally>();
+	const allyTallies = new Map<string, AllyTally>();
 	const monthBuckets = new Map<string, { victories: number; losses: number }>();
 
 	for (const run of runs) {
@@ -65,6 +74,24 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 			tallies.set(char, prev);
 		}
 
+		// Steam is required on every ally entry, so it's a stable dedup key
+		// even when atproto resolution is intermittent across runs.
+		for (const ally of run.allies ?? []) {
+			if (!ally.steam) continue;
+			const prev = allyTallies.get(ally.steam) ?? {
+				steam: ally.steam,
+				atproto: ally.atproto,
+				games: 0,
+				highestAscension: 0
+			};
+			prev.games++;
+			if (!prev.atproto && ally.atproto) prev.atproto = ally.atproto;
+			if (typeof run.ascension === 'number' && run.ascension > prev.highestAscension) {
+				prev.highestAscension = run.ascension;
+			}
+			allyTallies.set(ally.steam, prev);
+		}
+
 		const key = monthKey(run.updatedAt ?? run.startedAt);
 		if (key && (run.outcome === 'victory' || run.outcome === 'death' || run.outcome === 'abandoned')) {
 			const bucket = monthBuckets.get(key) ?? { victories: 0, losses: 0 };
@@ -75,6 +102,9 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 	}
 
 	const characters = [...tallies.values()].sort((a, b) => b.runs - a.runs);
+	const allies = [...allyTallies.values()].sort(
+		(a, b) => b.games - a.games || b.highestAscension - a.highestAscension
+	);
 
 	let recentMonth: RecentMonthRatio | null = null;
 	const sortedMonths = [...monthBuckets.keys()].sort();
@@ -89,6 +119,7 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 		victories,
 		hitsDealt,
 		characters,
+		allies,
 		recentMonth
 	};
 }
