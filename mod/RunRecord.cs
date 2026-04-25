@@ -22,6 +22,9 @@ internal sealed class RunRecord
     [JsonPropertyName("maxHp"),      JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public int MaxHp { get; set; }
 
+    [JsonPropertyName("currentHp"),  JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public int CurrentHp { get; set; }
+
     [JsonPropertyName("score"),      JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public int Score { get; set; }
 
@@ -88,6 +91,13 @@ internal sealed class CombatStatsSnapshot
     [JsonPropertyName("potionsUsed"),            JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int PotionsUsed            { get; set; }
     [JsonPropertyName("noDamageTurns"),          JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int NoDamageTurns          { get; set; }
     [JsonPropertyName("highestBlockInTurn"),     JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int HighestBlockInTurn     { get; set; }
+    [JsonPropertyName("healingReceived"),        JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int HealingReceived        { get; set; }
+    [JsonPropertyName("lowestHp"),               JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int LowestHp               { get; set; }
+    [JsonPropertyName("deaths"),                 JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int Deaths                 { get; set; }
+    [JsonPropertyName("killCount"),              JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int KillCount              { get; set; }
+    [JsonPropertyName("goldEarned"),             JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int GoldEarned             { get; set; }
+    [JsonPropertyName("goldSpent"),              JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int GoldSpent              { get; set; }
+    [JsonPropertyName("goldCurrent"),            JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] public int GoldCurrent            { get; set; }
 
     [JsonPropertyName("hitsDealtDistribution"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull),
      JsonConverter(typeof(IntKeyedDictionaryConverter))]

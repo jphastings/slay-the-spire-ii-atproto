@@ -38,6 +38,10 @@ internal static class CombatStats
     private static int _potionsUsed;
     private static int _noDamageTurns;
     private static int _highestBlockInTurn;
+    private static int _deaths;
+    private static int _killCount;
+    // int.MaxValue = "no observation yet". Sentinel converts to "unset" at populate.
+    private static int _lowestHp = int.MaxValue;
     private static readonly Dictionary<int, int> _hitsDealtDistribution = new();
     private static readonly Dictionary<int, int> _hitsTakenDistribution = new();
     private static readonly Dictionary<string, int> _cardUseDistribution = new();
@@ -48,6 +52,10 @@ internal static class CombatStats
     private static int _damageTakenThisTurn;
     private static int _blockThisTurn;
     private static CombatSide _currentSide = CombatSide.None;
+    // Per-combat dedup so multi-hit overkill or thorns can't double-count a kill.
+    private static readonly HashSet<Creature> _killedThisCombat = new();
+    // Local player creature for the current combat — held so we can unsubscribe Died.
+    private static Creature? _localPlayerCreature;
 
     public static void Attach()
     {
@@ -65,6 +73,7 @@ internal static class CombatStats
                 }
                 cm.CombatSetUp += OnCombatSetUp;
                 cm.CombatWon   += OnCombatWon;
+                cm.CombatEnded += OnCombatEnded;
                 cm.TurnStarted += OnTurnStarted;
                 cm.TurnEnded   += OnTurnEnded;
                 _attached = true;
@@ -88,6 +97,7 @@ internal static class CombatStats
                 {
                     cm.CombatSetUp -= OnCombatSetUp;
                     cm.CombatWon   -= OnCombatWon;
+                    cm.CombatEnded -= OnCombatEnded;
                     cm.TurnStarted -= OnTurnStarted;
                     cm.TurnEnded   -= OnTurnEnded;
                 }
@@ -126,6 +136,9 @@ internal static class CombatStats
                 PotionsUsed            = _potionsUsed,
                 NoDamageTurns          = _noDamageTurns,
                 HighestBlockInTurn     = _highestBlockInTurn,
+                Deaths                 = _deaths,
+                KillCount              = _killCount,
+                LowestHp               = _lowestHp == int.MaxValue ? 0 : _lowestHp,
                 HitsDealtDistribution = _hitsDealtDistribution.Count > 0
                     ? new Dictionary<int, int>(_hitsDealtDistribution)
                     : null,
@@ -185,7 +198,16 @@ internal static class CombatStats
                     _damageTaken += hpDamage;
                     if (_currentSide == CombatSide.Enemy) _damageTakenThisTurn += hpDamage;
                 }
+
+                // Track post-damage low watermark for the local player.
+                if (receiver.CurrentHp < _lowestHp) _lowestHp = receiver.CurrentHp;
             }
+
+            // Killing-blow attribution. The hook is post-resolution so receiver.CurrentHp
+            // reflects the damage just applied. Per-combat dedup avoids counting
+            // overkill multi-hits or thorns ticks against a corpse.
+            if (dealerIsMe && receiver.IsEnemy && receiver.CurrentHp <= 0 && _killedThisCombat.Add(receiver))
+                _killCount++;
         }
     }
 
@@ -239,7 +261,41 @@ internal static class CombatStats
             _damageTakenThisTurn  = 0;
             _blockThisTurn        = 0;
             _currentSide          = state?.CurrentSide ?? CombatSide.None;
+            _killedThisCombat.Clear();
+
+            // Subscribe to the local player creature's Died event so we can count
+            // deaths even when allies revive (combat continues, can re-die).
+            if (state is not null)
+            {
+                foreach (var c in state.PlayerCreatures)
+                {
+                    if (c is null || !LocalContext.IsMe(c)) continue;
+                    _localPlayerCreature = c;
+                    c.Died += OnLocalPlayerDied;
+                    if (c.CurrentHp < _lowestHp) _lowestHp = c.CurrentHp;
+                    break;
+                }
+            }
         }
+    }
+
+    private static void OnCombatEnded(CombatRoom room)
+    {
+        lock (_lock)
+        {
+            if (_localPlayerCreature is not null)
+            {
+                try { _localPlayerCreature.Died -= OnLocalPlayerDied; }
+                catch (Exception ex) { Log.Error("CombatStats: failed to unsubscribe Died", ex); }
+                _localPlayerCreature = null;
+            }
+            _killedThisCombat.Clear();
+        }
+    }
+
+    private static void OnLocalPlayerDied(Creature creature)
+    {
+        lock (_lock) { if (_attached) _deaths++; }
     }
 
     private static void OnCombatWon(CombatRoom room)
@@ -300,9 +356,13 @@ internal static class CombatStats
         _biggestTurnDamageDealt = _biggestTurnDamageTaken = 0;
         _cardsPlayed = _cardsDrawn = _cardsExhausted = _potionsUsed = 0;
         _noDamageTurns = _highestBlockInTurn = 0;
+        _deaths = _killCount = 0;
+        _lowestHp = int.MaxValue;
         _hitsDealtDistribution.Clear();
         _hitsTakenDistribution.Clear();
         _cardUseDistribution.Clear();
+        _killedThisCombat.Clear();
+        _localPlayerCreature = null;
         _roundsThisCombat = _damageDealtThisTurn = _damageTakenThisTurn = _blockThisTurn = 0;
         _currentSide = CombatSide.None;
     }

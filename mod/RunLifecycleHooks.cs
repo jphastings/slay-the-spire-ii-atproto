@@ -67,6 +67,7 @@ internal static class RunStartHook
             var run = RunStateExtractor.ExtractLive(manager, state);
             run.Outcome = "in_progress";
             CombatStats.Populate(run);
+            MapPointStats.Populate(run, state);
             RunTracker.PublishUpdate(run);
         }
         catch (Exception ex)
@@ -82,6 +83,7 @@ internal static class RunStartHook
 
         var run = RunStateExtractor.ExtractFromLiveOnGameOver(manager, state);
         CombatStats.Populate(run);
+        MapPointStats.Populate(run, state);
         CombatStats.Detach();
         Log.Info($"finalizing from live state: outcome={run.Outcome}");
         RunTracker.PublishFinal(run);
@@ -103,6 +105,7 @@ internal static class RunEndHook
 
             var run = RunStateExtractor.Extract(__instance, isVictory, __result);
             CombatStats.Populate(run);
+            MapPointStats.Populate(run, __result);
             CombatStats.Detach();
             RunTracker.PublishFinal(run);
         }

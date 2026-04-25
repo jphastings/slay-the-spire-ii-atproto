@@ -26,6 +26,10 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 				description:
 					"Local player's maximum HP at the time of emission (reflects run-long HP gains/losses)."
 			}),
+			currentHp: lx.integer({
+				minimum: 0,
+				description: "Local player's current HP at the time of emission (0 if dead)."
+			}),
 			score: lx.integer({ minimum: 0 }),
 			steamID64: lx.string({
 				description: "SteamID64 of the run's owner, when playing on Steam."
@@ -113,6 +117,29 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 		highestBlockInTurn: lx.integer({
 			minimum: 0,
 			description: 'Most block gained by the player in a single player turn.'
+		}),
+		healingReceived: lx.integer({
+			minimum: 0,
+			description: 'Total HP healed by the player across the run (sum of positive HP changes).'
+		}),
+		lowestHp: lx.integer({
+			minimum: 0,
+			description: 'Lowest HP the player reached at any tracked moment in the run.'
+		}),
+		deaths: lx.integer({
+			minimum: 0,
+			description:
+				'Number of times the player went to 0 HP. 0 in solo victory; can exceed 1 in multiplayer where allies revive.'
+		}),
+		killCount: lx.integer({
+			minimum: 0,
+			description: 'Number of monsters this player dealt the killing blow to.'
+		}),
+		goldEarned: lx.integer({ minimum: 0, description: 'Total gold gained over the run.' }),
+		goldSpent: lx.integer({ minimum: 0, description: 'Total gold spent over the run.' }),
+		goldCurrent: lx.integer({
+			minimum: 0,
+			description: 'Gold the player is currently holding at the time of emission.'
 		}),
 		hitsDealtDistribution: lx.ref('#distribution', {
 			description:
