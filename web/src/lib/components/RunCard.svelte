@@ -2,11 +2,21 @@
 	import type { RunRecord } from '$lib/api/types';
 	import { humanizeId, formatAscension, formatDuration, formatRelativeTime } from '$lib/utils/format';
 	import OutcomeBadge from './OutcomeBadge.svelte';
+	import AllyAvatar from './AllyAvatar.svelte';
 
 	let { run, href }: { run: RunRecord; href: string } = $props();
+
+	const allies = $derived(run.allies ?? []);
 </script>
 
 <a {href} class="card">
+	{#if allies.length > 0}
+		<div class="allies" aria-label="Played with">
+			{#each allies as ally}
+				<AllyAvatar player={ally} />
+			{/each}
+		</div>
+	{/if}
 	<div class="header">
 		<span class="character">{humanizeId(run.character)}</span>
 		<span class="ascension">{formatAscension(run.ascension)}</span>
@@ -37,6 +47,7 @@
 
 <style>
 	.card {
+		position: relative;
 		display: block;
 		padding: 1rem 1.25rem;
 		background: var(--bg-card);
@@ -47,6 +58,14 @@
 		transition:
 			background 0.15s,
 			border-color 0.15s;
+	}
+
+	.allies {
+		position: absolute;
+		top: 0.6rem;
+		right: 0.6rem;
+		display: flex;
+		gap: 0.25rem;
 	}
 
 	.card:hover {
