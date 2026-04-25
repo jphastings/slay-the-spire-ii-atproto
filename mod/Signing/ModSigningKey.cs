@@ -12,7 +12,7 @@ namespace AtprotoTracker.Signing;
 internal static class ModSigningKey
 {
     public const string ResourceName = "AtprotoTracker.signing-private-key.txt";
-    public const string AttestationType = "me.byjp.pesos.sts2.modAttestation";
+    public const string AttestationType = "me.byjp.pesos.sts2.run#attestation";
 
     private static readonly Lazy<Loaded?> _loaded = new(LoadOnce);
 

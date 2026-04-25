@@ -160,5 +160,26 @@ export const sts2Run = lx.lexicon('me.byjp.pesos.sts2.run', {
 			description:
 				'Generic histogram keyed by arbitrary string values mapped to their integer counts. Keys are intentionally undeclared because the set of values is open-ended.'
 		}
+	),
+	attestation: lx.object(
+		{
+			cid: lx.string({
+				required: true,
+				description: 'CIDv1 (DAG-CBOR + SHA-256) of the record body that was signed.'
+			}),
+			key: lx.string({
+				required: true,
+				format: 'did',
+				description: 'did:key identifying the signing key.'
+			}),
+			signature: lx.bytes({
+				required: true,
+				description: 'P-256 ECDSA signature (low-S, IEEE P1363 r‖s) over the content CID bytes.'
+			})
+		},
+		{
+			description:
+				"Inline ECDSA signature appended to the record's `signatures` array after the content CID is computed (per badge.blue). The `signatures` array is stripped before re-validation; entries identify the signing key so verifiers can look it up against a trusted-keys list to confirm a genuine mod build. The canonical list lives at https://sts2.byjp.me/.well-known/sts2-mod-keys/keys.json — other verifiers may publish their own at the same well-known path on a different host."
+		}
 	)
 });
