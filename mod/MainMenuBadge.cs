@@ -113,7 +113,7 @@ internal static class MainMenuBadge
             _                      => Strings.Get("dialog_unconfigured",
                                         AuthState.Error ?? Strings.Get("dialog_unconfigured_default")),
         };
-        var popup = NErrorPopup.Create("atproto-tracker", body, false);
+        var popup = NErrorPopup.Create($"{Plugin.ModId} v{Plugin.ModVersion}", body, false);
         NModalContainer.Instance?.Add(popup!);
         NModalContainer.Instance?.ShowBackstop();
     }
