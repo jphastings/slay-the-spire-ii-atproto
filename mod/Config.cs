@@ -13,6 +13,11 @@ internal sealed class Config
     // Cached after first run so subsequent runs update the same actor.stats record.
     [JsonPropertyName("statsRkey")]   public string StatsRkey { get; set; } = "";
 
+    // Highest run rkey we've already inspected for ally-DID backfill. On boot
+    // we walk records and skip anything ≤ this marker so the work is a
+    // one-time cost per record, not every-boot.
+    [JsonPropertyName("allyBackfillCheckpoint")] public string AllyBackfillCheckpoint { get; set; } = "";
+
     [JsonIgnore] public string Path { get; private set; } = "";
 
     private static readonly JsonSerializerOptions JsonOpts = new()

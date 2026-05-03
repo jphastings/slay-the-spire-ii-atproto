@@ -86,6 +86,9 @@ public static class Plugin
             await AtProto.LoginAsync(mini.Pds, mini.Did, cfg.AppPassword);
             AuthState.Set(AuthStatus.Ok, handle: mini.Handle, did: mini.Did);
             Log.Info($"authenticated as @{mini.Handle} ({mini.Did}) on {mini.Pds}");
+            // Fire-and-forget: backfilling missing ally DIDs on historical
+            // records doesn't gate gameplay, and failures shouldn't block.
+            _ = Task.Run(AllyBackfill.RunAsync);
         }
         catch (Exception ex)
         {

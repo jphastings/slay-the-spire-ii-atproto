@@ -69,6 +69,19 @@ internal sealed class AtProtoClient
         return body["uri"]!.GetValue<string>();
     }
 
+    public async Task<JsonNode?> ListRecordsAsync(string collection, string? cursor, int limit)
+    {
+        await EnsureFreshAsync();
+        var url = $"{_pdsUrl}/xrpc/com.atproto.repo.listRecords"
+                + $"?repo={Uri.EscapeDataString(_did!)}"
+                + $"&collection={Uri.EscapeDataString(collection)}"
+                + $"&limit={limit}";
+        if (!string.IsNullOrEmpty(cursor)) url += $"&cursor={Uri.EscapeDataString(cursor)}";
+        var res = await _http.GetAsync(url);
+        if (!res.IsSuccessStatusCode) return null;
+        return await res.Content.ReadFromJsonAsync<JsonNode>();
+    }
+
     public async Task<JsonNode?> GetRecordAsync(string collection, string rkey)
     {
         await EnsureFreshAsync();

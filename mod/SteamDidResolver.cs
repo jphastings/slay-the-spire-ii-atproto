@@ -31,6 +31,32 @@ internal static class SteamDidResolver
         Atproto = LookupDid(steamId64),
     };
 
+    /// <summary>
+    /// Awaitable lookup used by the boot-time ally backfill. Returns the
+    /// resolved DID or null on a miss / transient error. Hits the same cache
+    /// as <see cref="LookupDid"/> so concurrent in-game and backfill paths
+    /// share state.
+    /// </summary>
+    public static async Task<string?> LookupDidAsync(ulong steamId64)
+    {
+        if (_cache.TryGetValue(steamId64, out var cached)) return cached;
+        try
+        {
+            var url = $"{Endpoint}?type=steam&subject={steamId64}";
+            var res = await _http.GetFromJsonAsync<ReverseLookupResponse>(url);
+            if (res?.Matches is { Count: > 0 } m && m[0].Did is { } did)
+            {
+                _cache[steamId64] = did;
+                return did;
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Warn($"keytrace lookup failed for {steamId64}: {ex.Message}");
+        }
+        return null;
+    }
+
     private static async Task StartLookupAsync(ulong steamId64)
     {
         if (!_inFlight.TryAdd(steamId64, 0)) return;
