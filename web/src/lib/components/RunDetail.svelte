@@ -71,6 +71,17 @@
 
 	const hasAllies = $derived(!!run.allies && run.allies.length > 0);
 	const selfPlayer = $derived({ atproto: did, steam: run.steamID64 });
+
+	const compareHref = $derived.by(() => {
+		const allyDids = (run.allies ?? [])
+			.map((a) => a.atproto)
+			.filter((d): d is string => !!d);
+		if (allyDids.length === 0) return null;
+		const params = new URLSearchParams();
+		params.append('did', did);
+		for (const d of allyDids) params.append('did', d);
+		return `/multiplayer/${tid}#${params.toString()}`;
+	});
 </script>
 
 {#snippet titleRow()}
@@ -140,6 +151,9 @@
 				{#each run.allies ?? [] as ally}
 					<PlayerCard player={ally} {tid} compact />
 				{/each}
+				{#if compareHref}
+					<a class="compare-link" href={compareHref}>Compare →</a>
+				{/if}
 			</aside>
 			<div class="stats-area">
 				{@render statsBoxes()}
@@ -156,7 +170,7 @@
 		{@render statsBoxes()}
 	{/if}
 
-	{#if run.maxHp != null && run.maxHp > 0}
+	{#if run.outcome !== 'death' && run.maxHp != null && run.maxHp > 0}
 		<HpBar currentHp={run.currentHp ?? 0} maxHp={run.maxHp} />
 	{/if}
 
@@ -318,6 +332,13 @@
 		letter-spacing: 0.05em;
 	}
 
+	.compare-link {
+		flex-basis: 100%;
+		font-size: 0.85rem;
+		color: var(--text-secondary);
+		margin-top: 0.15rem;
+	}
+
 	/* Narrow layout: let the self card and "with" sit inline alongside allies. */
 	.self-group {
 		display: contents;
@@ -345,6 +366,10 @@
 			flex-direction: column;
 			align-items: center;
 			gap: 0.2rem;
+		}
+
+		.compare-link {
+			flex-basis: auto;
 		}
 	}
 </style>
