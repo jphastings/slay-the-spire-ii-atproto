@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sI 'https://keytrace.dev/xrpc/dev.keytrace.reverseLookup?type=steam&subject=*)"
+    ]
+  }
+}

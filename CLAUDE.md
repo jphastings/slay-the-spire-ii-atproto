@@ -76,10 +76,6 @@ The site is fully static, so every third-party API we call must send CORS header
 
 Deploys go to [wisp.place](https://docs.wisp.place/redirects/) via `.github/workflows/deploy.yml`. Wisp's `_redirects` matcher includes the query string in the rule LHS — a rule like `/foo/:tid /index.html 200` only matches URLs **without** a `?param`, so any SPA route that takes query params falls through to whatever catch-all is below it. We sidestep this by **keeping every rule free of `?param` clauses** and putting route state that would normally be query params into the URL hash fragment instead (hashes never reach the server). Example: `/multiplayer/[tid]#did=<a>&did=<b>` rather than `?did=<a>&did=<b>`. Debug with `curl -sI <url>` with and without a query — if only the no-query version returns 200, wisp's matcher is eating the query; move the state to the hash.
 
-## Temporary code
-
-- `web/src/lib/utils/player.ts` / `mod/SteamDidResolver.cs` both have a 404-guard around the keytrace reverseLookup endpoint because `keytrace.dev/xrpc/dev.keytrace.reverseLookup` isn't publicly deployed yet. Marked with `TODO` in the source — remove once it ships.
-
 ## Testing multiplayer UI without a real MP run
 
 The `allies` array is only populated in co-op runs. To eyeball the ally-column layout without starting a multiplayer session, inject fake allies via a chrome-devtools `initScript` that patches `window.fetch` to mutate the `getRecord` response body. Example:

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
@@ -13,20 +12,15 @@ internal static class SteamDidResolver
 {
     private const string Endpoint = "https://keytrace.dev/xrpc/dev.keytrace.reverseLookup";
     private static readonly HttpClient _http = new();
-    // Both hits and misses are cached for the lifetime of the mod (process).
-    // Transient HTTP errors skip the cache so we retry next extraction.
-    private static readonly ConcurrentDictionary<ulong, string?> _cache = new();
+    // Only positive hits are cached. Misses (no match, transient errors) are
+    // retried next extraction so a player who publishes their keytrace claim
+    // mid-session gets picked up without a game restart.
+    private static readonly ConcurrentDictionary<ulong, string> _cache = new();
     private static readonly ConcurrentDictionary<ulong, byte> _inFlight = new();
-
-    // TODO: remove this 404-guard once the keytrace.dev reverseLookup endpoint is
-    // publicly released. Until then, a single 404 disables further lookups for
-    // the session so we don't hammer a not-yet-live endpoint.
-    private static bool _endpointAvailable = true;
 
     public static string? LookupDid(ulong steamId64)
     {
         if (_cache.TryGetValue(steamId64, out var did)) return did;
-        if (!_endpointAvailable) return null;
         _ = StartLookupAsync(steamId64);
         return null;
     }
@@ -44,12 +38,8 @@ internal static class SteamDidResolver
         {
             var url = $"{Endpoint}?type=steam&subject={steamId64}";
             var res = await _http.GetFromJsonAsync<ReverseLookupResponse>(url);
-            _cache[steamId64] = res?.Matches is { Count: > 0 } m ? m[0].Did : null;
-        }
-        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-        {
-            _endpointAvailable = false;
-            Log.Warn($"keytrace endpoint returned 404; disabling DID lookups for this session ({Endpoint})");
+            if (res?.Matches is { Count: > 0 } m && m[0].Did is { } did)
+                _cache[steamId64] = did;
         }
         catch (Exception ex)
         {
