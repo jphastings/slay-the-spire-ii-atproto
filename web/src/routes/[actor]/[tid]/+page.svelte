@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { resolveIdentity } from '$lib/api/slingshot';
+	import { resolveIdentity, SlingshotUnavailableError } from '$lib/api/slingshot';
 	import { getRun } from '$lib/api/pds';
 	import type { MiniDoc, RunRecord } from '$lib/api/types';
 	import RunDetail from '$lib/components/RunDetail.svelte';
+	import SlingshotDown from '$lib/components/SlingshotDown.svelte';
 
 	const POLL_INTERVAL_MS = 60_000;
 
 	let loading = $state(true);
 	let error = $state<string | null>(null);
+	let slingshotDown = $state(false);
 	let identity = $state<MiniDoc | null>(null);
 	let run = $state<RunRecord | null>(null);
 
@@ -37,12 +39,17 @@
 	async function load(actor: string, tid: string) {
 		loading = true;
 		error = null;
+		slingshotDown = false;
 		try {
 			identity = await resolveIdentity(actor);
 			const result = await getRun(identity.pds, identity.did, tid);
 			run = result.value;
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Unknown error';
+			if (e instanceof SlingshotUnavailableError) {
+				slingshotDown = true;
+			} else {
+				error = e instanceof Error ? e.message : 'Unknown error';
+			}
 		} finally {
 			loading = false;
 		}
@@ -59,6 +66,8 @@
 
 {#if loading}
 	<div class="status">Loading...</div>
+{:else if slingshotDown}
+	<SlingshotDown />
 {:else if error}
 	<div class="status error">{error}</div>
 {:else if run && identity}

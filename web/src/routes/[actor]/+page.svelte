@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { resolveIdentity } from '$lib/api/slingshot';
+	import { resolveIdentity, SlingshotUnavailableError } from '$lib/api/slingshot';
 	import { listRuns } from '$lib/api/pds';
 	import type { MiniDoc, RecordEntry } from '$lib/api/types';
 	import RunCard from '$lib/components/RunCard.svelte';
 	import PlayerCard from '$lib/components/PlayerCard.svelte';
 	import ClaimPromptCard from '$lib/components/ClaimPromptCard.svelte';
 	import ProfileStats from '$lib/components/ProfileStats.svelte';
+	import SlingshotDown from '$lib/components/SlingshotDown.svelte';
 	import { computeProfileStats } from '$lib/utils/profile-stats';
 	import { fetchKeytraceClaim, type KeytraceClaim } from '$lib/utils/player';
 
 	let loading = $state(true);
 	let error = $state<string | null>(null);
+	let slingshotDown = $state(false);
 	let identity = $state<MiniDoc | null>(null);
 	// undefined = still checking, null = no claim, object = claim present.
 	let claim = $state<KeytraceClaim | null | undefined>(undefined);
@@ -27,6 +29,7 @@
 	async function load(actor: string) {
 		loading = true;
 		error = null;
+		slingshotDown = false;
 		runs = [];
 		claim = undefined;
 		try {
@@ -45,7 +48,11 @@
 				(a, b) => new Date(b.value.updatedAt).getTime() - new Date(a.value.updatedAt).getTime()
 			);
 		} catch (e) {
-			error = e instanceof Error ? e.message : 'Unknown error';
+			if (e instanceof SlingshotUnavailableError) {
+				slingshotDown = true;
+			} else {
+				error = e instanceof Error ? e.message : 'Unknown error';
+			}
 		} finally {
 			loading = false;
 		}
@@ -62,6 +69,8 @@
 
 {#if loading}
 	<div class="status">Loading...</div>
+{:else if slingshotDown}
+	<SlingshotDown />
 {:else if error}
 	<div class="status error">{error}</div>
 {:else if identity}

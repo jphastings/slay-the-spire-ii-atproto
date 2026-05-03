@@ -152,7 +152,7 @@
 					<PlayerCard player={ally} {tid} compact />
 				{/each}
 				{#if compareHref}
-					<a class="compare-link" href={compareHref}>Compare →</a>
+					<a class="compare-link" href={compareHref}>Compare→</a>
 				{/if}
 			</aside>
 			<div class="stats-area">
@@ -334,8 +334,11 @@
 
 	.compare-link {
 		flex-basis: 100%;
-		font-size: 0.85rem;
-		color: var(--text-secondary);
+		text-align: center;
+		font-variant: small-caps;
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		letter-spacing: 0.05em;
 		margin-top: 0.15rem;
 	}
 
@@ -368,8 +371,13 @@
 			gap: 0.2rem;
 		}
 
+		/* Wide layout: sit as the next item below the player-card stack
+		   (column flex), centred horizontally instead of right-aligned with
+		   the cards. flex-basis returns to auto so it doesn't eat the
+		   column's main-axis height. */
 		.compare-link {
 			flex-basis: auto;
+			align-self: center;
 		}
 	}
 </style>

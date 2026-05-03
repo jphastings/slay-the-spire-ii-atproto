@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { resolveIdentity } from '$lib/api/slingshot';
+	import { resolveIdentity, SlingshotUnavailableError } from '$lib/api/slingshot';
 	import { getRun } from '$lib/api/pds';
 	import type { RunRecord } from '$lib/api/types';
 	import MultiplayerComparison from '$lib/components/MultiplayerComparison.svelte';
+	import SlingshotDown from '$lib/components/SlingshotDown.svelte';
 
 	interface LoadedPlayer {
 		did: string;
@@ -12,6 +13,7 @@
 
 	let loading = $state(true);
 	let players = $state<LoadedPlayer[]>([]);
+	let slingshotDown = $state(false);
 	// Tracks hash changes so edits like `#did=…` after load re-fire the effect.
 	let hash = $state('');
 
@@ -31,18 +33,26 @@
 
 	async function load(tid: string, dids: string[]) {
 		loading = true;
+		slingshotDown = false;
+		// Tracked across the parallel resolutions so we can distinguish a real
+		// outage (apology UI) from per-DID misses (silently dropped, as before).
+		let sawSlingshotDown = false;
 		const results = await Promise.all(
 			dids.map(async (did) => {
 				try {
 					const identity = await resolveIdentity(did);
 					const record = await getRun(identity.pds, identity.did, tid);
 					return { did: identity.did, run: record.value } satisfies LoadedPlayer;
-				} catch {
+				} catch (e) {
+					if (e instanceof SlingshotUnavailableError) sawSlingshotDown = true;
 					return null;
 				}
 			})
 		);
 		players = results.filter((p): p is LoadedPlayer => p !== null);
+		// Only surface the apology when nothing loaded — otherwise we showed
+		// the players we got and the partial outage isn't worth interrupting.
+		slingshotDown = sawSlingshotDown && players.length === 0;
 		loading = false;
 	}
 </script>
@@ -55,6 +65,8 @@
 
 {#if loading}
 	<div class="status">Loading runs...</div>
+{:else if slingshotDown}
+	<SlingshotDown />
 {:else if players.length < 2}
 	<div class="status">
 		Not enough runs to compare. Need at least two players with visible runs for this game.

@@ -19,13 +19,6 @@ const integer = (n: number) => n.toLocaleString('en-GB');
 
 const num = (v: unknown): number | null => (typeof v === 'number' ? v : null);
 
-function gcd(a: number, b: number): number {
-	a = Math.abs(Math.round(a));
-	b = Math.abs(Math.round(b));
-	while (b > 0) [a, b] = [b, a % b];
-	return a || 1;
-}
-
 export const METRICS: Metric[] = [
 	{
 		id: 'damageDealt',
@@ -47,10 +40,13 @@ export const METRICS: Metric[] = [
 			return taken / dealt;
 		},
 		format: (_, run) => {
+			// Always normalised so the left side is 1 (units of damage taken),
+			// making the right side directly comparable across players: bigger
+			// = dealt more per HP taken.
 			const taken = Number(run.stats?.damageTaken ?? 0);
 			const dealt = Number(run.stats?.damageDealt ?? 0);
-			const g = gcd(taken, dealt);
-			return `${integer(taken / g)} : ${integer(dealt / g)}`;
+			if (taken === 0) return `0 : ${integer(dealt)}`;
+			return `1 : ${(dealt / taken).toFixed(2)}`;
 		}
 	},
 	{
