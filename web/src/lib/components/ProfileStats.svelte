@@ -87,6 +87,14 @@
 						</span>
 						<span class="char-asc">Max ascension {c.highestAscension}</span>
 					</div>
+					{#if c.lossesAtMax > 0}
+						<span
+							class="char-max-record"
+							title="Losses at ascension {c.highestAscension}"
+						>
+							{c.lossesAtMax}L
+						</span>
+					{/if}
 				</li>
 			{/each}
 		</ul>
@@ -153,6 +161,7 @@
 	}
 
 	.char {
+		position: relative;
 		display: flex;
 		align-items: center;
 		gap: 0.6rem;
@@ -160,6 +169,18 @@
 		background: var(--bg-card);
 		border: 1px solid var(--border-subtle);
 		border-radius: var(--radius);
+	}
+
+	.char-max-record {
+		position: absolute;
+		top: 0.35rem;
+		right: 0.55rem;
+		font-size: 0.72rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.02em;
+		line-height: 1;
+		color: var(--accent-red);
 	}
 
 	/* Matches the sidebar breakpoint in [actor]/+page.svelte — at that size

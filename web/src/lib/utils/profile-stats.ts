@@ -5,6 +5,8 @@ export interface CharacterTally {
 	runs: number;
 	victories: number;
 	highestAscension: number;
+	/** Deaths + abandoned runs at this character's highestAscension. */
+	lossesAtMax: number;
 }
 
 export interface RecentMonthRatio {
@@ -63,6 +65,9 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 	let goldEarned = 0;
 	let deaths = 0;
 	const tallies = new Map<string, CharacterTally>();
+	// Per-(character, ascension) loss counts. Once we know each character's
+	// highestAscension, we read the corresponding bucket to fill lossesAtMax.
+	const charAscLosses = new Map<string, Map<number, number>>();
 	const allyTallies = new Map<string, AllyTally>();
 	const monthBuckets = new Map<string, { victories: number; losses: number }>();
 
@@ -80,7 +85,8 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 				character: char,
 				runs: 0,
 				victories: 0,
-				highestAscension: 0
+				highestAscension: 0,
+				lossesAtMax: 0
 			};
 			prev.runs++;
 			if (run.outcome === 'victory') prev.victories++;
@@ -88,6 +94,18 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 				prev.highestAscension = run.ascension;
 			}
 			tallies.set(char, prev);
+
+			if (
+				typeof run.ascension === 'number' &&
+				(run.outcome === 'death' || run.outcome === 'abandoned')
+			) {
+				let perAsc = charAscLosses.get(char);
+				if (!perAsc) {
+					perAsc = new Map();
+					charAscLosses.set(char, perAsc);
+				}
+				perAsc.set(run.ascension, (perAsc.get(run.ascension) ?? 0) + 1);
+			}
 		}
 
 		// Steam is required on every ally entry, so it's a stable dedup key
@@ -117,6 +135,10 @@ export function computeProfileStats(runs: RunRecord[]): ProfileStats {
 		}
 	}
 
+	for (const tally of tallies.values()) {
+		tally.lossesAtMax =
+			charAscLosses.get(tally.character)?.get(tally.highestAscension) ?? 0;
+	}
 	const characters = [...tallies.values()].sort((a, b) => b.runs - a.runs);
 	const allies = [...allyTallies.values()].sort(
 		(a, b) => b.games - a.games || b.highestAscension - a.highestAscension
