@@ -13,6 +13,13 @@ internal sealed class Config
     // Cached after first run so subsequent runs update the same actor.stats record.
     [JsonPropertyName("statsRkey")]   public string StatsRkey { get; set; } = "";
 
+    // Stamped after a successful login so an offline boot still knows which
+    // DID to bucket queued runs under. Invalidated implicitly when the user
+    // edits Handle to something different (we re-resolve when next online).
+    [JsonPropertyName("cachedHandle")] public string CachedHandle { get; set; } = "";
+    [JsonPropertyName("cachedDid")]    public string CachedDid    { get; set; } = "";
+    [JsonPropertyName("cachedPds")]    public string CachedPds    { get; set; } = "";
+
     // Highest run rkey we've already inspected for ally-DID backfill. On boot
     // we walk records and skip anything ≤ this marker so the work is a
     // one-time cost per record, not every-boot.

@@ -79,13 +79,27 @@ public static class Plugin
             return;
         }
 
-        AuthState.Set(AuthStatus.Checking);
+        // Pre-seed AuthState from the cached identity (if the configured
+        // handle still matches) so an offline boot still has a DID to bucket
+        // queued runs under. Cache is overwritten on the next successful login.
+        if (cfg.Handle == cfg.CachedHandle && !string.IsNullOrEmpty(cfg.CachedDid))
+            AuthState.Set(AuthStatus.Checking, handle: cfg.CachedHandle, did: cfg.CachedDid);
+        else
+            AuthState.Set(AuthStatus.Checking);
+
         try
         {
             var mini = await IdentityResolver.ResolveAsync(cfg.Handle);
             await AtProto.LoginAsync(mini.Pds, mini.Did, cfg.AppPassword);
             AuthState.Set(AuthStatus.Ok, handle: mini.Handle, did: mini.Did);
             Log.Info($"authenticated as @{mini.Handle} ({mini.Did}) on {mini.Pds}");
+            if (cfg.CachedHandle != mini.Handle || cfg.CachedDid != mini.Did || cfg.CachedPds != mini.Pds)
+            {
+                cfg.CachedHandle = mini.Handle;
+                cfg.CachedDid    = mini.Did;
+                cfg.CachedPds    = mini.Pds;
+                cfg.Save();
+            }
             // Fire-and-forget: backfilling missing ally DIDs on historical
             // records doesn't gate gameplay, and failures shouldn't block.
             _ = Task.Run(AllyBackfill.RunAsync);
@@ -94,10 +108,29 @@ public static class Plugin
             // stays untouched until that account is the one logged in.
             _ = Task.Run(Outbox.FlushAsync);
         }
+        catch (Exception ex) when (IsOfflineException(ex))
+        {
+            AuthState.Set(AuthStatus.Offline, error: ex.Message);
+            Log.Warn($"offline at boot — runs will queue and sync when reconnected ({ex.Message})");
+        }
         catch (Exception ex)
         {
             AuthState.Set(AuthStatus.Failed, error: ex.Message);
             Log.Error("authentication failed", ex);
         }
+    }
+
+    // Network-shaped failures from Slingshot or the PDS that mean "no
+    // connectivity," not "credentials rejected." HTTP responses with a status
+    // code (even 5xx) are treated as Failed so the user sees the real error.
+    private static bool IsOfflineException(Exception? ex)
+    {
+        for (var e = ex; e is not null; e = e.InnerException)
+        {
+            if (e is System.Net.Http.HttpRequestException hre && hre.StatusCode is null) return true;
+            if (e is System.Net.Sockets.SocketException) return true;
+            if (e is System.Threading.Tasks.TaskCanceledException) return true;
+        }
+        return false;
     }
 }

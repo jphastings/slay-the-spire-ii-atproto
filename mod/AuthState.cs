@@ -8,6 +8,7 @@ internal enum AuthStatus
     Checking,
     Ok,
     Failed,
+    Offline,
 }
 
 internal static class AuthState

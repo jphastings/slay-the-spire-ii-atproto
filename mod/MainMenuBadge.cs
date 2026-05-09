@@ -12,6 +12,7 @@ internal static class MainMenuBadge
     private static readonly Color OkColor      = new(0.45f, 0.90f, 0.55f, 0.95f); // green
     private static readonly Color CheckColor   = new(0.80f, 0.80f, 0.30f, 0.75f); // yellow
     private static readonly Color FailedColor  = new(0.85f, 0.30f, 0.30f, 0.90f); // red
+    private static readonly Color OfflineColor = new(0.50f, 0.70f, 0.95f, 0.85f); // soft blue — queued, waiting to reconnect
     private static readonly Color StrikeColor  = new(0.85f, 0.30f, 0.30f, 1.00f); // red
     private static readonly Color UnconfigColor = new(0.70f, 0.70f, 0.70f, 0.55f); // grey
 
@@ -89,14 +90,17 @@ internal static class MainMenuBadge
         {
             AuthStatus.Ok          => OkColor,
             AuthStatus.Checking    => CheckColor,
+            AuthStatus.Offline     => OfflineColor,
             AuthStatus.Failed      => FailedColor,
             _                      => UnconfigColor,
         };
-        strike.Visible = status != AuthStatus.Ok && status != AuthStatus.Checking;
+        // Offline isn't a failure — runs queue locally, so no strike-through.
+        strike.Visible = status is not AuthStatus.Ok and not AuthStatus.Checking and not AuthStatus.Offline;
         btn.TooltipText = status switch
         {
             AuthStatus.Ok          => Strings.Get("tooltip_ok", AuthState.Handle),
             AuthStatus.Checking    => Strings.Get("tooltip_checking"),
+            AuthStatus.Offline     => Strings.Get("tooltip_offline"),
             AuthStatus.Failed      => Strings.Get("tooltip_failed", AuthState.Error),
             _                      => Strings.Get("tooltip_unconfigured"),
         };
@@ -109,6 +113,8 @@ internal static class MainMenuBadge
         {
             AuthStatus.Ok          => Strings.Get("dialog_ok", AuthState.Handle),
             AuthStatus.Checking    => Strings.Get("dialog_checking"),
+            AuthStatus.Offline     => Strings.Get("dialog_offline",
+                                        AuthState.Handle ?? Plugin.Config.Handle),
             AuthStatus.Failed      => Strings.Get("dialog_failed", AuthState.Error),
             _                      => Strings.Get("dialog_unconfigured",
                                         AuthState.Error ?? Strings.Get("dialog_unconfigured_default")),

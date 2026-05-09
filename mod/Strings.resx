@@ -93,4 +93,12 @@ Update config.json and restart the game.</value>
   <data name="dialog_unconfigured_default" xml:space="preserve">
     <value>Edit config.json next to the mod DLL and restart the game.</value>
   </data>
+  <data name="tooltip_offline" xml:space="preserve">
+    <value>atproto-tracker: offline — runs will sync when reconnected</value>
+  </data>
+  <data name="dialog_offline" xml:space="preserve">
+    <value>You appear to be offline.
+
+Your runs are being saved locally and will sync to your Atmosphere account (@{0}) the next time the game launches with an internet connection.</value>
+  </data>
 </root>
