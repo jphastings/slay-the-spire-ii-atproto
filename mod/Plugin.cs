@@ -89,6 +89,10 @@ public static class Plugin
             // Fire-and-forget: backfilling missing ally DIDs on historical
             // records doesn't gate gameplay, and failures shouldn't block.
             _ = Task.Run(AllyBackfill.RunAsync);
+            // Drain any runs queued from prior sessions where this DID was
+            // offline. Per-DID partitioning means another account's queue
+            // stays untouched until that account is the one logged in.
+            _ = Task.Run(Outbox.FlushAsync);
         }
         catch (Exception ex)
         {
