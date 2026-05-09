@@ -63,7 +63,7 @@ jobs:
           mkdir -p "$stage"
           cp mod/.godot/mono/temp/bin/Release/atproto-tracker.dll "$stage/"
           cp mod/manifest.json                                    "$stage/"
-          cp mod/config.example.json                              "$stage/"
+          cp mod/config.json.example                              "$stage/"
           cd release
           zip -r "atproto-tracker.zip" atproto-tracker
 
@@ -73,7 +73,7 @@ jobs:
           mkdir -p installer/Resources
           cp mod/.godot/mono/temp/bin/Release/atproto-tracker.dll installer/Resources/
           cp mod/manifest.json                                    installer/Resources/
-          cp mod/config.example.json                              installer/Resources/
+          cp mod/config.json.example                              installer/Resources/
 
       - name: Publish installer (Windows x64)
         run: |
@@ -120,7 +120,7 @@ jobs:
           mkdir -p installer/Resources
           cp mod/.godot/mono/temp/bin/Release/atproto-tracker.dll installer/Resources/
           cp mod/manifest.json                                    installer/Resources/
-          cp mod/config.example.json                              installer/Resources/
+          cp mod/config.json.example                              installer/Resources/
 
       # --- Import Apple signing certificate into a temporary keychain ---
       - name: Import signing certificate

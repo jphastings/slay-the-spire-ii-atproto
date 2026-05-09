@@ -7,7 +7,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>atproto-tracker</AssemblyName>
     <RootNamespace>AtprotoTracker</RootNamespace>
-    <Version>0.16.0</Version>
+    <Version>0.16.1</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
@@ -42,7 +42,7 @@
 
   <ItemGroup>
     <None Include="manifest.json"       CopyToOutputDirectory="PreserveNewest" />
-    <None Include="config.example.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="config.json.example" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <!-- Embed the build-time signing private key as a resource when provided
@@ -100,7 +100,7 @@
     <MakeDir Directories="$(DeployDir)" />
     <Copy SourceFiles="$(TargetPath)"        DestinationFolder="$(DeployDir)" />
     <Copy SourceFiles="manifest.json"        DestinationFolder="$(DeployDir)" />
-    <Copy SourceFiles="config.example.json"  DestinationFolder="$(DeployDir)" />
+    <Copy SourceFiles="config.json.example"  DestinationFolder="$(DeployDir)" />
     <Copy SourceFiles="@(SatelliteAssemblies)"
           DestinationFiles="@(SatelliteAssemblies->'$(DeployDir)/%(RecursiveDir)%(Filename)%(Extension)')" />
     <Message Text="Installed atproto-tracker to $(DeployDir)" Importance="high" />

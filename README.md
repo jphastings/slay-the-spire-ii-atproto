@@ -73,7 +73,7 @@ scripts/generate-refs.sh  # reads Sts2DataDir from mod/local.props
 
 ### Releases
 
-Bump `<Version>` in [mod/atproto-tracker.csproj](mod/atproto-tracker.csproj) and push to `main`. The build stamps the version into both the assembly and `manifest.json` automatically. The [release workflow](.github/workflows/release.yml) creates a `v<version>` tag and publishes a zip with `atproto-tracker.dll` + `manifest.json` + `config.example.json`.
+Bump `<Version>` in [mod/atproto-tracker.csproj](mod/atproto-tracker.csproj) and push to `main`. The build stamps the version into both the assembly and `manifest.json` automatically. The [release workflow](.github/workflows/release.yml) creates a `v<version>` tag and publishes a zip with `atproto-tracker.dll` + `manifest.json` + `config.json.example`.
 
 ## Layout
 

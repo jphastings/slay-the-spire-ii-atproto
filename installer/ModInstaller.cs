@@ -11,7 +11,7 @@ internal static class ModInstaller
     private static readonly string[] ProfileDirs = ["profile1", "profile2", "profile3"];
 
     private static readonly string[] EmbeddedFiles =
-        ["atproto-tracker.dll", "manifest.json", "config.example.json"];
+        ["atproto-tracker.dll", "manifest.json", "config.json.example"];
 
     public static string GetModFolder(string modsPath) =>
         Path.Combine(modsPath, ModFolderName);
