@@ -76,7 +76,7 @@
 {:else if identity}
 	<div class="header">
 		<div class="title">
-			<h1>@{identity.handle}</h1>
+			<h1 typeof="schema:Person" resource={identity.did}>@{identity.handle}</h1>
 			<p class="tagline">Slay the Spire 2 Runs</p>
 		</div>
 		<div class="actor">
@@ -100,7 +100,11 @@
 			</aside>
 			<div class="runs">
 				{#each runs as entry}
-					<RunCard run={entry.value} href={`/${page.params.actor}/${rkeyFromUri(entry.uri)}`} />
+					<RunCard
+						run={entry.value}
+						href={`/${page.params.actor}/${rkeyFromUri(entry.uri)}`}
+						resource={entry.uri}
+					/>
 				{/each}
 			</div>
 		</div>

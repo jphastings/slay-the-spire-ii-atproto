@@ -27,6 +27,8 @@
 		href={resolved.href}
 		target={resolved.external ? '_blank' : undefined}
 		rel={resolved.external ? 'noopener noreferrer' : undefined}
+		typeof={tally.atproto ? 'schema:Person' : undefined}
+		resource={tally.atproto || undefined}
 	>
 		{#if resolved.avatar}
 			<img class="avatar" src={resolved.avatar} alt="" loading="lazy" />
@@ -42,7 +44,12 @@
 		</div>
 	</a>
 {:else}
-	<span class="ally pending" aria-busy="true">
+	<span
+		class="ally pending"
+		aria-busy="true"
+		typeof={tally.atproto ? 'schema:Person' : undefined}
+		resource={tally.atproto || undefined}
+	>
 		<div class="avatar placeholder" aria-hidden="true"></div>
 		<div class="text">
 			<span class="games">

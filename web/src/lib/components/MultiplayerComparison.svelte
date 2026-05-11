@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { RunRecord } from '$lib/api/types';
 	import PlayerCard from './PlayerCard.svelte';
+	import { COLLECTION } from '$lib/api/pds';
 	import { computeComparison, formatScore, type PlayerInput } from '$lib/utils/multiplayer-metrics';
 
 	let {
@@ -29,7 +30,12 @@
 				<th scope="col" class="corner" aria-hidden="true"></th>
 				{#each orderedDids as did (did)}
 					{@const score = result.scores[did] ?? 0}
-					<th scope="col" class="player-col">
+					<th
+						scope="col"
+						class="player-col"
+						typeof="schema:Thing"
+						resource="at://{did}/{COLLECTION}/{tid}"
+					>
 						<div class="player-header">
 							<PlayerCard player={{ atproto: did }} {tid} preferLocal compact />
 							<div

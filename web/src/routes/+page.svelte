@@ -67,7 +67,7 @@
 		<div class="recent">
 			<p>Players:</p>
 			{#each recent as { did, handle } (did)}
-				<a href="/{did}" class="btn btn-ghost">@{handle}</a>
+				<a href="/{did}" class="btn btn-ghost" typeof="schema:Person" resource={did}>@{handle}</a>
 			{/each}
 		</div>
 	{/if}

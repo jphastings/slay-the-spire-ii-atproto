@@ -42,6 +42,8 @@
 		href={resolved.href}
 		target={resolved.external ? '_blank' : undefined}
 		rel={resolved.external ? 'noopener noreferrer' : undefined}
+		typeof={player.atproto ? 'schema:Person' : undefined}
+		resource={player.atproto || undefined}
 	>
 		{#if resolved.avatar}
 			<img class="avatar" src={resolved.avatar} alt="" loading="lazy" />
@@ -56,7 +58,13 @@
 		</div>
 	</a>
 {:else}
-	<span class="card pending" class:compact aria-busy="true">
+	<span
+		class="card pending"
+		class:compact
+		aria-busy="true"
+		typeof={player.atproto ? 'schema:Person' : undefined}
+		resource={player.atproto || undefined}
+	>
 		<div class="avatar placeholder" aria-hidden="true"></div>
 		<div class="text">
 			<div class="label">{fallbackLabel}</div>

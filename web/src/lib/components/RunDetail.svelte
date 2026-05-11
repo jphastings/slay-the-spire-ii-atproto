@@ -68,6 +68,7 @@
 					: null
 	);
 	const pdslsUrl = $derived(`https://pdsls.dev/at://${did}/${COLLECTION}/${tid}`);
+	const atUri = $derived(`at://${did}/${COLLECTION}/${tid}`);
 
 	const hasAllies = $derived(!!run.allies && run.allies.length > 0);
 	const selfPlayer = $derived({ atproto: did, steam: run.steamID64 });
@@ -136,7 +137,7 @@
 	</dl>
 {/snippet}
 
-<div class="detail">
+<div class="detail" typeof="schema:Thing" resource={atUri}>
 	{#if hasAllies}
 		<!-- With allies: grid with a dedicated players column (wide) or row (narrow). -->
 		<div class="layout">

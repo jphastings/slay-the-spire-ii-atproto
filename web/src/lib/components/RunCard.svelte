@@ -4,12 +4,12 @@
 	import OutcomeBadge from './OutcomeBadge.svelte';
 	import AllyAvatar from './AllyAvatar.svelte';
 
-	let { run, href }: { run: RunRecord; href: string } = $props();
+	let { run, href, resource }: { run: RunRecord; href: string; resource: string } = $props();
 
 	const allies = $derived(run.allies ?? []);
 </script>
 
-<a {href} class="card">
+<a {href} class="card" typeof="schema:Thing" {resource}>
 	{#if allies.length > 0}
 		<div class="allies" aria-label="Played with">
 			{#each allies as ally}
