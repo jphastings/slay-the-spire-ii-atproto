@@ -22,6 +22,9 @@ export interface CardMeta {
 	class?: string;
 	character?: string;
 	cost: string;
+	// Regent "star cost" — a second resource some Regent cards cost on top
+	// of (or instead of) energy. Absent/0 means the card has no star cost.
+	starCost?: number;
 	type: CardType;
 	rarity: CardRarity;
 	title?: string;

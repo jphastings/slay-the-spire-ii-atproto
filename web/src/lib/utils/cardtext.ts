@@ -13,13 +13,21 @@
 // Branches may embed BBCode and further placeholders; brace matching is
 // balanced so nested `{}` / `[]` don't trip up the splitter.
 
-export type RunStyle = 'normal' | 'highlight' | 'placeholder';
+export type RunStyle = 'normal' | 'highlight' | 'placeholder' | 'icon';
 
 export interface Run {
 	text: string;
 	style: RunStyle;
 	field?: string;
+	// For style 'icon': the asset stem under /cards/parts (e.g. "star_icon").
+	icon?: string;
 }
+
+// Bare `{…Icon}` placeholders the game replaces with an inline sprite.
+// Maps the token to the card-part asset stem the web ships.
+const iconTokens: Record<string, string> = {
+	singleStarIcon: 'star_icon'
+};
 
 export type Line = Run[];
 
@@ -86,6 +94,13 @@ export function parseCardText(desc: string, opts: ParseOptions = {}): Line[] {
 				const inner = s.slice(i + 1, end);
 				const ev = evaluatePlaceholder(inner, opts);
 				if (ev === null) {
+					const icon = iconTokens[inner];
+					if (icon) {
+						flush();
+						cur.push({ text: '', style: 'icon', icon });
+						i = end + 1;
+						continue;
+					}
 					const field = inner.slice(0, inner.indexOf(':') === -1 ? inner.length : inner.indexOf(':'));
 					flush();
 					const v = resolvePlaceholderValue(field, opts.values);

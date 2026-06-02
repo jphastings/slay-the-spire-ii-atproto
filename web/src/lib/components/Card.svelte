@@ -55,6 +55,10 @@
 	// Cards with a negative cost are "Unplayable" in the game — the
 	// energy orb and number aren't drawn (curses, statuses).
 	const hasCost = $derived(meta && !meta.cost.startsWith('-'));
+	// Regent star cost: a second badge below the energy orb. Only the
+	// Regent's star-costing cards carry a positive value.
+	const starCost = $derived(meta?.starCost ?? 0);
+	const hasStar = $derived(starCost > 0);
 	const character = $derived(meta?.character ?? 'colorless');
 	const orbChar = $derived(orbCharacter(character));
 	// Normalise rarity to one of our baked banner variants.
@@ -140,6 +144,13 @@
 		{/if}
 		<span class="cost">{meta?.cost}</span>
 	{/if}
+	{#if hasStar}
+		{@const starStyle = packedSpriteStyle(orbSheet, 'star')}
+		{#if starStyle}
+			<div class="layer star-icon" style={starStyle} aria-hidden="true"></div>
+		{/if}
+		<span class="star-cost">{starCost}</span>
+	{/if}
 	{#if enchantment}
 		{@const tabStyle = packedSpriteStyle(enchantSheet, 'tab')}
 		{@const iconStyle = packedSpriteStyle(enchantSheet, enchantment)}
@@ -155,7 +166,11 @@
 		<div class="description">
 			<div class="description-inner">
 				{#each descLines as line, i}
-					{#each line as run}<span class="run {run.style}">{run.text}</span>{/each}{#if i < descLines.length - 1}<br />{/if}
+					{#each line as run}{#if run.style === 'icon'}<span
+								class="run icon"
+								style="--icon: url('/cards/parts/{run.icon}.webp')"
+								aria-hidden="true"
+							></span>{:else}<span class="run {run.style}">{run.text}</span>{/if}{/each}{#if i < descLines.length - 1}<br />{/if}
 				{/each}
 			</div>
 		</div>
@@ -276,6 +291,34 @@
 		text-shadow: calc(var(--w) * 2 / 300) calc(var(--w) * 2 / 300) 0 rgba(0, 0, 0, 0.19);
 	}
 
+	/* StarIcon: card.tscn (-186,-189)..(-128,-131) → (-36,22)..(22,80).
+	   The Regent star-cost badge, tucked below-left of the energy orb. */
+	.star-icon {
+		left: -12%;
+		top: 5.213%;
+		width: 19.333%;
+		height: 13.744%;
+	}
+
+	/* StarLabel: centered in the star icon, font 22, cream text on a teal
+	   outline (outline_size 12 → stroke 6/300, half like the energy label). */
+	.star-cost {
+		position: absolute;
+		left: -12%;
+		top: 5.213%;
+		width: 19.333%;
+		height: 13.744%;
+		display: grid;
+		place-items: center;
+		font-weight: 700;
+		font-size: calc(var(--w) * 22 / 300);
+		color: #fff6e2;
+		line-height: 1;
+		-webkit-text-stroke: calc(var(--w) * 6 / 300) #1a5e6b;
+		paint-order: stroke fill;
+		text-shadow: calc(var(--w) * 2 / 300) calc(var(--w) * 2 / 300) 0 rgba(0, 0, 0, 0.19);
+	}
+
 	/* TitleLabel: (-105,-204)..(105,-150) → (45,7)..(255,61), font 26. */
 	.name {
 		position: absolute;
@@ -339,5 +382,17 @@
 	.description .run.highlight,
 	.description .run.placeholder {
 		color: #f0c850;
+	}
+
+	/* Inline {singleStarIcon} sprite — sized to the description text. */
+	.description .run.icon {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		vertical-align: -0.15em;
+		background-image: var(--icon);
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 </style>

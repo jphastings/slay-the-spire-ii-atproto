@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/jphastings/slay-the-spire-ii-atproto/extract/pck"
@@ -19,6 +20,7 @@ type CardMeta struct {
 	ClassName    string             `json:"class"`                   // original C# class name (for debug)
 	Character    string             `json:"character,omitempty"`     // ironclad, silent, defect, etc.
 	Cost         string             `json:"cost"`                    // "0", "1", "2", or "?" when unknown
+	StarCost     int                `json:"starCost,omitempty"`      // Regent star cost; 0/absent = none (base CanonicalStarCost is -1)
 	Type         string             `json:"type"`                    // attack | skill | power | ...
 	Rarity       string             `json:"rarity"`
 	Title        string             `json:"title,omitempty"`         // localized display name
@@ -40,6 +42,10 @@ var (
 		`CanonicalKeywords\s*=>\s*[\s\S]*?(?:\]\s*\{([^}]*)\}|<CardKeyword>\(\s*(CardKeyword\.\w+)\s*\))`,
 	)
 	cardKeywordRefRE = regexp.MustCompile(`CardKeyword\.(\w+)`)
+	// Regent cards override `public override int CanonicalStarCost => N;`.
+	// The base CardModel returns -1 (no star cost), so only overriding
+	// cards match here; non-Regent cards leave StarCost at 0.
+	canonicalStarCostRE = regexp.MustCompile(`CanonicalStarCost\s*=>\s*(\d+)`)
 )
 
 // Keyword orderings from sts2.dll (CardKeywordOrder in the decomp).
@@ -98,6 +104,7 @@ func extractMetadata(csPath, outPath string, charByID, loc, keywordLoc map[strin
 			ClassName:    className,
 			Character:    charByID[id],
 			Cost:         normaliseCost(strings.TrimSpace(string(ctor[1]))),
+			StarCost:     parseStarCost(body),
 			Type:         strings.ToLower(string(ctor[2])),
 			Rarity:       strings.ToLower(string(ctor[3])),
 			Title:        loc[up+".title"],
@@ -154,6 +161,22 @@ func classBodyRange(src []byte, startAt int) (int, int) {
 		}
 	}
 	return -1, -1
+}
+
+// parseStarCost reads the `CanonicalStarCost => N` override out of a card's
+// class body. Returns 0 when the card doesn't override it (i.e. has no star
+// cost) — the base CardModel returns -1, so only Regent star-costing cards
+// carry a positive value here.
+func parseStarCost(body []byte) int {
+	m := canonicalStarCostRE.FindSubmatch(body)
+	if m == nil {
+		return 0
+	}
+	n, err := strconv.Atoi(string(m[1]))
+	if err != nil {
+		return 0
+	}
+	return n
 }
 
 // parseCanonicalKeywords pulls the CardKeyword.XXX identifiers out of a

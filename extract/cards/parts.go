@@ -64,6 +64,26 @@ func Extract(p *pck.Pack, outDir, decompiledCS string) error {
 		return fmt.Errorf("enchant tab: %w", err)
 	}
 
+	// Regent star-cost badge: the StarIcon node in scenes/cards/card.tscn
+	// renders images/ui/combat/energy_star.png next to the energy orb. Drop
+	// it into parts/orb/ so the orb sprite-sheet packer ships it alongside
+	// the per-character energy orbs, keyed "star".
+	if err := extractStandalone(p,
+		"images/ui/combat/energy_star.png.import",
+		filepath.Join(partsDir, "orb", "star.png"),
+	); err != nil {
+		return fmt.Errorf("star badge: %w", err)
+	}
+
+	// Inline {singleStarIcon} glyph used in Regent card descriptions
+	// (e.g. Child of the Stars). Ships as a standalone card part webp.
+	if err := extractStandalone(p,
+		"images/packed/sprite_fonts/star_icon.png.import",
+		filepath.Join(partsDir, "star_icon.png"),
+	); err != nil {
+		return fmt.Errorf("star icon: %w", err)
+	}
+
 	if err := writeTints(p, filepath.Join(outDir, "tints.json")); err != nil {
 		return fmt.Errorf("tints: %w", err)
 	}
