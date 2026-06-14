@@ -33,10 +33,13 @@ export type Line = Run[];
 
 export interface ParseOptions {
 	upgraded?: boolean;
-	// Numeric values for leaf `{Field:diff()}` placeholders. When a key is
-	// present the literal value is rendered (styled as a highlight) instead
-	// of a `?` chip. Unknown fields still fall back to `?`.
-	values?: Record<string, number>;
+	// Per-card values for placeholders. Numbers drive `{Field:diff()}` leaves
+	// (the literal renders as a highlight instead of a `?` chip). Numbers and
+	// strings also resolve `{Field:choose(...)}` selectors and boolean
+	// conditionals — e.g. Mad Science emits `CardType=Attack` plus a 1/0 per
+	// rider so the parser shows only the chosen branch. Unknown fields fall
+	// back to `?` (leaves) or the existing default-branch behaviour.
+	values?: Record<string, number | string>;
 }
 
 export function parseCardText(desc: string, opts: ParseOptions = {}): Line[] {
@@ -160,6 +163,23 @@ function evaluatePlaceholder(inner: string, opts: ParseOptions): string | null {
 	const field = inner.slice(0, colon1);
 	const rest = inner.slice(colon1 + 1);
 
+	// Selector: {Field:choose(OPT1|OPT2|...):BRANCH1|BRANCH2|...}. The card's
+	// recorded choice for `field` (e.g. Mad Science's CardType=Attack) picks
+	// the matching branch; with no recorded choice we fall back to the first.
+	if (rest.startsWith('choose(')) {
+		const close = rest.indexOf(')');
+		if (close > 0 && rest.slice(close, close + 2) === '):') {
+			const options = rest.slice('choose('.length, close).split('|');
+			const branches = splitBranches(rest.slice(close + 2));
+			const raw = opts.values?.[field];
+			let idx = -1;
+			if (typeof raw === 'string') idx = options.indexOf(raw);
+			else if (typeof raw === 'number' && Number.isInteger(raw) && raw >= 0 && raw < branches.length)
+				idx = raw;
+			return branches[idx >= 0 ? idx : 0] ?? '';
+		}
+	}
+
 	// Function-call leaves: diff(), diff(N), energyIcons(), energyIcons(N).
 	if (/^\w+\(\d*\)$/.test(rest)) return null;
 
@@ -185,6 +205,16 @@ function applyOp(field: string, kind: string, args: string, opts: ParseOptions):
 		if (field === 'InCombat') {
 			// Deck viewer is never in combat, so always take the else branch.
 			return branches[1] ?? '';
+		}
+		// When the card recorded a value for this boolean (e.g. Mad Science's
+		// per-rider 1/0 flags), honour it so only the chosen branch shows.
+		const known = opts.values?.[field];
+		if (known !== undefined) {
+			const truthy =
+				typeof known === 'number'
+					? known !== 0
+					: known !== '' && known !== '0' && known.toLowerCase() !== 'false';
+			return (truthy ? branches[0] : branches[1]) ?? '';
 		}
 		// Unknown boolean — prefer the non-empty branch so cards read well.
 		return branches.find((b) => b.length > 0) ?? '';

@@ -54,11 +54,13 @@ export interface ParsedDeckId {
 	base: string;
 	upgraded: boolean;
 	enchantment?: string;
-	// Per-card DynamicVar overrides emitted by the mod for cards whose
-	// class carries [SavedProperty] fields (e.g. The Scythe's growing
-	// Damage). Keys are DynamicVar names; values are the card's current
-	// base values.
-	state?: Record<string, number>;
+	// Per-card state emitted by the mod for cards whose class carries
+	// [SavedProperty] fields (e.g. The Scythe's growing Damage, or Mad
+	// Science's chosen CardType + rider flags). Keys are the names the card
+	// description references; values are numbers where they parse cleanly
+	// (live var values, 1/0 booleans) and strings otherwise (enum choices
+	// like CardType=Attack).
+	state?: Record<string, number | string>;
 }
 
 // parseDeckId splits a deck entry into its components. The mod emits:
@@ -77,16 +79,19 @@ export function parseDeckId(id: string): ParsedDeckId {
 	// but the mod emits deck entries uppercase (e.g. CARD.STRIKE_IRONCLAD/TEZCATARAS_EMBER).
 	const enchantment = slash < 0 ? undefined : withoutState.slice(slash + 1).toLowerCase();
 	const isUp = before.endsWith('+');
-	let state: Record<string, number> | undefined;
+	let state: Record<string, number | string> | undefined;
 	if (stateStr.length > 0) {
 		state = {};
 		for (const pair of stateStr.split(',')) {
 			const eq = pair.indexOf('=');
 			if (eq < 0) continue;
 			const key = pair.slice(0, eq);
-			const num = Number(pair.slice(eq + 1));
-			if (key.length === 0 || !Number.isFinite(num)) continue;
-			state[key] = num;
+			if (key.length === 0) continue;
+			const raw = pair.slice(eq + 1);
+			const num = Number(raw);
+			// Keep numbers as numbers (var values, 1/0 flags); preserve
+			// non-numeric choices (e.g. CardType=Attack) as strings.
+			state[key] = raw !== '' && Number.isFinite(num) ? num : raw;
 		}
 		if (Object.keys(state).length === 0) state = undefined;
 	}

@@ -290,7 +290,51 @@ internal static class RunStateExtractor
                 parts.Add(key + "=" + baseValue.ToString());
             }
         }
+
+        CollectDescriptionArgs(card, parts);
         return string.Join(",", parts);
+    }
+
+    // Some cards carry per-instance choices the description renders via
+    // CardModel.AddExtraArgsToDescription rather than DynamicVars — e.g. Mad
+    // Science's chosen CardType and rider effect (stored in [SavedProperty]
+    // enums, surfaced to the description as a "CardType" string plus a bool
+    // per rider). We mirror the game: take a fresh description LocString, let
+    // the card add its args, and capture the resulting bool/string values so
+    // the web can resolve the card's {Field:choose(...)} / rider conditionals.
+    // Numeric DynamicVars are captured by the caller, so we skip them here.
+    private static void CollectDescriptionArgs(object card, List<string> parts)
+    {
+        try
+        {
+            var description = GetMember(card, "Description");
+            if (description is null) return;
+
+            var addArgs = card.GetType().GetMethod(
+                "AddExtraArgsToDescription",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            addArgs?.Invoke(card, new[] { description });
+
+            if (GetMember(description, "Variables") is not IEnumerable variables) return;
+            foreach (var kv in variables)
+            {
+                var key = GetMember(kv, "Key") as string;
+                var value = GetMember(kv, "Value");
+                if (string.IsNullOrEmpty(key) || value is null) continue;
+                var encoded = value switch
+                {
+                    bool b    => b ? "1" : "0",
+                    string s  => s,
+                    Enum e    => e.ToString(),
+                    _         => null, // DynamicVar objects etc. — already handled
+                };
+                if (encoded is not null) parts.Add(key + "=" + encoded);
+            }
+        }
+        catch
+        {
+            // Best-effort: never let description introspection break deck collection.
+        }
     }
 
     private static string FormatDecimal(decimal d)
